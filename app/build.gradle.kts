@@ -1,11 +1,12 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
 }
 
 android {
     namespace = "com.nagi.ddtools"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.nagi.ddtools"
@@ -13,8 +14,6 @@ android {
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -41,7 +40,15 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.10.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+
+
+    // Room 核心库
+    implementation("androidx.room:room-runtime:2.6.0")
+
+    // 如果你使用的是 Kotlin，添加以下依赖
+    implementation("androidx.room:room-ktx:2.6.0")
+
+    // 注解处理器用于生成 DAO 接口和类
+    kapt("androidx.room:room-compiler:2.6.0")
+
 }
