@@ -1,17 +1,21 @@
 package com.nagi.ddtools
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.nagi.ddtools.database.AppDatabase
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.findNavController
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.nagi.ddtools.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        GlobalScope.launch {
-            AppDatabase.getInstance(applicationContext).homePageDao().getAll()
-        }
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        val navView: BottomNavigationView = binding.navView
+        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+        navView.setupWithNavController(navController)
     }
+
 }
