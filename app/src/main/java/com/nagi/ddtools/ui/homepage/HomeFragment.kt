@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import com.nagi.ddtools.database.homePagLis.HomePageList
 import com.nagi.ddtools.databinding.FragmentHomeBinding
+import com.nagi.ddtools.ui.adapter.HomePageListAdapter
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -34,7 +34,26 @@ class HomeFragment : Fragment() {
     }
 
     private fun updateView(data: List<HomePageList>) {
-        // TODO: 实现此方法以使用提供的数据更新视图
+        if (data.isEmpty()) {
+//            return
+        }
+        val adapterTest = HomePageListAdapter(listOf(
+            HomePageList(1,"111","111"),
+            HomePageList(1,"111","111"),
+            HomePageList(1,"111","111"),
+            HomePageList(1,"111","111"),
+            HomePageList(1,"111","111"),
+            HomePageList(1,"111","111"),
+            HomePageList(1,"111","111"),
+            HomePageList(1,"111","111"),
+            HomePageList(1,"111","111"),
+            HomePageList(1,"111","111"),
+            HomePageList(1,"111","111"),
+            HomePageList(1,"111","111"),
+        ))
+        val adapter = HomePageListAdapter(data)
+        binding.homePageListview.adapter = adapterTest
+        binding.homePageListview.layoutManager = GridLayoutManager(context,2)
     }
 
     override fun onDestroyView() {
