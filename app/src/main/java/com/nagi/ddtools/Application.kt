@@ -1,10 +1,11 @@
 package com.nagi.ddtools
 
 import android.app.Application
+import com.nagi.ddtools.database.AppDatabase
 
 class DdTools : Application() {
     override fun onCreate() {
         super.onCreate()
-        // TODO: 进行App初始化操作
+        AppDatabase.getInstance(applicationContext)
     }
 }

@@ -1,7 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
+    id("com.google.devtools.ksp")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -14,6 +15,10 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+    }
+
+    buildFeatures {
+        viewBinding = true
     }
 
     buildTypes {
@@ -51,12 +56,9 @@ dependencies {
 
 
     // Room 核心库
-    implementation("androidx.room:room-runtime:2.6.0")
-
+    implementation("androidx.room:room-runtime:2.6.1")
     // 如果你使用的是 Kotlin，添加以下依赖
-    implementation("androidx.room:room-ktx:2.6.0")
-
+    implementation("androidx.room:room-ktx:2.6.1")
     // 注解处理器用于生成 DAO 接口和类
-    kapt("androidx.room:room-compiler:2.6.0")
-
+    ksp("androidx.room:room-compiler:2.6.1")
 }

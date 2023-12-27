@@ -1,14 +1,17 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
     <style name="Base.Theme.DdTools" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
+    <style name="Theme.DdTools" parent="Base.Theme.DdTools" />
+
+    <!-- 首页列表图片样式 -->
+    <style name="homePageListImageStyle">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
+    </style>
+    <!-- 圆形图片 -->
+    <style name="circleStyle">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
     </style>
 
-    <style name="Theme.DdTools" parent="Base.Theme.DdTools" />
-    <style name="Theme.DdTools.SplashTheme" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">#66ccff</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
-        <item name="postSplashScreenTheme">@style/Theme.DdTools</item>
-    </style>
 </resources>
