@@ -20,5 +20,11 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:listitem="@layout/home_page_listview_view" />
 
+    <com.google.android.material.imageview.ShapeableImageView
+        android:visibility="gone"
+        android:src="@drawable/baseline_add"
+        android:id="@+id/home_page_add"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

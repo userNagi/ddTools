@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
     <application
         android:name=".DdTools"
         android:allowBackup="true"
@@ -14,9 +17,9 @@
         android:theme="@style/Theme.DdTools"
         tools:targetApi="31">
         <activity
-            android:theme="@style/Base.Theme.DdTools.Splash"
             android:name=".SplashActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Base.Theme.DdTools.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
