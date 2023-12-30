@@ -17,14 +17,14 @@
 
     <TextView
         android:id="@+id/nav_title_text"
-        android:text="@string/title_home"
-        android:textSize="16dp"
-        android:textColor="@color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/title_home"
+        android:textColor="@color/black"
+        android:textSize="18dp"
         app:layout_constraintBottom_toTopOf="@id/nav_host_fragment_activity_main"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="SpUsage" />
 
@@ -50,6 +50,7 @@
         android:layout_marginStart="0dp"
         android:layout_marginEnd="0dp"
         android:background="?android:attr/windowBackground"
+        app:itemRippleColor="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
