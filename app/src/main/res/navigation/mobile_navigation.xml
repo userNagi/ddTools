@@ -13,13 +13,13 @@
 
     <fragment
         android:id="@+id/navigation_tool"
-        android:name="com.nagi.ddtools.ui.dashboard.DashboardFragment"
+        android:name="com.nagi.ddtools.ui.toolpage.ToolPageFragment"
         android:label="@string/title_tool"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_tool" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.nagi.ddtools.ui.notifications.NotificationsFragment"
+        android:name="com.nagi.ddtools.ui.minepage.MinePageFragment"
         android:label="@string/title_mine"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_mine" />
 </navigation>

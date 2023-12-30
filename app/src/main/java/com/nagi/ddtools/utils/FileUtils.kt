@@ -7,9 +7,11 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.util.Log
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LifecycleCoroutineScope
 import com.nagi.ddtools.utils.UiUtils.toast
 import java.io.File
 import java.io.FileOutputStream
@@ -22,10 +24,13 @@ import java.io.FileOutputStream
  * @date :2023/12/27 23:01
  */
 object FileUtils {
+    private const val WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 114
 
     /**
-     ** 打开图片库，选择一张图片
-     **/
+     * 打开图片库，选择一张图片。
+     * @param activity 当前活动。
+     * @param resultLauncher 用于启动选择图片的Activity Result Launcher。
+     */
     fun openImageGallery(activity: Activity, resultLauncher: ActivityResultLauncher<Intent>) {
         checkWriteExternalPermission(activity) { granted ->
             if (!granted) {
@@ -38,8 +43,8 @@ object FileUtils {
     }
 
     /**
-     ** 权限检查
-     **/
+     * 检查写入外部存储的权限。
+     */
     private fun checkWriteExternalPermission(activity: Activity, callback: (Boolean) -> Unit) {
         if (ContextCompat.checkSelfPermission(
                 activity,
@@ -49,7 +54,7 @@ object FileUtils {
             ActivityCompat.requestPermissions(
                 activity,
                 arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                114
+                WRITE_EXTERNAL_STORAGE_REQUEST_CODE
             )
         } else {
             callback(true)
@@ -57,32 +62,30 @@ object FileUtils {
     }
 
     /**
-     ** 移动图片到本地且返回
-     **/
+     * 移动图片到本地且返回
+     */
     fun moveImageIntoAppFile(context: Context, uri: Uri, path: String): String? {
-        try {
+        return try {
             val appDir = context.filesDir
-            val targetDir = File(appDir, path)
-            if (!targetDir.exists()) {
-                targetDir.mkdirs()
+            val targetDir = File(appDir, path).apply {
+                if (!exists()) mkdirs()
             }
             val targetFile = File(targetDir, getFileNameWithTimestamp(uri))
-            val outputStream = FileOutputStream(targetFile)
             context.contentResolver.openInputStream(uri)?.use { inputStream ->
-                inputStream.copyTo(outputStream)
+                FileOutputStream(targetFile).use { outputStream ->
+                    inputStream.copyTo(outputStream)
+                }
             }
-            outputStream.flush()
-            outputStream.close()
-            return targetFile.path
+            targetFile.path
         } catch (e: Exception) {
-            Log.e("Error moving image: ", e.message, e)
+            Log.e("Error moving image: ", e.message.toString(), e)
+            null
         }
-        return null
     }
-
     private fun getFileNameWithTimestamp(uri: Uri): String {
-        val lastSegment = uri.path?.split(".")?.lastOrNull() ?: ".png"
+        val originalFileName = uri.lastPathSegment ?: "image"
+        val extension = originalFileName.substringAfterLast('.', "png")
         val timestamp = System.currentTimeMillis()
-        return "$timestamp.$lastSegment"
+        return "IMG_$timestamp.$extension"
     }
 }

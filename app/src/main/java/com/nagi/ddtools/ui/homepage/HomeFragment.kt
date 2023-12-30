@@ -6,8 +6,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
@@ -21,21 +23,15 @@ import com.nagi.ddtools.utils.UiUtils.toast
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-
+    private lateinit var adapter: HomePageListAdapter
+    private var isAdapterInitialized = false
     private val viewModel: HomeViewModel by viewModels()
 
     private var resultLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            result.data?.data?.let { uri ->
-                moveImageIntoAppFile(requireContext(), uri, "homePageList")
-            }
-        } else {
-            toast(requireContext(), "您未选择图片")
-        }
+        handleActivityResult(result)
     }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -44,30 +40,58 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initAdapter()
         viewModel.homeListData.observe(viewLifecycleOwner) { data ->
             updateView(data)
         }
     }
-
-    private fun updateView(data: List<HomePageList>) {
-        if (data.isEmpty()) {
-            binding.homePageListview.visibility = View.GONE
-            binding.homePageAdd.visibility = View.VISIBLE
-            binding.homePageAdd.setOnClickListener {
-                activity?.let {
-                    openImageGallery(it, resultLauncher)
-                }
+    private fun initAdapter() {
+        if (!isAdapterInitialized) {
+            adapter = HomePageListAdapter(mutableListOf()) { position ->
+                showDeleteDialog(position)
             }
-            return
+            binding.homePageListview.adapter = adapter
+            binding.homePageListview.layoutManager = GridLayoutManager(context, 2)
+            isAdapterInitialized = true
         }
-        binding.homePageListview.visibility = View.VISIBLE
-        binding.homePageAdd.visibility = View.GONE
-        val adapter = HomePageListAdapter(data)
-        binding.homePageListview.adapter = adapter
-        binding.homePageListview.layoutManager = GridLayoutManager(context, 2)
+    }
+    private fun updateView(data: List<HomePageList>) {
+        binding.homePageListview.visibility = if (data.isEmpty()) View.GONE else View.VISIBLE
+        binding.homePageAdd.visibility = if (data.isEmpty()) View.VISIBLE else View.GONE
+
+        if (data.isEmpty()) {
+            binding.homePageAdd.setOnClickListener {
+                openImageGallery()
+            }
+        } else {
+            adapter.updateData(data)
+        }
+    }
+    private fun openImageGallery() {
+        activity?.let { openImageGallery(it, resultLauncher) }
+    }
+    private fun handleActivityResult(result: ActivityResult) {
+        if (result.resultCode == Activity.RESULT_OK) {
+            result.data?.data?.let { uri ->
+                moveImageIntoAppFile(requireContext(), uri, "homePageList")
+            }
+        } else {
+            toast(requireContext(),"您未选择图片")
+        }
+    }
+
+    private fun showDeleteDialog(position: Int) {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Delete Item")
+            .setMessage("Are you sure you want to delete this item?")
+            .setPositiveButton("Confirm") { dialog, _ ->
+                adapter.removeAt(position)
+                dialog.dismiss()
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
 
     override fun onDestroyView() {

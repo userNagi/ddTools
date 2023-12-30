@@ -2,24 +2,38 @@ package com.nagi.ddtools.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.nagi.ddtools.database.homePagLis.HomePageList
 import com.nagi.ddtools.databinding.HomePageListviewViewBinding
 
-class HomePageListAdapter(private val dataList: List<HomePageList>) :
-    RecyclerView.Adapter<HomePageListAdapter.ViewHolder>() {
+class HomePageListAdapter(
+    private var dataList: MutableList<HomePageList>,
+    private val onLongClick: (Int) -> Unit
+) : RecyclerView.Adapter<HomePageListAdapter.ViewHolder>() {
+
+    fun updateData(newData: List<HomePageList>) {
+        val diffCallback = HomePageListDiffCallback(dataList, newData)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+
+        dataList.clear()
+        dataList.addAll(newData)
+        diffResult.dispatchUpdatesTo(this)
+    }
+
+    fun removeAt(position: Int) {
+        dataList.removeAt(position)
+        notifyItemRemoved(position)
+    }
 
     class ViewHolder(private val binding: HomePageListviewViewBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: HomePageList) {
-            // 必须要有一个加载本地图片的函数，例如使用Glide库
-//            Glide.with(binding.homePageListviewImage.context)
-//                .load(item.imgUrl)
-//                .into(binding.homePageListviewImage)
-
-            // 设置文本
+        fun bind(item: HomePageList, onLongClick: (Int) -> Unit) {
             binding.homePageListviewText.text = item.name
+            itemView.setOnLongClickListener {
+                onLongClick(adapterPosition)
+                true
+            }
         }
     }
 
@@ -30,17 +44,24 @@ class HomePageListAdapter(private val dataList: List<HomePageList>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(dataList[position])
-        holder.itemView.setOnClickListener {
-            Toast.makeText(holder.itemView.context, "点击了第${position}个", Toast.LENGTH_SHORT)
-                .show()
-        }
-        holder.itemView.setOnLongClickListener {
-            {}
-            true
-        }
+        holder.bind(dataList[position], onLongClick)
     }
 
-
     override fun getItemCount(): Int = dataList.size
+
+    class HomePageListDiffCallback(
+        private val oldList: List<HomePageList>,
+        private val newList: List<HomePageList>
+    ) : DiffUtil.Callback() {
+        override fun getOldListSize(): Int = oldList.size
+        override fun getNewListSize(): Int = newList.size
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition].id == newList[newItemPosition].id
+        }
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition] == newList[newItemPosition]
+        }
+    }
 }
+
