@@ -1,12 +1,15 @@
 package com.nagi.ddtools.ui.toolpage.tools.idolsearch
 
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.nagi.ddtools.R
 import com.nagi.ddtools.databinding.ActivityIdolSearchBinding
+import java.io.BufferedReader
+import java.io.InputStreamReader
+
 
 class IdolSearchActivity : AppCompatActivity() {
     private lateinit var binding: ActivityIdolSearchBinding
@@ -21,7 +24,7 @@ class IdolSearchActivity : AppCompatActivity() {
 
     private fun initView() {
         binding.searchTitleBack.setOnClickListener { finish() }
-        binding.searchLocation.setOnClickListener { }
+        binding.searchLocation.setOnClickListener { updateLocation() }
         binding.searchSwitchSearch.setOnCheckedChangeListener { _, isChecked ->
             updateSwitchColors(isChecked)
         }
@@ -38,7 +41,13 @@ class IdolSearchActivity : AppCompatActivity() {
     }
 
     private fun updateLocation() {
-
+        val `is` = resources.openRawResource(R.raw.idolgrouplist)
+        val reader = BufferedReader(InputStreamReader(`is`))
+        var line: String?
+        val json = StringBuilder()
+        while (reader.readLine().also { line = it } != null) {
+            json.append(line)
+        }
     }
 
     private fun setupStatusBar() {
