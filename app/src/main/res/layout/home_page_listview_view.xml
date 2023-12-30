@@ -12,9 +12,9 @@
         android:layout_width="164dp"
         android:layout_height="230dp"
         android:padding="1dp"
-        android:src="@drawable/baseline_add"
+        android:src="@drawable/ic_baseline_add"
         app:shapeAppearance="@style/homePageListImageStyle"
-        app:strokeColor="#66ccff"
+        app:strokeColor="@color/lty"
         app:strokeWidth="2dp" />
 
     <TextView

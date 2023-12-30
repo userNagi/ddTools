@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F7F8FA"
+    android:background="@drawable/bg_fragment_rounded_corners"
     tools:context=".ui.homepage.HomeFragment">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -22,7 +22,7 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:visibility="gone"
-        android:src="@drawable/baseline_add"
+        android:src="@drawable/ic_baseline_add"
         android:id="@+id/home_page_add"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

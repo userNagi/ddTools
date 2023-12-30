@@ -84,13 +84,13 @@ class HomeFragment : Fragment() {
 
     private fun showDeleteDialog(position: Int) {
         AlertDialog.Builder(requireContext())
-            .setTitle("Delete Item")
-            .setMessage("Are you sure you want to delete this item?")
-            .setPositiveButton("Confirm") { dialog, _ ->
+            .setTitle("删除此项")
+            .setMessage("你确定要删除这一项嘛")
+            .setPositiveButton("确定") { dialog, _ ->
                 adapter.removeAt(position)
                 dialog.dismiss()
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton("取消", null)
             .show()
     }
 
