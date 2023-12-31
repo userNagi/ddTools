@@ -2,6 +2,7 @@ package com.nagi.ddtools.ui.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -29,7 +30,12 @@ class IdolGroupListAdapter(
             binding.idolGroupImg.setImageResource(R.color.lty)
             binding.idolGroupName.text = item.name
             binding.idolGroupLocation.text = item.location
-            binding.idolGroupInfo.text = item.desc
+            if (item.desc.isEmpty()) {
+                binding.idolGroupInfo.visibility = View.GONE
+            } else {
+                binding.idolGroupInfo.visibility = View.VISIBLE
+                binding.idolGroupInfo.text = item.desc
+            }
             itemView.setOnClickListener {
                 binding.idolGroupInfo.text = "好好听啊" + item.name
             }

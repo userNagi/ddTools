@@ -15,11 +15,13 @@ import kotlinx.coroutines.withContext
 
 class IdolSearchViewModel : ViewModel() {
     private val _idolGroupData = MutableLiveData<List<IdolGroupList>>()
+    private val _locationData = MutableLiveData<Set<String>>()
     val idolGroupData: LiveData<List<IdolGroupList>> = _idolGroupData
-
+    val locationData: LiveData<Set<String>> = _locationData
     fun loadIdolGroupData(jsonString: String, context: Context) {
         viewModelScope.launch {
             val idolGroupList = mutableListOf<IdolGroupList>()
+            val locationList = mutableSetOf<String>()
             withContext(Dispatchers.IO) {
                 jsonString.reader().use { reader ->
                     JsonReader(reader).use { jsonReader ->
@@ -51,20 +53,35 @@ class IdolSearchViewModel : ViewModel() {
 
                                     "desc" -> if (jsonReader.peek() != JsonToken.NULL) desc =
                                         jsonReader.nextString()
+
                                     else -> jsonReader.skipValue()
                                 }
                             }
                             jsonReader.endObject()
-                            idolGroupList.add(IdolGroupList(id, img_url, name, version, location,desc))
+                            locationList.add(location)
+                            idolGroupList.add(
+                                IdolGroupList(id, img_url, name, version, location, desc)
+                            )
                         }
                         jsonReader.endArray()
                     }
                 }
                 // 更新 LiveData
+                _locationData.postValue(locationList)
                 _idolGroupData.postValue(idolGroupList)
                 withContext(Dispatchers.IO) {
                     AppDatabase.getInstance(context).idolGroupListDao().insertAll(idolGroupList)
                 }
+            }
+        }
+    }
+
+    fun getIdolGroupListByLocation(location: String, context: Context) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                _idolGroupData.postValue(
+                    AppDatabase.getInstance(context).idolGroupListDao().getByLocation(location)
+                )
             }
         }
     }

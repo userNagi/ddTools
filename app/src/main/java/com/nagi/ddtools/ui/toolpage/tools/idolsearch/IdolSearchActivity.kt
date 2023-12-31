@@ -1,8 +1,10 @@
 package com.nagi.ddtools.ui.toolpage.tools.idolsearch
 
+import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -16,6 +18,7 @@ class IdolSearchActivity : AppCompatActivity() {
     private lateinit var binding: ActivityIdolSearchBinding
     private lateinit var adapter: IdolGroupListAdapter
     private var isAdapterInitialized = false
+    private var chooseWhich = 0
     private val viewModel: IdolSearchViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,7 +29,6 @@ class IdolSearchActivity : AppCompatActivity() {
         initView()
         setupStatusBar()
         viewModel.idolGroupData.observe(this) { data -> updateAdapter(data) }
-        updateIdolGroupData()
     }
 
     private fun initView() {
@@ -39,6 +41,9 @@ class IdolSearchActivity : AppCompatActivity() {
     }
 
     private fun initAdapter() {
+        val inputStream = resources.openRawResource(R.raw.idolgrouplist)
+        val jsonString = inputStream.bufferedReader().use { it.readText() }
+        viewModel.loadIdolGroupData(jsonString, applicationContext)
         if (!isAdapterInitialized) {
             adapter = IdolGroupListAdapter(mutableListOf())
         }
@@ -57,9 +62,25 @@ class IdolSearchActivity : AppCompatActivity() {
     }
 
     private fun updateIdolGroupData() {
-        val inputStream = resources.openRawResource(R.raw.idolgrouplist)
-        val jsonString = inputStream.bufferedReader().use { it.readText() }
-        viewModel.loadIdolGroupData(jsonString, applicationContext)
+        viewModel.locationData.observe(this) { options ->
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("请选择一个选项")
+            builder.setSingleChoiceItems(
+                options.toList().toTypedArray(),
+                chooseWhich
+            ) { _, which ->
+                chooseWhich = which
+                binding.searchLocation.text = options.toList()[which]
+            }
+            builder.setPositiveButton("确定") { _, _ ->
+                viewModel.getIdolGroupListByLocation(options.toList()[chooseWhich], applicationContext)
+            }
+            builder.setNegativeButton("取消") { _, _ -> }
+            val dialog = builder.create()
+            dialog.show()
+        }
+
+
     }
 
     private fun updateAdapter(data: List<IdolGroupList>) {

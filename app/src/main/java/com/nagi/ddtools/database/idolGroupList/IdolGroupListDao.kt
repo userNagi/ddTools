@@ -15,6 +15,9 @@ interface IdolGroupListDao {
     @Query("SELECT * FROM IdolGroupList WHERE id = :id")
     fun getById(id: Int): IdolGroupList
 
+    @Query("SELECT * FROM IdolGroupList WHERE location = :location")
+    fun getByLocation(location:String):List<IdolGroupList>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(info: IdolGroupList)
 
