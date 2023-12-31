@@ -1,19 +1,20 @@
 package com.nagi.ddtools.ui.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.nagi.ddtools.database.homePagLis.HomePageList
-import com.nagi.ddtools.databinding.ListHomePageViewBinding
+import com.nagi.ddtools.R
+import com.nagi.ddtools.database.idolGroupList.IdolGroupList
+import com.nagi.ddtools.databinding.ListIdolGroupViewBinding
 
-class HomePageListAdapter(
-    private var dataList: MutableList<HomePageList>,
-    private val onLongClick: (Int) -> Unit
-) : RecyclerView.Adapter<HomePageListAdapter.ViewHolder>() {
+class IdolGroupListAdapter(
+    private var dataList: MutableList<IdolGroupList>
+) : RecyclerView.Adapter<IdolGroupListAdapter.ViewHolder>() {
 
-    fun updateData(newData: List<HomePageList>) {
-        val diffCallback = HomePageListDiffCallback(dataList, newData)
+    fun updateData(newData: List<IdolGroupList>) {
+        val diffCallback = IdolGroupListDiffCallback(dataList, newData)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
 
         dataList.clear()
@@ -21,37 +22,34 @@ class HomePageListAdapter(
         diffResult.dispatchUpdatesTo(this)
     }
 
-    fun removeAt(position: Int) {
-        dataList.removeAt(position)
-        notifyItemRemoved(position)
-    }
-
-    class ViewHolder(private val binding: ListHomePageViewBinding) :
+    class ViewHolder(private val binding: ListIdolGroupViewBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: HomePageList, onLongClick: (Int) -> Unit) {
-            binding.homePageListviewText.text = item.name
-            itemView.setOnLongClickListener {
-                onLongClick(adapterPosition)
-                true
+        @SuppressLint("SetTextI18n")
+        fun bind(item: IdolGroupList) {
+            binding.idolGroupImg.setImageResource(R.color.lty)
+            binding.idolGroupName.text = item.name
+            binding.idolGroupLocation.text = item.location
+            binding.idolGroupInfo.text = item.desc
+            itemView.setOnClickListener {
+                binding.idolGroupInfo.text = "好好听啊" + item.name
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
-            ListHomePageViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ListIdolGroupViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(dataList[position], onLongClick)
+        holder.bind(dataList[position])
     }
 
     override fun getItemCount(): Int = dataList.size
-
-    class HomePageListDiffCallback(
-        private val oldList: List<HomePageList>,
-        private val newList: List<HomePageList>
+    class IdolGroupListDiffCallback(
+        private val oldList: List<IdolGroupList>,
+        private val newList: List<IdolGroupList>
     ) : DiffUtil.Callback() {
         override fun getOldListSize(): Int = oldList.size
         override fun getNewListSize(): Int = newList.size
@@ -64,4 +62,3 @@ class HomePageListAdapter(
         }
     }
 }
-

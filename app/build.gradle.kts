@@ -64,4 +64,8 @@ dependencies {
     implementation("androidx.room:room-ktx:2.6.1")
     // 注解处理器用于生成 DAO 接口和类
     ksp("androidx.room:room-compiler:2.6.1")
+    //json解析库
+    implementation("com.google.code.gson:gson:2.9.0")
+
+
 }

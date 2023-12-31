@@ -22,9 +22,7 @@
         android:layout_marginTop="-35dp"
         android:background="@drawable/bg_fragment_rounded_corners"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_title_background"
-        app:layout_constraintVertical_bias="0.0"
-        tools:layout_editor_absoluteX="0dp" />
+        app:layout_constraintTop_toBottomOf="@id/search_title_background" />
 
     <ImageView
         android:id="@+id/search_title_back"
@@ -94,5 +92,13 @@
         app:layout_constraintStart_toEndOf="@+id/search_switch_search"
         app:layout_constraintTop_toTopOf="@+id/search_body_background" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/search_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_switch_search"
+        tools:listitem="@layout/list_idol_group_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

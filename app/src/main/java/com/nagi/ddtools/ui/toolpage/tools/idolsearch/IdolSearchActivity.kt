@@ -2,17 +2,22 @@ package com.nagi.ddtools.ui.toolpage.tools.idolsearch
 
 import android.graphics.Color
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.nagi.ddtools.R
+import com.nagi.ddtools.database.idolGroupList.IdolGroupList
 import com.nagi.ddtools.databinding.ActivityIdolSearchBinding
-import java.io.BufferedReader
-import java.io.InputStreamReader
+import com.nagi.ddtools.ui.adapter.IdolGroupListAdapter
 
 
 class IdolSearchActivity : AppCompatActivity() {
     private lateinit var binding: ActivityIdolSearchBinding
+    private lateinit var adapter: IdolGroupListAdapter
+    private var isAdapterInitialized = false
+    private val viewModel: IdolSearchViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityIdolSearchBinding.inflate(layoutInflater).also {
@@ -20,14 +25,25 @@ class IdolSearchActivity : AppCompatActivity() {
         }
         initView()
         setupStatusBar()
+        viewModel.idolGroupData.observe(this) { data -> updateAdapter(data) }
+        updateIdolGroupData()
     }
 
     private fun initView() {
         binding.searchTitleBack.setOnClickListener { finish() }
-        binding.searchLocation.setOnClickListener { updateLocation() }
+        binding.searchLocation.setOnClickListener { updateIdolGroupData() }
         binding.searchSwitchSearch.setOnCheckedChangeListener { _, isChecked ->
             updateSwitchColors(isChecked)
         }
+        initAdapter()
+    }
+
+    private fun initAdapter() {
+        if (!isAdapterInitialized) {
+            adapter = IdolGroupListAdapter(mutableListOf())
+        }
+        binding.searchRecycler.adapter = adapter
+        isAdapterInitialized = true
     }
 
     private fun updateSwitchColors(isChecked: Boolean) {
@@ -40,14 +56,14 @@ class IdolSearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateLocation() {
-        val `is` = resources.openRawResource(R.raw.idolgrouplist)
-        val reader = BufferedReader(InputStreamReader(`is`))
-        var line: String?
-        val json = StringBuilder()
-        while (reader.readLine().also { line = it } != null) {
-            json.append(line)
-        }
+    private fun updateIdolGroupData() {
+        val inputStream = resources.openRawResource(R.raw.idolgrouplist)
+        val jsonString = inputStream.bufferedReader().use { it.readText() }
+        viewModel.loadIdolGroupData(jsonString, applicationContext)
+    }
+
+    private fun updateAdapter(data: List<IdolGroupList>) {
+        adapter.updateData(data)
     }
 
     private fun setupStatusBar() {

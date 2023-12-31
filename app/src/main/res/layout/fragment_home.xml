@@ -18,7 +18,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:listitem="@layout/home_page_listview_view" />
+        tools:listitem="@layout/list_home_page_view" />
 
     <ImageView
         android:id="@+id/home_page_add"
