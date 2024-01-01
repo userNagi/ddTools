@@ -7,6 +7,8 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.nagi.ddtools.databinding.ActivityMainBinding
+import com.nagi.ddtools.resourceGet.NetGet
+import com.nagi.ddtools.utils.NetUtils
 
 class MainActivity : AppCompatActivity() {
 
@@ -19,6 +21,14 @@ class MainActivity : AppCompatActivity() {
         }
         setupStatusBar()
         setupNavigation()
+        checkUpdate()
+    }
+
+    private fun checkUpdate() {
+        val updateInfo = NetGet.getUpdateDetails(applicationContext)
+        val version = NetUtils.getLocalVersion(applicationContext)
+        if (updateInfo.first != version && updateInfo.second.isNotEmpty()) {
+        }
     }
 
     private fun setupStatusBar() {

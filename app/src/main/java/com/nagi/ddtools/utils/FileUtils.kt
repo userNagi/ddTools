@@ -22,6 +22,7 @@ import java.io.IOException
  * @date :2023/12/27 23:01
  */
 object FileUtils {
+    val IDOL_GROUP_FILE = "/data/idolGroupList.json"
     private val TAG = "FileUtils"
     private const val WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 114
 
@@ -77,7 +78,7 @@ object FileUtils {
             }
             targetFile.path
         } catch (e: Exception) {
-            Log.e("Error moving image: ", e.message.toString(), e)
+            LogUtils.e("Error moving image: "+e.message)
             null
         }
     }
@@ -103,7 +104,7 @@ object FileUtils {
             if (!folder.exists()) {
                 val success = folder.mkdirs()
                 if (!success) {
-                    Log.e(TAG, "Failed to create directory at ${folder.absolutePath}")
+                    LogUtils.e( "Failed to create directory at ${folder.absolutePath}")
                     return
                 }
             }
@@ -114,9 +115,7 @@ object FileUtils {
         val outputFile = File(outputDirectory, outputFileName)
 
         if (outputFile.exists() && !overwrite) {
-            Log.d(
-                TAG, "File already exists at ${outputFile.absolutePath} "
-            )
+            LogUtils.e( "File already exists at ${outputFile.absolutePath} ")
             return
         }
 

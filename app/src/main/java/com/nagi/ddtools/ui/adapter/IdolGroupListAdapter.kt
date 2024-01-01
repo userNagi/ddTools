@@ -25,19 +25,18 @@ class IdolGroupListAdapter(
 
     class ViewHolder(private val binding: ListIdolGroupViewBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        @SuppressLint("SetTextI18n")
         fun bind(item: IdolGroupList) {
             binding.idolGroupImg.setImageResource(R.color.lty)
             binding.idolGroupName.text = item.name
             binding.idolGroupLocation.text = item.location
-            if (item.desc.isEmpty()) {
+            if (item.group_desc.isEmpty()) {
                 binding.idolGroupInfo.visibility = View.GONE
             } else {
                 binding.idolGroupInfo.visibility = View.VISIBLE
-                binding.idolGroupInfo.text = item.desc
+                binding.idolGroupInfo.text = item.group_desc
             }
             itemView.setOnClickListener {
-                binding.idolGroupInfo.text = "好好听啊" + item.name
+                binding.idolGroupInfo.text = item.group_desc
             }
         }
     }

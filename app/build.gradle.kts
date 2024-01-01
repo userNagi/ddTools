@@ -66,6 +66,6 @@ dependencies {
     ksp("androidx.room:room-compiler:2.6.1")
     //json解析库
     implementation("com.google.code.gson:gson:2.9.0")
-
-
+    // OkHttp的版本可能会更新，请使用最新版本
+    implementation ("com.squareup.okhttp3:okhttp:4.12.0")
 }

@@ -12,6 +12,8 @@ import com.nagi.ddtools.R
 import com.nagi.ddtools.database.idolGroupList.IdolGroupList
 import com.nagi.ddtools.databinding.ActivityIdolSearchBinding
 import com.nagi.ddtools.ui.adapter.IdolGroupListAdapter
+import com.nagi.ddtools.utils.FileUtils
+import java.io.File
 
 
 class IdolSearchActivity : AppCompatActivity() {
@@ -41,9 +43,9 @@ class IdolSearchActivity : AppCompatActivity() {
     }
 
     private fun initAdapter() {
-        val inputStream = resources.openRawResource(R.raw.idolgrouplist)
+        val inputStream = File(applicationContext.filesDir, FileUtils.IDOL_GROUP_FILE)
         val jsonString = inputStream.bufferedReader().use { it.readText() }
-        viewModel.loadIdolGroupData(jsonString, applicationContext)
+        viewModel.loadIdolGroupData(jsonString)
         if (!isAdapterInitialized) {
             adapter = IdolGroupListAdapter(mutableListOf())
         }
@@ -63,17 +65,19 @@ class IdolSearchActivity : AppCompatActivity() {
 
     private fun updateIdolGroupData() {
         viewModel.locationData.observe(this) { options ->
+            val data = options.toList() as ArrayList<String>
             val builder = AlertDialog.Builder(this)
+            data.add(0,"全世界")
             builder.setTitle("请选择一个选项")
             builder.setSingleChoiceItems(
-                options.toList().toTypedArray(),
+                data.toTypedArray(),
                 chooseWhich
             ) { _, which ->
                 chooseWhich = which
-                binding.searchLocation.text = options.toList()[which]
             }
             builder.setPositiveButton("确定") { _, _ ->
-                viewModel.getIdolGroupListByLocation(options.toList()[chooseWhich], applicationContext)
+                binding.searchLocation.text = data[chooseWhich]
+                viewModel.getIdolGroupListByLocation(data[chooseWhich])
             }
             builder.setNegativeButton("取消") { _, _ -> }
             val dialog = builder.create()
