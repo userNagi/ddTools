@@ -5,6 +5,14 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        create("release") {
+            storeFile = file("/Users/fangmingqi/privateWork/ddTools/ddtools")
+            storePassword = "fangmingqi"
+            keyAlias = "key0"
+            keyPassword = "fangmingqi"
+        }
+    }
     namespace = "com.nagi.ddtools"
     compileSdk = 34
 
@@ -36,6 +44,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     compileOptions {
@@ -64,4 +73,8 @@ dependencies {
     implementation("androidx.room:room-ktx:2.6.1")
     // 注解处理器用于生成 DAO 接口和类
     ksp("androidx.room:room-compiler:2.6.1")
+    //json解析库
+    implementation("com.google.code.gson:gson:2.9.0")
+    // OkHttp的版本可能会更新，请使用最新版本
+    implementation ("com.squareup.okhttp3:okhttp:4.12.0")
 }

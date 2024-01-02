@@ -1,7 +1,15 @@
 <resources>
     <string name="app_name">ddTools</string>
+    <string name="dd">DD</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_home">首页</string>
     <string name="title_tool">工具</string>
     <string name="title_mine">我的</string>
+    <string name="tool_main_text">别问，问就是闲的</string>
+    <string name="about_idol_tool">偶像相关</string>
+    <string name="search_idol_group">偶像查询</string>
+    <string name="search_idol_activity">活动查询</string>
+    <string name="search_idol">切换为偶像查询</string>
+    <string name="search_group">切换为团体查询</string>
+    <string name="search_location_choose">全世界</string>
 </resources>
