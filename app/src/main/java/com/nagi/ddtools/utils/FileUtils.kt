@@ -34,7 +34,7 @@ object FileUtils {
     fun openImageGallery(activity: Activity, resultLauncher: ActivityResultLauncher<Intent>) {
         checkWriteExternalPermission(activity) { granted ->
             if (!granted) {
-                toast(activity, "您没有给予权限")
+                activity.toast("您没有给予权限")
                 return@checkWriteExternalPermission
             }
             val intent = Intent(Intent.ACTION_PICK).setType("image/*")

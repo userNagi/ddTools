@@ -5,6 +5,14 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        create("release") {
+            storeFile = file("/Users/fangmingqi/privateWork/ddTools/ddtools")
+            storePassword = "fangmingqi"
+            keyAlias = "key0"
+            keyPassword = "fangmingqi"
+        }
+    }
     namespace = "com.nagi.ddtools"
     compileSdk = 34
 
@@ -36,6 +44,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     compileOptions {

@@ -21,15 +21,8 @@ class MainActivity : AppCompatActivity() {
         }
         setupStatusBar()
         setupNavigation()
-        checkUpdate()
     }
 
-    private fun checkUpdate() {
-        val updateInfo = NetGet.getUpdateDetails(applicationContext)
-        val version = NetUtils.getLocalVersion(applicationContext)
-        if (updateInfo.first != version && updateInfo.second.isNotEmpty()) {
-        }
-    }
 
     private fun setupStatusBar() {
         window.statusBarColor = ContextCompat.getColor(this, R.color.lty)

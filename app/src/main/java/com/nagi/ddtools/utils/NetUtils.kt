@@ -75,6 +75,7 @@ object NetUtils {
             HttpMethod.POST -> {
                 val formBodyBuilder = FormBody.Builder()
                 params.forEach { (key, value) -> formBodyBuilder.add(key, value) }
+                builder.url(url)
                 builder.post(formBodyBuilder.build())
             }
             // GET请求时，构建HttpUrl并添加查询参数
