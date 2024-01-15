@@ -12,4 +12,11 @@
     <string name="search_idol">切换为偶像查询</string>
     <string name="search_group">切换为团体查询</string>
     <string name="search_location_choose">全世界</string>
+    <string name="please_choose">请选择</string>
+    <string name="about_fan_tool">应援相关</string>
+    <string name="tool_fan_board">灯牌</string>
+    <string name="sure">确定</string>
+    <string name="cancel">取消</string>
+    <string name="choose_who">今天切谁</string>
+    <string name="choose_posture">什么姿势</string>
 </resources>

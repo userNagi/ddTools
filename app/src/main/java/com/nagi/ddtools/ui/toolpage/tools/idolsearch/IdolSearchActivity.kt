@@ -1,8 +1,8 @@
 package com.nagi.ddtools.ui.toolpage.tools.idolsearch
 
-import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +13,10 @@ import com.nagi.ddtools.database.idolGroupList.IdolGroupList
 import com.nagi.ddtools.databinding.ActivityIdolSearchBinding
 import com.nagi.ddtools.ui.adapter.IdolGroupListAdapter
 import com.nagi.ddtools.utils.FileUtils
+import com.nagi.ddtools.utils.LogUtils
+import com.nagi.ddtools.utils.NetUtils
+import com.nagi.ddtools.utils.UiUtils
+import com.nagi.ddtools.utils.UiUtils.toast
 import java.io.File
 
 
@@ -35,6 +39,7 @@ class IdolSearchActivity : AppCompatActivity() {
 
     private fun initView() {
         binding.searchTitleBack.setOnClickListener { finish() }
+        binding.searchResearch.setOnClickListener { reGetData() }
         binding.searchLocation.setOnClickListener { updateIdolGroupData() }
         binding.searchSwitchSearch.setOnCheckedChangeListener { _, isChecked ->
             updateSwitchColors(isChecked)
@@ -56,9 +61,9 @@ class IdolSearchActivity : AppCompatActivity() {
     private fun updateSwitchColors(isChecked: Boolean) {
         if (isChecked) {
             binding.searchSwitchTextLeft.setTextColor(Color.BLACK)
-            binding.searchSwitchTextRight.setTextColor(Color.parseColor("#66CCFF"))
+            binding.searchSwitchTextRight.setTextColor(resources.getColor(R.color.lty, null))
         } else {
-            binding.searchSwitchTextLeft.setTextColor(Color.parseColor("#66CCFF"))
+            binding.searchSwitchTextLeft.setTextColor(resources.getColor(R.color.lty, null))
             binding.searchSwitchTextRight.setTextColor(Color.BLACK)
         }
     }
@@ -67,24 +72,54 @@ class IdolSearchActivity : AppCompatActivity() {
         viewModel.locationData.observe(this) { options ->
             val data = options.toList() as ArrayList<String>
             val builder = AlertDialog.Builder(this)
-            data.add(0,"全世界")
-            builder.setTitle("请选择一个选项")
+            data.add(0, resources.getText(R.string.search_location_choose).toString())
+            builder.setTitle(resources.getText(R.string.please_choose).toString())
             builder.setSingleChoiceItems(
                 data.toTypedArray(),
                 chooseWhich
             ) { _, which ->
                 chooseWhich = which
             }
-            builder.setPositiveButton("确定") { _, _ ->
+            builder.setPositiveButton(getText(R.string.sure)) { _, _ ->
                 binding.searchLocation.text = data[chooseWhich]
                 viewModel.getIdolGroupListByLocation(data[chooseWhich])
             }
-            builder.setNegativeButton("取消") { _, _ -> }
+            builder.setNegativeButton(getText(R.string.cancel)) { _, _ -> }
             val dialog = builder.create()
             dialog.show()
         }
 
 
+    }
+
+    private var lastClickTime: Long = 0
+    private val debounceTime: Long = 10000
+    private fun reGetData() {
+        val currentTime = System.currentTimeMillis()
+        if (currentTime - lastClickTime >= debounceTime) {
+            lastClickTime = currentTime
+            UiUtils.showLoading(this)
+            try {
+                NetUtils.fetchAndSave(
+                    "https://wiki.chika-idol.live/request/ddtools/getChikaIdolList.php/.",
+                    NetUtils.HttpMethod.POST,
+                    emptyMap(),
+                    File(filesDir, FileUtils.IDOL_GROUP_FILE).path
+                ) { success, message ->
+                    if (!success) {
+                        LogUtils.e("Failed to fetch idol group list: $message")
+                    } else {
+                        runOnUiThread { initAdapter() }
+                    }
+                    UiUtils.hideLoading()
+                }
+            } catch (e: Exception) {
+                LogUtils.e("Exception during fetching idol group list: ${e.message}")
+                UiUtils.hideLoading()
+            }
+        } else {
+            applicationContext.toast("请等待10秒后再尝试", Toast.LENGTH_LONG)
+        }
     }
 
     private fun updateAdapter(data: List<IdolGroupList>) {

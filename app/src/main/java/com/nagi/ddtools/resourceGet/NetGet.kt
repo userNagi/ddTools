@@ -11,9 +11,9 @@ import com.nagi.ddtools.utils.NetUtils
 import java.io.File
 
 object NetGet {
-    const val ROOT_URL = "https://wiki.chika-idol.live/request/ddtools/"
-    const val IDOL_GROUP_LIST_URL = "getChikaIdolList.php/"
-    const val CHECK_UPDATE_URL = "getUpdateInfo.php/"
+    private const val ROOT_URL = "https://wiki.chika-idol.live/request/ddtools/"
+    private const val IDOL_GROUP_LIST_URL = "getChikaIdolList.php/"
+    private const val CHECK_UPDATE_URL = "getUpdateInfo.php/"
     fun getIdolGroupList(context: Context) {
         NetUtils.fetchAndSave(
             ROOT_URL + IDOL_GROUP_LIST_URL,
@@ -36,7 +36,7 @@ object NetGet {
             if (success && result != null) {
                 try {
                     val itemType = object : TypeToken<UpdateInfo>() {}.type
-                    val updateInfo:UpdateInfo = Gson().fromJson(result, itemType)
+                    val updateInfo: UpdateInfo = Gson().fromJson(result, itemType)
                     callback(updateInfo)
                 } catch (e: JsonSyntaxException) {
                     LogUtils.e("UpdateInfo: JSON parsing error: ${e.localizedMessage}")

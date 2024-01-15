@@ -22,7 +22,7 @@ import java.io.IOException
  * @date :2023/12/27 23:01
  */
 object FileUtils {
-    val IDOL_GROUP_FILE = "/data/idolGroupList.json"
+    const val IDOL_GROUP_FILE = "/data/idolGroupList.json"
     private val TAG = "FileUtils"
     private const val WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 114
 

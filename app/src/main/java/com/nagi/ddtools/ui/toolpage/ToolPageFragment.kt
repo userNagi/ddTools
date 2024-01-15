@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.nagi.ddtools.databinding.FragmentToolBinding
+import com.nagi.ddtools.ui.toolpage.tools.fanboard.FanBoardActivity
 import com.nagi.ddtools.ui.toolpage.tools.idolsearch.IdolSearchActivity
 
 class ToolPageFragment : Fragment() {
@@ -34,6 +35,9 @@ class ToolPageFragment : Fragment() {
     private fun initViews() {
         binding.toolSearchIdol.setOnClickListener {
             openPage(requireActivity(), IdolSearchActivity::class.java)
+        }
+        binding.toolFanBoard.setOnClickListener {
+            openPage(requireActivity(), FanBoardActivity::class.java)
         }
     }
 
