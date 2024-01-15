@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.JsonParser
 import com.nagi.ddtools.R
 import com.nagi.ddtools.database.idolGroupList.IdolGroupList
 import com.nagi.ddtools.databinding.ListIdolGroupViewBinding
@@ -36,6 +37,14 @@ class IdolGroupListAdapter(
             }
             itemView.setOnClickListener {
                 binding.idolGroupInfo.text = item.group_desc
+            }
+            if (item.ext.isNotEmpty()){
+                if (JsonParser.parseString(item.ext).asJsonObject.get("weibo") != null) {
+                    binding.jumpWeibo.visibility = View.VISIBLE
+                }
+                if (JsonParser.parseString(item.ext).asJsonObject.get("bili") != null) {
+                    binding.jumpBili.visibility = View.VISIBLE
+                }
             }
         }
     }

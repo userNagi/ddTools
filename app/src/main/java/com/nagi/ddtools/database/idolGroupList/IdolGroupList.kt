@@ -11,4 +11,5 @@ data class IdolGroupList(
     val version: Int,
     val location: String,
     val group_desc: String,
+    val ext:String
 )

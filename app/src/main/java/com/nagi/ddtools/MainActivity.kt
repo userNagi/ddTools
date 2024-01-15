@@ -1,16 +1,14 @@
 package com.nagi.ddtools
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.nagi.ddtools.databinding.ActivityMainBinding
-import com.nagi.ddtools.resourceGet.NetGet
-import com.nagi.ddtools.utils.NetUtils
+import com.nagi.ddtools.ui.base.DdToolsBaseActivity
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : DdToolsBaseActivity() {
 
     private lateinit var binding: ActivityMainBinding
 

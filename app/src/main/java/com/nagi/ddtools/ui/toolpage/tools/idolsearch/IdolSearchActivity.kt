@@ -5,13 +5,11 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import com.nagi.ddtools.R
 import com.nagi.ddtools.database.idolGroupList.IdolGroupList
 import com.nagi.ddtools.databinding.ActivityIdolSearchBinding
 import com.nagi.ddtools.ui.adapter.IdolGroupListAdapter
+import com.nagi.ddtools.ui.base.DdToolsBaseActivity
 import com.nagi.ddtools.utils.FileUtils
 import com.nagi.ddtools.utils.LogUtils
 import com.nagi.ddtools.utils.NetUtils
@@ -20,7 +18,7 @@ import com.nagi.ddtools.utils.UiUtils.toast
 import java.io.File
 
 
-class IdolSearchActivity : AppCompatActivity() {
+class IdolSearchActivity : DdToolsBaseActivity() {
     private lateinit var binding: ActivityIdolSearchBinding
     private lateinit var adapter: IdolGroupListAdapter
     private var isAdapterInitialized = false
@@ -33,7 +31,6 @@ class IdolSearchActivity : AppCompatActivity() {
             setContentView(it.root)
         }
         initView()
-        setupStatusBar()
         viewModel.idolGroupData.observe(this) { data -> updateAdapter(data) }
     }
 
@@ -118,18 +115,11 @@ class IdolSearchActivity : AppCompatActivity() {
                 UiUtils.hideLoading()
             }
         } else {
-            applicationContext.toast("请等待10秒后再尝试", Toast.LENGTH_LONG)
+            toast("请等待10秒后再尝试", Toast.LENGTH_LONG)
         }
     }
 
     private fun updateAdapter(data: List<IdolGroupList>) {
         adapter.updateData(data)
-    }
-
-    private fun setupStatusBar() {
-        window.statusBarColor = ContextCompat.getColor(this, R.color.lty)
-        WindowInsetsControllerCompat(window, window.decorView).apply {
-            isAppearanceLightStatusBars = true
-        }
     }
 }

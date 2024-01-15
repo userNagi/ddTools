@@ -79,12 +79,16 @@
         <com.google.android.material.imageview.ShapeableImageView
             android:layout_width="33dp"
             android:layout_height="33dp"
+            android:visibility="gone"
+            android:id="@+id/jump_weibo"
             android:layout_marginEnd="14dp"
             android:src="@drawable/ic_weibo" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:layout_width="33dp"
             android:layout_height="33dp"
+            android:visibility="gone"
+            android:id="@+id/jump_bili"
             android:src="@drawable/ic_bili" />
 
     </LinearLayout>

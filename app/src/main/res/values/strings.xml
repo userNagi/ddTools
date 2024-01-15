@@ -19,4 +19,10 @@
     <string name="cancel">取消</string>
     <string name="choose_who">今天切谁</string>
     <string name="choose_posture">什么姿势</string>
+    <string name="fan_board_is_roll">是否滚动：</string>
+    <string name="roll_way">滚动方向：</string>
+    <string name="roll_ltf">左-右</string>
+    <string name="roll_rtf">右-左</string>
+    <string name="roll_ttb">上-下</string>
+    <string name="roll_btt">下-上</string>
 </resources>
