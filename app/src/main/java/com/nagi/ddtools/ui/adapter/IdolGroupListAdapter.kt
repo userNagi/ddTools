@@ -9,6 +9,7 @@ import com.google.gson.JsonParser
 import com.nagi.ddtools.R
 import com.nagi.ddtools.database.idolGroupList.IdolGroupList
 import com.nagi.ddtools.databinding.ListIdolGroupViewBinding
+import com.nagi.ddtools.utils.UiUtils.openUrl
 
 class IdolGroupListAdapter(
     private var dataList: MutableList<IdolGroupList>
@@ -38,12 +39,19 @@ class IdolGroupListAdapter(
             itemView.setOnClickListener {
                 binding.idolGroupInfo.text = item.group_desc
             }
-            if (item.ext.isNotEmpty()){
-                if (JsonParser.parseString(item.ext).asJsonObject.get("weibo") != null) {
-                    binding.jumpWeibo.visibility = View.VISIBLE
+            if (item.ext.isNotEmpty()) {
+                val extAsJson = JsonParser.parseString(item.ext).asJsonObject
+                if (extAsJson.has("weibo")) {
+                    if (extAsJson["weibo"].asString.isNotEmpty()){
+                        binding.jumpWeibo.visibility = View.VISIBLE
+                        binding.jumpWeibo.setOnClickListener { openUrl(extAsJson["weibo"].asString, binding.root.context) }
+                    }
                 }
-                if (JsonParser.parseString(item.ext).asJsonObject.get("bili") != null) {
-                    binding.jumpBili.visibility = View.VISIBLE
+                if (extAsJson.has("bili")) {
+                    if (extAsJson["bili"].asString.isNotEmpty()){
+                        binding.jumpBili.visibility = View.VISIBLE
+                        binding.jumpBili.setOnClickListener { openUrl(extAsJson["bili"].asString, binding.root.context) }
+                    }
                 }
             }
         }

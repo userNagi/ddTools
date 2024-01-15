@@ -2,6 +2,8 @@ package com.nagi.ddtools.utils
 
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Looper
 import android.view.View
 import android.widget.EditText
@@ -14,6 +16,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+
 
 /**
  * @projectName
@@ -84,5 +87,13 @@ object UiUtils {
         loadingDialog?.dismiss()
         loadingDialog = null
         loadingJob?.cancel()
+    }
+
+    fun openUrl(url:String,context: Context){
+        val uri = Uri.parse(url)
+        val intent = Intent()
+        intent.action = "android.intent.action.VIEW"
+        intent.data = uri
+        context.startActivity(intent)
     }
 }
