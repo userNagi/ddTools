@@ -11,6 +11,6 @@ class FanBoardViewModel : ViewModel() {
 
     // 切换滚动状态
     fun toggleRolling() {
-        _isRolling.value = _isRolling.value != true // 当前值的非
+        _isRolling.value = _isRolling.value != true
     }
 }

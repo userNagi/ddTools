@@ -22,7 +22,9 @@
         android:layout_marginTop="-35dp"
         android:background="@drawable/bg_fragment_rounded_corners"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_title_background" />
+        app:layout_constraintTop_toBottomOf="@id/search_title_background"
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout_editor_absoluteX="0dp" />
 
     <TextView
         android:id="@+id/search_title"
@@ -49,12 +51,21 @@
         tools:ignore="SpUsage" />
 
     <com.nagi.ddtools.ui.widget.ColorPickerView
-        android:id="@+id/board_color_picker"
+        android:id="@+id/board_color_picker_background"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/board_is_roll" />
+
+    <com.nagi.ddtools.ui.widget.ColorPickerView
+        android:id="@+id/board_color_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/board_color_picker_background" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/board_click"
@@ -70,12 +81,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
         android:text="@string/roll_way"
         android:textColor="@color/black"
         android:textSize="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/board_color_picker"
         tools:ignore="SpUsage" />
+
     <RadioGroup
         android:id="@+id/board_roll_way_group"
         android:layout_width="wrap_content"
@@ -117,5 +130,49 @@
             android:textColor="@color/black"
             tools:ignore="SpUsage" />
     </RadioGroup>
+
+    <TextView
+        android:id="@+id/board_roll_speed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/roll_speed"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="@+id/search_body_background"
+        app:layout_constraintTop_toBottomOf="@+id/board_roll_way_group"
+        tools:ignore="SpUsage" />
+
+    <SeekBar
+        android:id="@+id/board_speed_seekbar"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:max="10"
+        android:progress="3"
+        app:layout_constraintBottom_toBottomOf="@+id/board_roll_speed"
+        app:layout_constraintStart_toEndOf="@+id/board_roll_speed"
+        app:layout_constraintTop_toTopOf="@+id/board_roll_speed" />
+
+    <TextView
+        android:id="@+id/board_input_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:text="输入文字："
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/board_roll_speed"
+        tools:ignore="HardcodedText,SpUsage" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/board_input_edit"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/board_input_text"
+        app:layout_constraintStart_toEndOf="@+id/board_input_text"
+        app:layout_constraintTop_toTopOf="@+id/board_input_text" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

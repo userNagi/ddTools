@@ -3,6 +3,8 @@ package com.nagi.ddtools.utils
 import android.app.Dialog
 import android.content.Context
 import android.os.Looper
+import android.view.View
+import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -44,11 +46,15 @@ object UiUtils {
         positiveButtonText: String = "确定",
         negativeButtonText: String = "取消",
         onPositive: (() -> Unit)? = null,
-        onNegative: (() -> Unit)? = null
+        onNegative: (() -> Unit)? = null,
+        customView: View? = null
     ) {
         AlertDialog.Builder(this).apply {
             setTitle(title)
             setMessage(message)
+            if (customView != null) {
+                setView(customView)
+            }
             setPositiveButton(positiveButtonText) { _, _ -> onPositive?.invoke() }
             setNegativeButton(negativeButtonText) { _, _ -> onNegative?.invoke() }
         }.show()

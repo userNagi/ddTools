@@ -21,6 +21,7 @@
     <string name="choose_posture">什么姿势</string>
     <string name="fan_board_is_roll">是否滚动：</string>
     <string name="roll_way">滚动方向：</string>
+    <string name="roll_speed">滚动速度：</string>
     <string name="roll_ltf">左-右</string>
     <string name="roll_rtf">右-左</string>
     <string name="roll_ttb">上-下</string>

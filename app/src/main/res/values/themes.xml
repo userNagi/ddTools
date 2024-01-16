@@ -14,6 +14,8 @@
     <style name="Theme.DdTools" parent="Base.Theme.DdTools" />
 
     <style name="Base.Theme.DdTools.Splash" parent="Base.Theme.DdTools">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
     </style>
 
     <!-- 首页列表图片样式 -->

@@ -10,6 +10,7 @@ object PrefsUtils {
     private const val PREFS_NAME = "DdToolsPrefs"
     private const val KEY_FIRST_RUN = "firstRun"
     private const val KEY_LAST_RUN_DATE = "lastRunDate"
+    private const val KEY_TOOL_TITLE = "toolTitle"
 
     private fun getSharedPreferences(context: Context): SharedPreferences {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -37,6 +38,14 @@ object PrefsUtils {
     fun setTodayFirstRunDone(context: Context) {
         val todayDateString = getCurrentDateString()
         getSharedPreferences(context).edit().putString(KEY_LAST_RUN_DATE, todayDateString).apply()
+    }
+
+    fun getToolTitle(context: Context): String? {
+        return getSharedPreferences(context).getString(KEY_TOOL_TITLE, "别问，问就是闲的")
+    }
+
+    fun setToolTitle(context: Context, title: String) {
+        getSharedPreferences(context).edit().putString(KEY_TOOL_TITLE, title).apply()
     }
 }
 

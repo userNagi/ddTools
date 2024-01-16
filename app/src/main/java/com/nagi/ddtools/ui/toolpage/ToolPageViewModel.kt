@@ -1,13 +1,24 @@
 package com.nagi.ddtools.ui.toolpage
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.nagi.ddtools.utils.PrefsUtils
 
-class ToolPageViewModel : ViewModel() {
-
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is dashboard Fragment"
+class ToolPageViewModel(application: Application) : AndroidViewModel(application) {
+    private val _title = MutableLiveData<String>().apply {
+        value = PrefsUtils.getToolTitle(application)
     }
-    val text: LiveData<String> = _text
+
+    fun setTitle(title: String) {
+        try {
+            _title.value = title
+        } catch (e: Exception) {
+            _title.postValue(title)
+        }
+        PrefsUtils.setToolTitle(getApplication(), title)
+    }
+
+    val title: LiveData<String> = _title
 }
