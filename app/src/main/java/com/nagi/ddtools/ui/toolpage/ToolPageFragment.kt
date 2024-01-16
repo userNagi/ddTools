@@ -11,6 +11,7 @@ import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.nagi.ddtools.databinding.FragmentToolBinding
+import com.nagi.ddtools.ui.toolpage.tools.activitysearch.ActivitySearchActivity
 import com.nagi.ddtools.ui.toolpage.tools.fanboard.FanBoardActivity
 import com.nagi.ddtools.ui.toolpage.tools.idolsearch.IdolSearchActivity
 import com.nagi.ddtools.utils.UiUtils.dialog
@@ -60,7 +61,7 @@ class ToolPageFragment : Fragment() {
             openPage(requireActivity(), IdolSearchActivity::class.java)
         }
         binding.toolSearchActivity.setOnClickListener {
-
+            openPage(requireActivity(), ActivitySearchActivity::class.java)
         }
         binding.toolChooseWho.setOnClickListener {
 

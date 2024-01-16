@@ -1,0 +1,32 @@
+[
+  {
+    "id": "525093981",
+    "name": "DOKIFES\uff01Vol.004\u5317\u4eac",
+    "duration_date": "2024-01-14",
+    "duration_time": "OPEN 12:30START 13:00END 18:00",
+    "location": "\u5317\u4eac",
+    "participating_group": "[{\"name\": \"Lumos\u8367\u5149\u8ba1\u5212 \", \"location\": \"\u5317\u4eac\"}, {\"name\": \"\u9635\u96e8\u7535\u53f0 \", \"location\": \"\u5317\u4eac\"}, {\"name\": \"\u8bf7\u7ed9\u5c0f\u72d7\u5f88\u591a\u7231 \", \"location\": \"\u5317\u4eac\"}]",
+    "price": "\u65e9\u9e1f\u7968:98\/\u9884\u552e\u7968\uff1a108\/\u73b0\u573a\u7968\uff1a128",
+    "buy_url": "https:\/\/wap.showstart.com\/pages\/activity\/detail\/detail?activityId=217463",
+    "location_desc": "\u5317\u4eac\u5e02\u6d77\u6dc0\u533a\u5b66\u6e05\u8def38\u53f7BOM\u4e09\u5c42",
+    "info_desc": "",
+    "weibo_url": "https:\/\/weibo.com\/7607179452\/4987899754057220",
+    "bili_url": null,
+    "ext": null
+  },
+  {
+    "id": "525191369",
+    "name": "DOKI FES! Vol.001",
+    "duration_date": "2014-01-01",
+    "duration_time": "12:30\u5165\u573a\r\n13:30\u5f00\u59cb\r\n15:30\u7ed3\u675f",
+    "location": "\u5317\u4eac",
+    "participating_group": "[{\"name\": \"Lumos\u8367\u5149\u8ba1\u5212 \", \"location\": \"\u5317\u4eac\"}]",
+    "price": "\u65e9\u9e1f\u796898\/\u9884\u552e\u7968114\/\u73b0\u573a\u7968514",
+    "buy_url": "https:\/\/baidu.com",
+    "location_desc": "\u5317\u4eac\u5e02\u6d77\u6dc0\u533a\u5b66\u6e05\u8def38\u53f7BOM\u4e09\u5c42",
+    "info_desc": "",
+    "weibo_url": "https:\/\/baidu.com",
+    "bili_url": null,
+    "ext": null
+  }
+]

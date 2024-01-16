@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.toolpage.tools.activitysearch.activity_activity_search">
+
+    <View
+        android:id="@+id/search_title_background"
+        android:layout_width="match_parent"
+        android:layout_height="95dp"
+        android:background="@drawable/bg_linear_gradient"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/search_body_background"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="-35dp"
+        android:background="@drawable/bg_fragment_rounded_corners"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_title_background" />
+
+    <ImageView
+        android:id="@+id/search_title_back"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_marginStart="15dp"
+        android:src="@drawable/baseline_arrow_back"
+        app:layout_constraintBottom_toBottomOf="@+id/search_title"
+        app:layout_constraintStart_toStartOf="@+id/search_title_background"
+        app:layout_constraintTop_toTopOf="@+id/search_title"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/search_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/search_idol_activity"
+        android:textColor="@color/black"
+        android:textSize="18dp"
+        app:layout_constraintBottom_toTopOf="@+id/search_body_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SpUsage" />
+
+    <TextView
+        android:id="@+id/search_location"
+        android:layout_width="wrap_content"
+        android:layout_height="18dp"
+        android:layout_marginEnd="15dp"
+        android:gravity="center"
+        android:text="@string/search_location_choose"
+        app:drawableEndCompat="@drawable/baseline_arrow_drop_down"
+        app:layout_constraintBottom_toBottomOf="@+id/search_title"
+        app:layout_constraintEnd_toEndOf="@+id/search_title_background"
+        app:layout_constraintTop_toTopOf="@+id/search_title"
+        tools:ignore="SpUsage" />
+
+    <TextView
+        android:id="@+id/search_activity_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="@string/search_activity_activity"
+        android:textSize="18dp"
+        app:drawableEndCompat="@drawable/baseline_arrow_drop_down"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/search_body_background"
+        tools:ignore="SpUsage" />
+
+
+    <TextView
+        android:id="@+id/search_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:gravity="center"
+        android:text="@string/search_activity_date"
+        android:textSize="18dp"
+        app:drawableEndCompat="@drawable/baseline_arrow_drop_down"
+        app:layout_constraintStart_toEndOf="@+id/search_activity_activity"
+        app:layout_constraintTop_toTopOf="@+id/search_activity_activity"
+        tools:ignore="SpUsage" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/search_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_activity_activity"
+        app:layout_goneMarginEnd="10dp"
+        tools:listitem="@layout/list_activity_view" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/search_research"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="40dp"
+        android:clickable="true"
+        android:src="@drawable/ic_reget"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="ContentDescription" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

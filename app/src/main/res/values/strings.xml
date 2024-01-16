@@ -12,6 +12,8 @@
     <string name="search_idol">切换为偶像查询</string>
     <string name="search_group">切换为团体查询</string>
     <string name="search_location_choose">全世界</string>
+    <string name="search_activity_activity">未开始</string>
+    <string name="search_activity_date">日期</string>
     <string name="please_choose">请选择</string>
     <string name="about_fan_tool">应援相关</string>
     <string name="tool_fan_board">灯牌</string>
@@ -22,6 +24,7 @@
     <string name="fan_board_is_roll">是否滚动：</string>
     <string name="roll_way">滚动方向：</string>
     <string name="roll_speed">滚动速度：</string>
+    <string name="text_size">文字大小：</string>
     <string name="roll_ltf">左-右</string>
     <string name="roll_rtf">右-左</string>
     <string name="roll_ttb">上-下</string>

@@ -18,18 +18,7 @@ class FanBoardActivity : DdToolsBaseActivity() {
             setContentView(it.root)
         }
         viewModel.isRolling.observe(this) { isRolling ->
-            binding.boardIsRoll.isChecked = isRolling
-            if (!isRolling) {
-                binding.boardRollWay.visibility = View.GONE
-                binding.boardRollWayGroup.visibility = View.GONE
-                binding.boardRollSpeed.visibility = View.GONE
-                binding.boardSpeedSeekbar.visibility = View.GONE
-            } else {
-                binding.boardRollWay.visibility = View.VISIBLE
-                binding.boardRollWayGroup.visibility = View.VISIBLE
-                binding.boardRollSpeed.visibility = View.VISIBLE
-                binding.boardSpeedSeekbar.visibility = View.VISIBLE
-            }
+            initSwitch(isRolling)
         }
         initView()
     }
@@ -37,14 +26,39 @@ class FanBoardActivity : DdToolsBaseActivity() {
     private fun initView() {
         binding.boardColorPicker.setText("文字颜色：")
         binding.boardColorPickerBackground.setText("背景颜色：")
-        binding.boardColorPickerBackground.setIsSingleCheck(true)
         binding.boardIsRoll.setOnCheckedChangeListener { _, _ ->
             viewModel.toggleRolling()
         }
         binding.boardClick.setOnClickListener {
+            val backColor = binding.boardColorPickerBackground.getSelectedColors()
             val color = binding.boardColorPicker.getSelectedColors()
-            bundle.putString("color", Gson().toJson(color))
+            val text = binding.boardInputEdit.text.toString()
+            val textSize = binding.boardSizeSeekbar.progress
+            bundle.putString("backColor", Gson().toJson(backColor))
+            bundle.putString("textColor", Gson().toJson(color))
+            bundle.putString("text", text)
+            bundle.putInt("textSize", textSize)
             openBoard()
+        }
+    }
+
+    private fun initSwitch(isRolling: Boolean) {
+        binding.boardIsRoll.isChecked = isRolling
+        bundle.putBoolean("isRolling", isRolling)
+        if (!isRolling) {
+            binding.boardRollWay.visibility = View.GONE
+            binding.boardRollWayGroup.visibility = View.GONE
+            binding.boardRollSpeed.visibility = View.GONE
+            binding.boardSpeedSeekbar.visibility = View.GONE
+        } else {
+            binding.boardRollWay.visibility = View.VISIBLE
+            binding.boardRollWayGroup.visibility = View.VISIBLE
+            binding.boardRollSpeed.visibility = View.VISIBLE
+            binding.boardSpeedSeekbar.visibility = View.VISIBLE
+            bundle.putInt("rollSpeed", binding.boardSpeedSeekbar.progress)
+            bundle.putString(
+                "rollWay", binding.boardRollWayGroup.checkedRadioButtonId.toString()
+            )
         }
     }
 

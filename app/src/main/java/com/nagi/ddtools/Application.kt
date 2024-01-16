@@ -2,6 +2,7 @@ package com.nagi.ddtools
 
 import android.app.Application
 import com.nagi.ddtools.database.AppDatabase
+import com.nagi.ddtools.resourceGet.NetGet.getActivityList
 import com.nagi.ddtools.resourceGet.NetGet.getIdolGroupList
 import com.nagi.ddtools.utils.FileUtils.copyRawResourceToFile
 import com.nagi.ddtools.utils.LogUtils
@@ -24,8 +25,15 @@ class DdTools : Application() {
                 "idolGroupList.json",
                 "data"
             )
+            copyRawResourceToFile(
+                applicationContext,
+                R.raw.activitylist,
+                "activityList.json",
+                "data"
+            )
             PrefsUtils.setFirstRunDone(applicationContext)
         }
         getIdolGroupList(applicationContext)
+        getActivityList(applicationContext)
     }
 }

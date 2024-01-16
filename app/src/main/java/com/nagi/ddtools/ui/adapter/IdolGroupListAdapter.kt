@@ -30,6 +30,7 @@ class IdolGroupListAdapter(
             binding.idolGroupImg.setImageResource(R.color.lty)
             binding.idolGroupName.text = item.name
             binding.idolGroupLocation.text = item.location
+            binding.idolGroupLocation.text = item.location
             if (item.group_desc.isEmpty()) {
                 binding.idolGroupInfo.visibility = View.GONE
             } else {
@@ -42,15 +43,15 @@ class IdolGroupListAdapter(
             if (item.ext.isNotEmpty()) {
                 val extAsJson = JsonParser.parseString(item.ext).asJsonObject
                 if (extAsJson.has("weibo")) {
-                    if (extAsJson["weibo"].asString.isNotEmpty()){
+                    if (extAsJson["weibo"].asString.isNotEmpty()) {
                         binding.jumpWeibo.visibility = View.VISIBLE
-                        binding.jumpWeibo.setOnClickListener { openUrl(extAsJson["weibo"].asString, binding.root.context) }
+                        binding.jumpWeibo.setOnClickListener { binding.root.context.openUrl(extAsJson["weibo"].asString) }
                     }
                 }
                 if (extAsJson.has("bili")) {
-                    if (extAsJson["bili"].asString.isNotEmpty()){
+                    if (extAsJson["bili"].asString.isNotEmpty()) {
                         binding.jumpBili.visibility = View.VISIBLE
-                        binding.jumpBili.setOnClickListener { openUrl(extAsJson["bili"].asString, binding.root.context) }
+                        binding.jumpBili.setOnClickListener { binding.root.context.openUrl(extAsJson["bili"].asString) }
                     }
                 }
             }

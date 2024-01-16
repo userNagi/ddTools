@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.nagi.ddtools.database.activityList.ActivityList
+import com.nagi.ddtools.database.activityList.ActivityListDao
 import com.nagi.ddtools.database.homePagLis.HomePageListDao
 import com.nagi.ddtools.database.homePagLis.HomePageList
 import com.nagi.ddtools.database.idolGroupList.IdolGroupList
@@ -15,11 +17,17 @@ import com.nagi.ddtools.database.idolGroupList.IdolGroupListDao
  * @description:
  * @date :2023/12/27 1:37
  */
-@Database(entities = [HomePageList::class, IdolGroupList::class], version = 1, exportSchema = false)
+@Database(
+    entities = [
+        HomePageList::class,
+        IdolGroupList::class,
+        ActivityList::class
+    ], version = 1, exportSchema = false
+)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun homePageDao(): HomePageListDao
     abstract fun idolGroupListDao(): IdolGroupListDao
-
+    abstract fun activityListDao(): ActivityListDao
     companion object {
         private var instance: AppDatabase? = null
         private val instanceLock = Any()
@@ -35,6 +43,7 @@ abstract class AppDatabase : RoomDatabase() {
             }
             return instance!!
         }
+
         fun getInstance() = instance
     }
 }

@@ -15,26 +15,28 @@ import com.nagi.ddtools.database.idolGroupList.IdolGroupListDao
 
 class IdolSearchViewModel : ViewModel() {
     private val _idolGroupData = MutableLiveData<List<IdolGroupList>>()
-    private val _locationData = MutableLiveData<Set<String>>()
-    private val database: IdolGroupListDao by lazy { AppDatabase.getInstance()!!.idolGroupListDao() }
+    private val _locationData = MutableLiveData<Map<String, Int>>()
+    private val database: IdolGroupListDao by lazy {
+        AppDatabase.getInstance()!!.idolGroupListDao()
+    }
 
     val idolGroupData: LiveData<List<IdolGroupList>> = _idolGroupData
-    val locationData: LiveData<Set<String>> = _locationData
+    val locationData: LiveData<Map<String, Int>> = _locationData
 
     fun loadIdolGroupData(jsonString: String) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 val itemType = object : TypeToken<List<IdolGroupList>>() {}.type
                 val idolGroupList: List<IdolGroupList> = Gson().fromJson(jsonString, itemType)
-                val locationList: Set<String> = idolGroupList.map { it.location }.toSet()
-
-                _locationData.postValue(locationList)
+                val locationCountMap: Map<String, Int> =
+                    idolGroupList.groupingBy { it.location }.eachCount()
+                _locationData.postValue(locationCountMap)
                 _idolGroupData.postValue(idolGroupList)
-
                 database.insertAll(idolGroupList)
             }
         }
     }
+
 
     fun getIdolGroupListByLocation(lo: String) {
         viewModelScope.launch {

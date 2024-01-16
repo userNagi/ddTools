@@ -89,11 +89,11 @@ object UiUtils {
         loadingJob?.cancel()
     }
 
-    fun openUrl(url:String,context: Context){
+    fun Context.openUrl(url:String){
         val uri = Uri.parse(url)
         val intent = Intent()
         intent.action = "android.intent.action.VIEW"
         intent.data = uri
-        context.startActivity(intent)
+        this.startActivity(intent)
     }
 }

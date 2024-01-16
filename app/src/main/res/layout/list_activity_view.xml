@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="6dp"
+    android:layout_marginBottom="6dp"
+    android:background="@drawable/bg_30_round">
+
+    <TextView
+        android:id="@+id/activity_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SpUsage"
+        tools:text="北京" />
+
+
+    <TextView
+        android:id="@+id/activity_location_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:textColor="#805540"
+        android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/activity_location"
+        app:layout_constraintStart_toEndOf="@+id/activity_location"
+        app:layout_constraintTop_toTopOf="@+id/activity_location"
+        tools:ignore="SpUsage"
+        tools:text="北京市海淀区学清路38号BOM三层" />
+
+    <View
+        android:id="@+id/activity_view_top"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#919499"
+        app:layout_constraintTop_toBottomOf="@id/activity_location" />
+
+    <TextView
+        android:id="@+id/activity_name"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:textSize="18dp"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/activity_location"
+        tools:ignore="SpUsage"
+        tools:text="DOKI FES! Vol.004 北京" />
+
+    <TextView
+        android:id="@+id/activity_time"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginStart="15dp"
+        android:textColor="#5C5F66"
+        android:layout_marginTop="10dp"
+        android:textSize="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/activity_name"
+        tools:ignore="SpUsage"
+        tools:text="12:30入场 13:30开始 15:30结束" />
+
+    <Button
+        android:id="@+id/activity_buy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:text="购票"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText" />
+
+    <View
+        android:id="@+id/activity_view_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#919499"
+        app:layout_constraintTop_toBottomOf="@id/activity_time" />
+
+    <TextView
+        android:id="@+id/activity_money"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="#e53b51"
+        android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/activity_time"
+        tools:ignore="SpUsage"
+        tools:text="早鸟票：98/预售票：108/现场票：128" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/activity_weibo"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginEnd="20dp"
+        android:src="@drawable/ic_weibo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/activity_view_bottom" />
+</androidx.constraintlayout.widget.ConstraintLayout>

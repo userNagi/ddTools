@@ -53,7 +53,6 @@ class ColorPickerView @JvmOverloads constructor(
             Color.MAGENTA,
             Color.WHITE
         )
-
         colors.forEachIndexed { index, color ->
             val colorOption = findViewById<FrameLayout>(colorOptionIDs[index])
             val checkMark = ImageView(context).apply {
@@ -80,7 +79,6 @@ class ColorPickerView @JvmOverloads constructor(
         view.isSelected = !view.isSelected
         checkMark.visibility = if (view.isSelected) VISIBLE else INVISIBLE
         if (!isMultiSelectEnabled && view.isSelected) {
-            // 在单选模式下，确保只有一个选项被选中
             for (i in 0 until colorViews.size()) {
                 if (colorViews.keyAt(i) != view.id) {
                     val otherView = findViewById<View>(colorViews.keyAt(i))
@@ -110,7 +108,6 @@ class ColorPickerView @JvmOverloads constructor(
     fun setIsSingleCheck(isSingleCheck: Boolean) {
         isMultiSelectEnabled = !isSingleCheck
     }
-
     private fun showColorPickerDialog() {
         val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_color_picker, null)
         val colorView = dialogView.findViewById<View>(R.id.color_view)

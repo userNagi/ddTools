@@ -38,8 +38,10 @@ class IdolSearchActivity : DdToolsBaseActivity() {
         binding.searchTitleBack.setOnClickListener { finish() }
         binding.searchResearch.setOnClickListener { reGetData() }
         binding.searchLocation.setOnClickListener { updateIdolGroupData() }
+        binding.searchSwitchSearch.isClickable = false
+        binding.searchSwitchSearch.setOnClickListener { toast("暂未接入，请耐心等待") }
         binding.searchSwitchSearch.setOnCheckedChangeListener { _, isChecked ->
-            updateSwitchColors(isChecked)
+//            updateSwitch(isChecked)
         }
         initAdapter()
     }
@@ -55,7 +57,7 @@ class IdolSearchActivity : DdToolsBaseActivity() {
         isAdapterInitialized = true
     }
 
-    private fun updateSwitchColors(isChecked: Boolean) {
+    private fun updateSwitch(isChecked: Boolean) {
         if (isChecked) {
             binding.searchSwitchTextLeft.setTextColor(Color.BLACK)
             binding.searchSwitchTextRight.setTextColor(resources.getColor(R.color.lty, null))
@@ -67,7 +69,9 @@ class IdolSearchActivity : DdToolsBaseActivity() {
 
     private fun updateIdolGroupData() {
         viewModel.locationData.observe(this) { options ->
-            val data = options.toList() as ArrayList<String>
+            val dataMap = options.toMap()
+            val data = ArrayList<String>()
+            dataMap.forEach { (key, value) -> data.add("$key($value)") }
             val builder = AlertDialog.Builder(this)
             data.add(0, resources.getText(R.string.search_location_choose).toString())
             builder.setTitle(resources.getText(R.string.please_choose).toString())

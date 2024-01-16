@@ -67,15 +67,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/board_color_picker_background" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/board_click"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_10_round"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <TextView
         android:id="@+id/board_roll_way"
         android:layout_width="wrap_content"
@@ -102,6 +93,7 @@
             android:id="@+id/board_roll_ltr"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checked="true"
             android:text="@string/roll_ltf"
             android:textColor="@color/black"
             tools:ignore="SpUsage" />
@@ -155,6 +147,29 @@
         app:layout_constraintTop_toTopOf="@+id/board_roll_speed" />
 
     <TextView
+        android:id="@+id/board_text_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/text_size"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="@+id/search_body_background"
+        app:layout_constraintTop_toBottomOf="@+id/board_roll_speed"
+        tools:ignore="SpUsage" />
+
+    <SeekBar
+        android:id="@+id/board_size_seekbar"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:max="10"
+        android:progress="3"
+        app:layout_constraintBottom_toBottomOf="@+id/board_text_size"
+        app:layout_constraintStart_toEndOf="@+id/board_text_size"
+        app:layout_constraintTop_toTopOf="@+id/board_text_size" />
+
+    <TextView
         android:id="@+id/board_input_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -164,7 +179,7 @@
         android:textColor="@color/black"
         android:textSize="20dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/board_roll_speed"
+        app:layout_constraintTop_toBottomOf="@+id/board_text_size"
         tools:ignore="HardcodedText,SpUsage" />
 
     <com.google.android.material.textfield.TextInputEditText
@@ -174,5 +189,17 @@
         app:layout_constraintBottom_toBottomOf="@+id/board_input_text"
         app:layout_constraintStart_toEndOf="@+id/board_input_text"
         app:layout_constraintTop_toTopOf="@+id/board_input_text" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/board_click"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_10_round"
+        android:text="确认"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/board_input_edit"
+        tools:ignore="HardcodedText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
