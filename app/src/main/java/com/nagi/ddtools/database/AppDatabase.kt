@@ -10,6 +10,8 @@ import com.nagi.ddtools.database.homePagLis.HomePageListDao
 import com.nagi.ddtools.database.homePagLis.HomePageList
 import com.nagi.ddtools.database.idolGroupList.IdolGroupList
 import com.nagi.ddtools.database.idolGroupList.IdolGroupListDao
+import com.nagi.ddtools.database.user.User
+import com.nagi.ddtools.database.user.UserDao
 
 /**
  * @projectName
@@ -21,13 +23,16 @@ import com.nagi.ddtools.database.idolGroupList.IdolGroupListDao
     entities = [
         HomePageList::class,
         IdolGroupList::class,
-        ActivityList::class
+        ActivityList::class,
+        User::class
     ], version = 1, exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun homePageDao(): HomePageListDao
     abstract fun idolGroupListDao(): IdolGroupListDao
     abstract fun activityListDao(): ActivityListDao
+    abstract fun userDao(): UserDao
+
     companion object {
         private var instance: AppDatabase? = null
         private val instanceLock = Any()
@@ -44,6 +49,6 @@ abstract class AppDatabase : RoomDatabase() {
             return instance!!
         }
 
-        fun getInstance() = instance
+        fun getInstance() = instance!!
     }
 }

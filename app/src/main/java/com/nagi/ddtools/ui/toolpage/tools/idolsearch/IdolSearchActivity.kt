@@ -81,7 +81,7 @@ class IdolSearchActivity : DdToolsBaseActivity() {
             ) { _, which ->
                 chooseWhich = which
             }
-            builder.setPositiveButton(getText(R.string.sure)) { _, _ ->
+            builder.setPositiveButton(getText(R.string.confirm)) { _, _ ->
                 binding.searchLocation.text = data[chooseWhich]
                 viewModel.getIdolGroupListByLocation(data[chooseWhich])
             }

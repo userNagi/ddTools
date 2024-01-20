@@ -17,7 +17,8 @@
     <string name="please_choose">请选择</string>
     <string name="about_fan_tool">应援相关</string>
     <string name="tool_fan_board">灯牌</string>
-    <string name="sure">确定</string>
+    <string name="to_be_do">没想好</string>
+    <string name="confirm">确定</string>
     <string name="cancel">取消</string>
     <string name="choose_who">今天切谁</string>
     <string name="choose_posture">什么姿势</string>
@@ -25,8 +26,19 @@
     <string name="roll_way">滚动方向：</string>
     <string name="roll_speed">滚动速度：</string>
     <string name="text_size">文字大小：</string>
+    <string name="all_selected">全随机</string>
     <string name="roll_ltf">左-右</string>
     <string name="roll_rtf">右-左</string>
     <string name="roll_ttb">上-下</string>
     <string name="roll_btt">下-上</string>
+    <string name="clock_login">点击头像去登录</string>
+    <string name="login">登录</string>
+    <string name="register">注册</string>
+    <string name="username">用户名</string>
+    <string name="password">密码</string>
+    <string name="agree">同意</string>
+    <string name="agree_user">同意《用户协议》和《隐私政策》</string>
+    <string name="login_dialog_message">虽然我也不知道应该写什么，但是似乎大家都写了那我也写一下吧\n
+        点击确定的话，就是同意了，就是可以登录了\n点击取消的话，那就是不同意了，那就是不可以登录了\n至于什么用户隐私什么的……呃，反正这app也不涉及什么隐私（笑）</string>
+    <string name="login_dialog_title">登录协议</string>
 </resources>

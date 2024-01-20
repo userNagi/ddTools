@@ -7,17 +7,26 @@
     android:background="@drawable/bg_fragment_rounded_corners"
     tools:context=".ui.minepage.MinePageFragment">
 
-    <TextView
-        android:id="@+id/text_notifications"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/login_view_image"
+        android:layout_width="66dp"
+        android:layout_height="66dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:background="#C9CACC"
+        android:src="@drawable/baseline_user_unlogin"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearance="@style/circleStyle" />
+
+    <TextView
+        android:id="@+id/login_view_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="@string/clock_login"
+        app:layout_constraintBottom_toBottomOf="@+id/login_view_image"
+        app:layout_constraintStart_toEndOf="@+id/login_view_image"
+        app:layout_constraintTop_toTopOf="@+id/login_view_image" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

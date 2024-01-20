@@ -26,7 +26,7 @@ class BoardActivity : AppCompatActivity() {
         val backColor = Gson().fromJson(backColorStr, IntArray::class.java)
         findViewById<TextView>(R.id.board_text).apply {
             text = textGet
-            textSize = (200+textSizeGet*10).toFloat()
+            textSize = (150+textSizeGet*10).toFloat()
             setTextColor(textColor[0])
         }
         findViewById<LinearLayout>(R.id.board_back).apply {

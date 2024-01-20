@@ -14,6 +14,7 @@ import com.nagi.ddtools.databinding.FragmentToolBinding
 import com.nagi.ddtools.ui.toolpage.tools.activitysearch.ActivitySearchActivity
 import com.nagi.ddtools.ui.toolpage.tools.fanboard.FanBoardActivity
 import com.nagi.ddtools.ui.toolpage.tools.idolsearch.IdolSearchActivity
+import com.nagi.ddtools.ui.widget.ChooseWhoDialog
 import com.nagi.ddtools.utils.UiUtils.dialog
 
 class ToolPageFragment : Fragment() {
@@ -36,6 +37,9 @@ class ToolPageFragment : Fragment() {
         initViews()
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
     private fun initViews() {
         initViewModel()
         binding.toolMainBody.setOnClickListener {
@@ -64,6 +68,8 @@ class ToolPageFragment : Fragment() {
             openPage(requireActivity(), ActivitySearchActivity::class.java)
         }
         binding.toolChooseWho.setOnClickListener {
+            val dialog = ChooseWhoDialog()
+            dialog.show(childFragmentManager, "customDialog")
 
         }
         binding.toolChoosePosture.setOnClickListener {
@@ -76,7 +82,7 @@ class ToolPageFragment : Fragment() {
 
     private fun initViewModel() {
         viewModel.title.observe(viewLifecycleOwner) {
-            binding.toolMainText.text = it
+            binding.toolMainBody.text = it
         }
     }
 

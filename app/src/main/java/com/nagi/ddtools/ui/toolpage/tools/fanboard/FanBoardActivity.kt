@@ -26,6 +26,7 @@ class FanBoardActivity : DdToolsBaseActivity() {
     private fun initView() {
         binding.boardColorPicker.setText("文字颜色：")
         binding.boardColorPickerBackground.setText("背景颜色：")
+        binding.searchTitleBack.setOnClickListener { finish() }
         binding.boardIsRoll.setOnCheckedChangeListener { _, _ ->
             viewModel.toggleRolling()
         }

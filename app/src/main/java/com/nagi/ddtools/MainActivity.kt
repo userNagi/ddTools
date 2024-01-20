@@ -1,8 +1,6 @@
 package com.nagi.ddtools
 
 import android.os.Bundle
-import androidx.core.content.ContextCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.nagi.ddtools.databinding.ActivityMainBinding
@@ -19,14 +17,6 @@ class MainActivity : DdToolsBaseActivity() {
         }
         setupStatusBar()
         setupNavigation()
-    }
-
-
-    private fun setupStatusBar() {
-        window.statusBarColor = ContextCompat.getColor(this, R.color.lty)
-        WindowInsetsControllerCompat(window, window.decorView).apply {
-            isAppearanceLightStatusBars = true
-        }
     }
 
     private fun setupNavigation() {

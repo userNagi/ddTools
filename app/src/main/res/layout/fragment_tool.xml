@@ -7,7 +7,7 @@
     android:background="@drawable/bg_fragment_rounded_corners"
     tools:context=".ui.toolpage.ToolPageFragment">
 
-    <View
+    <TextView
         android:id="@+id/tool_main_body"
         android:layout_width="match_parent"
         android:layout_height="110dp"
@@ -15,21 +15,13 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="40dp"
         android:background="@drawable/bg_10_round"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tool_main_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="@string/tool_main_text"
+        android:gravity="center"
         android:textColor="@color/black"
         android:textSize="25dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tool_main_body"
-        app:layout_constraintEnd_toEndOf="@+id/tool_main_body"
-        app:layout_constraintStart_toStartOf="@+id/tool_main_body"
-        app:layout_constraintTop_toTopOf="@+id/tool_main_body"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="SpUsage" />
 
     <TextView
@@ -183,7 +175,7 @@
             android:layout_weight="1"
             android:background="@drawable/bg_30_round_green"
             android:gravity="center"
-            android:text="@string/tool_fan_board"
+            android:text="@string/to_be_do"
             android:textColor="@color/purple_700"
             android:textSize="20dp"
             tools:ignore="SpUsage" />
@@ -196,7 +188,7 @@
             android:layout_weight="1"
             android:background="@drawable/bg_30_round_green"
             android:gravity="center"
-            android:text="@string/tool_fan_board"
+            android:text="@string/to_be_do"
             android:textColor="@color/purple_700"
             android:textSize="20dp"
             tools:ignore="SpUsage" />

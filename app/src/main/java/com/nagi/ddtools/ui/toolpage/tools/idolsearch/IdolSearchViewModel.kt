@@ -17,7 +17,7 @@ class IdolSearchViewModel : ViewModel() {
     private val _idolGroupData = MutableLiveData<List<IdolGroupList>>()
     private val _locationData = MutableLiveData<Map<String, Int>>()
     private val database: IdolGroupListDao by lazy {
-        AppDatabase.getInstance()!!.idolGroupListDao()
+        AppDatabase.getInstance().idolGroupListDao()
     }
 
     val idolGroupData: LiveData<List<IdolGroupList>> = _idolGroupData

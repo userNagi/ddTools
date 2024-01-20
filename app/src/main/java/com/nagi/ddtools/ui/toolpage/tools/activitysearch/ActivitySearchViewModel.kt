@@ -20,7 +20,7 @@ class ActivitySearchViewModel : ViewModel() {
     private val _locationData = MutableLiveData<Set<String>>()
     private val _dateData = MutableLiveData<Set<String>>()
     private val database: ActivityListDao by lazy {
-        AppDatabase.getInstance()!!.activityListDao()
+        AppDatabase.getInstance().activityListDao()
     }
 
     val dateListData: LiveData<Set<String>> = _dateData

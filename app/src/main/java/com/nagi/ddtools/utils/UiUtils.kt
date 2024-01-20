@@ -1,12 +1,12 @@
 package com.nagi.ddtools.utils
 
+import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Looper
 import android.view.View
-import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -89,11 +89,19 @@ object UiUtils {
         loadingJob?.cancel()
     }
 
-    fun Context.openUrl(url:String){
+    fun Context.openUrl(url: String) {
         val uri = Uri.parse(url)
         val intent = Intent()
         intent.action = "android.intent.action.VIEW"
         intent.data = uri
         this.startActivity(intent)
+    }
+
+    fun Context.openPage(activity: Activity, page: Class<*>, needFinish: Boolean = false) {
+        val intent = Intent(activity, page)
+        activity.startActivity(intent)
+        if (needFinish) {
+            activity.finish()
+        }
     }
 }

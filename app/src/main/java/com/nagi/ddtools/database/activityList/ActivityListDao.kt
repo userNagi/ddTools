@@ -12,7 +12,7 @@ interface ActivityListDao {
     fun getAll(): List<ActivityList>
 
     @Query("SELECT * FROM ActivityList WHERE id = :id")
-    fun getById(id: String): List<ActivityList>
+    fun getById(id: String): ActivityList
 
     @Query("SELECT * FROM ActivityList WHERE location = :location")
     fun getByLocation(location: String): List<ActivityList>

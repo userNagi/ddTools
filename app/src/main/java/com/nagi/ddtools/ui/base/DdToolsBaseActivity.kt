@@ -12,7 +12,7 @@ abstract class DdToolsBaseActivity : AppCompatActivity() {
         setupStatusBar()
     }
 
-    private fun setupStatusBar() {
+    open fun setupStatusBar() {
         window.statusBarColor = ContextCompat.getColor(this, R.color.lty)
         WindowInsetsControllerCompat(window, window.decorView).apply {
             isAppearanceLightStatusBars = true

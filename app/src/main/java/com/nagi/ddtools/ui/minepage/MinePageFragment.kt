@@ -4,10 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.nagi.ddtools.databinding.FragmentMineBinding
+import com.nagi.ddtools.ui.minepage.login.LoginActivity
+import com.nagi.ddtools.utils.UiUtils.openPage
 
 class MinePageFragment : Fragment() {
 
@@ -25,12 +26,23 @@ class MinePageFragment : Fragment() {
         _binding = FragmentMineBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textNotifications
         notificationsViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+
         }
         return root
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initView()
+    }
+
+    private fun initView() {
+        binding.loginViewImage.setOnClickListener {
+            requireActivity().openPage(requireActivity(),LoginActivity::class.java)
+        }
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
