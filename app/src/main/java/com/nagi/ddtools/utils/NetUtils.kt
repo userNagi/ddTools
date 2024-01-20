@@ -11,10 +11,19 @@ import okhttp3.Request
 import okhttp3.Response
 import java.io.File
 import java.io.IOException
+import java.util.concurrent.TimeUnit
 
 object NetUtils {
 
-    private val client by lazy { OkHttpClient() }
+    private val client by lazy {
+        OkHttpClient.Builder()
+            .connectTimeout(10, TimeUnit.SECONDS) // 连接超时设置为10秒
+            .readTimeout(30, TimeUnit.SECONDS)    // 读取超时设置为30秒
+            .writeTimeout(15, TimeUnit.SECONDS)   // 写入超时设置为15秒
+            .retryOnConnectionFailure(true)       // 设置为对连接失败进行重试
+            .build()
+    }
+
 
     enum class HttpMethod {
         GET, POST
