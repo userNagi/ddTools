@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import com.nagi.ddtools.data.Resource
 import com.nagi.ddtools.data.UpdateInfo
 import com.nagi.ddtools.database.homePagLis.HomePageList
 import com.nagi.ddtools.databinding.FragmentHomeBinding
@@ -63,10 +64,8 @@ class HomeFragment : Fragment() {
     private fun initNetData() {
         if (PrefsUtils.isTodayFirstRun(requireContext())) {
             NetGet.getUpdateDetails { updateDetails ->
-                if (updateDetails != null) {
-                    lifecycleScope.launch {
-                        checkUpdate(updateDetails)
-                    }
+                lifecycleScope.launch {
+                    checkUpdate(updateDetails)
                 }
             }
         }
@@ -102,23 +101,30 @@ class HomeFragment : Fragment() {
             requireContext().toast("您未选择图片")
         }
     }
-
-    private fun checkUpdate(updateInfo: UpdateInfo) {
-        val version = NetUtils.getLocalVersion(requireContext())
-        if (updateInfo.version != version && updateInfo.updateUrl.isNotEmpty()) {
-            try {
-                requireContext().dialog(
-                    title = updateInfo.title,
-                    message = updateInfo.message,
-                    positiveButtonText = "确定",
-                    onPositive = {
-                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(updateInfo.updateUrl)))
-                    },
-                    negativeButtonText = "取消",
-                    onNegative = {}
-                )
-            } catch (e: Exception) {
-                LogUtils.e("Get Update Failed: $e")
+    private fun checkUpdate(resource: Resource<UpdateInfo>) {
+        when (resource) {
+            is Resource.Success -> {
+                val updateInfo = resource.data
+                val version = NetUtils.getLocalVersion(requireContext())
+                if (updateInfo.version != version && updateInfo.updateUrl.isNotEmpty()) {
+                    try {
+                        requireContext().dialog(
+                            title = updateInfo.title,
+                            message = updateInfo.message,
+                            positiveButtonText = "确定",
+                            onPositive = {
+                                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(updateInfo.updateUrl)))
+                            },
+                            negativeButtonText = "取消",
+                            onNegative = {}
+                        )
+                    } catch (e: Exception) {
+                        LogUtils.e("Get Update Failed: $e")
+                    }
+                }
+            }
+            is Resource.Error -> {
+                LogUtils.e("Error checking for update: ${resource.message}")
             }
         }
     }

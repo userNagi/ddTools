@@ -2,6 +2,7 @@ package com.nagi.ddtools.utils
 
 import android.content.Context
 import android.content.pm.PackageManager
+import com.nagi.ddtools.data.Resource
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.FormBody
@@ -9,6 +10,7 @@ import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
+import org.json.JSONObject
 import java.io.File
 import java.io.IOException
 import java.util.concurrent.TimeUnit
@@ -34,21 +36,29 @@ object NetUtils {
         url: String,
         method: HttpMethod,
         params: Map<String, String>,
-        callback: (Boolean, String?) -> Unit
+        callback: (Resource<String>) -> Unit
     ) {
         val request = createRequest(url, method, params)
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                callback(false, "请求失败: ${e.localizedMessage}")
+                callback(Resource.Error("请求失败: ${e.localizedMessage}"))
             }
 
             override fun onResponse(call: Call, response: Response) {
                 response.use {
                     if (it.isSuccessful) {
                         val responseBody = it.body?.string()
-                        callback(true, responseBody)
+                        val json = JSONObject(responseBody!!)
+                        val status = json.optString("status")
+                        val message = json.optString("message")
+
+                        if (status == "success") {
+                            callback(Resource.Success(message))
+                        } else {
+                            callback(Resource.Error(message ?: "未知错误"))
+                        }
                     } else {
-                        callback(false, "响应失败: HTTP ${it.code}")
+                        callback(Resource.Error("响应失败: HTTP ${it.code}"))
                     }
                 }
             }
@@ -61,16 +71,24 @@ object NetUtils {
         method: HttpMethod,
         params: Map<String, String>,
         internalPath: String,
-        callback: (Boolean, String) -> Unit
+        callback: (Resource<String>) -> Unit
     ) {
-        fetch(url, method, params) { success, result ->
-            if (success && result != null) {
-                saveToFile(result, internalPath, callback)
-            } else {
-                callback(false, result ?: "Unknown Error")
+        fetch(url, method, params) { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    saveToFile(resource.data, internalPath) { success, message ->
+                        if (success) {
+                            callback(Resource.Success(message))
+                        } else {
+                            callback(Resource.Error(message))
+                        }
+                    }
+                }
+                is Resource.Error -> callback(resource)
             }
         }
     }
+
 
     // 根据请求类型创建Request对象
     private fun createRequest(

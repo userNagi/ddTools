@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import com.nagi.ddtools.R
+import com.nagi.ddtools.data.Resource
 import com.nagi.ddtools.database.idolGroupList.IdolGroupList
 import com.nagi.ddtools.databinding.ActivityIdolSearchBinding
 import com.nagi.ddtools.ui.adapter.IdolGroupListAdapter
@@ -102,18 +103,24 @@ class IdolSearchActivity : DdToolsBaseActivity() {
             UiUtils.showLoading(this)
             try {
                 NetUtils.fetchAndSave(
-                    "https://wiki.chika-idol.live/request/ddtools/getChikaIdolList.php/.",
-                    NetUtils.HttpMethod.POST,
-                    emptyMap(),
-                    File(filesDir, FileUtils.IDOL_GROUP_FILE).path
-                ) { success, message ->
-                    if (!success) {
-                        LogUtils.e("Failed to fetch idol group list: $message")
-                    } else {
-                        runOnUiThread { initAdapter() }
+                    url = "https://wiki.chika-idol.live/request/ddtools/getChikaIdolList.php/.",
+                    method = NetUtils.HttpMethod.POST,
+                    params = emptyMap(),
+                    internalPath = File(filesDir, FileUtils.IDOL_GROUP_FILE).path,
+                    callback = { resource ->
+                        when (resource) {
+                            is Resource.Success -> {
+                                runOnUiThread { initAdapter() }
+                            }
+
+                            is Resource.Error -> {
+                                LogUtils.e("Failed to fetch idol group list: ${resource.message}")
+                            }
+                        }
+                        UiUtils.hideLoading()
                     }
-                    UiUtils.hideLoading()
-                }
+                )
+
             } catch (e: Exception) {
                 LogUtils.e("Exception during fetching idol group list: ${e.message}")
                 UiUtils.hideLoading()

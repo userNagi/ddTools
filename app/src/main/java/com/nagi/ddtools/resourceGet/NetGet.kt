@@ -27,9 +27,9 @@ object NetGet {
             NetUtils.HttpMethod.POST,
             emptyMap(),
             File(context.filesDir, IDOL_GROUP_FILE).path
-        ) { success, message ->
-            if (!success) {
-                LogUtils.e("Failed to fetch idol group list: $message")
+        ) { resource ->
+            if (resource is Resource.Error) {
+                LogUtils.e("Failed to fetch idol group list: ${resource.message}")
             }
         }
     }
@@ -40,31 +40,35 @@ object NetGet {
             NetUtils.HttpMethod.POST,
             emptyMap(),
             File(context.filesDir, ACTIVITY_LIS_FILE).path
-        ) { success, message ->
-            if (!success) {
-                LogUtils.e("Failed to fetch activity list: $message")
+        ) { resource ->
+            if (resource is Resource.Error) {
+                LogUtils.e("Failed to fetch activity list: ${resource.message}")
             }
         }
     }
 
-    fun getUpdateDetails(callback: (UpdateInfo?) -> Unit) {
+    fun getUpdateDetails(callback: (Resource<UpdateInfo>) -> Unit) {
         NetUtils.fetch(
             ROOT_URL + CHECK_UPDATE_URL,
             NetUtils.HttpMethod.GET,
             emptyMap()
-        ) { success, result ->
-            if (success && result != null) {
-                try {
-                    val itemType = object : TypeToken<UpdateInfo>() {}.type
-                    val updateInfo: UpdateInfo = Gson().fromJson(result, itemType)
-                    callback(updateInfo)
-                } catch (e: JsonSyntaxException) {
-                    LogUtils.e("UpdateInfo: JSON parsing error: ${e.localizedMessage}")
-                    callback(null)
+        ) { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    try {
+                        val itemType = object : TypeToken<UpdateInfo>() {}.type
+                        val updateInfo: UpdateInfo = Gson().fromJson(resource.data, itemType)
+                        callback(Resource.Success(updateInfo))
+                    } catch (e: JsonSyntaxException) {
+                        LogUtils.e("UpdateInfo: JSON parsing error: ${e.localizedMessage}")
+                        callback(Resource.Error("JSON parsing error: ${e.localizedMessage}"))
+                    }
                 }
-            } else {
-                LogUtils.e("UpdateInfo: Failed to fetch update details: $result")
-                callback(null)
+
+                is Resource.Error -> {
+                    LogUtils.e("UpdateInfo: Failed to fetch update details: ${resource.message}")
+                    callback(Resource.Error("Failed to fetch update details: ${resource.message}"))
+                }
             }
         }
     }
@@ -77,22 +81,17 @@ object NetGet {
                 "username" to username,
                 "password" to DataUtils.hashPassword(username, password)
             )
-        ) { success, result ->
-            if (success && result != null) {
-                val errorResponse = Gson().fromJson(result, Map::class.java)
-                val errorMessage = errorResponse["error"] as? String
-                if (!errorMessage.isNullOrEmpty()) {
-                    callback(Resource.Error(errorMessage))
-                } else {
-                    try {
-                        val userInfo = Gson().fromJson(result, User::class.java)
-                        callback(Resource.Success(userInfo))
-                    } catch (e: JsonSyntaxException) {
-                        callback(Resource.Error("JSON parsing error: ${e.localizedMessage}"))
-                    }
+        ) { resource ->
+            if (resource is Resource.Success) {
+                try {
+                    val userInfo = Gson().fromJson(resource.data, User::class.java)
+                    callback(Resource.Success(userInfo))
+                } catch (e: JsonSyntaxException) {
+                    callback(Resource.Error("JSON parsing error: ${e.localizedMessage}"))
                 }
-            } else {
-                callback(Resource.Error("Failed to fetch update details."))
+            }
+            if (resource is Resource.Error) {
+                callback(Resource.Error("登录失败：${resource.message}"))
             }
         }
     }
@@ -116,7 +115,6 @@ object NetGet {
             "email" to email,
             "nickname" to nickname
         )
-
         avatarUrl?.let { requestBody["avatar_url"] = it }
         bio?.let { requestBody["bio"] = it }
         role?.let { requestBody["role"] = it }
@@ -128,17 +126,10 @@ object NetGet {
             ROOT_URL + USER_REGISTER,
             NetUtils.HttpMethod.POST,
             requestBody
-        ) { success, result ->
-            if (success && result != null) {
-                val errorResponse = Gson().fromJson(result, Map::class.java)
-                val errorMessage = errorResponse["error"] as? String
-                if (!errorMessage.isNullOrEmpty()) {
-                    callback(Resource.Error(errorMessage))
-                } else {
-                    callback(Resource.Success("注册成功！"))
-                }
-            } else {
-                callback(Resource.Error("Failed to send registration request."))
+        ) { resource ->
+            when (resource) {
+                is Resource.Success -> callback(Resource.Success("注册成功！"))
+                is Resource.Error -> callback(Resource.Error(resource.message))
             }
         }
     }
