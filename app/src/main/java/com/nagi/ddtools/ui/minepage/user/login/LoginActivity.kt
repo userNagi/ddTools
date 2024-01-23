@@ -1,4 +1,4 @@
-package com.nagi.ddtools.ui.minepage.login
+package com.nagi.ddtools.ui.minepage.user.login
 
 import android.graphics.Color
 import android.os.Bundle
@@ -9,7 +9,9 @@ import androidx.core.view.WindowInsetsControllerCompat
 import com.nagi.ddtools.R
 import com.nagi.ddtools.databinding.ActivityLoginBinding
 import com.nagi.ddtools.ui.base.DdToolsBaseActivity
+import com.nagi.ddtools.ui.minepage.user.register.RegisterActivity
 import com.nagi.ddtools.utils.UiUtils.dialog
+import com.nagi.ddtools.utils.UiUtils.openPage
 import com.nagi.ddtools.utils.UiUtils.toast
 
 class LoginActivity : DdToolsBaseActivity() {
@@ -44,6 +46,12 @@ class LoginActivity : DdToolsBaseActivity() {
             loginPassWord.addTextChangedListener(LoginWatching {
                 loginPasswordLayout.error = null
             })
+            registerButton.setOnClickListener {
+                openPage(
+                    this@LoginActivity,
+                    RegisterActivity::class.java
+                )
+            }
         }
     }
 
@@ -52,6 +60,7 @@ class LoginActivity : DdToolsBaseActivity() {
             when (state) {
                 is LoginViewModel.LoginState.Success -> {
                     applicationContext.toast("登录成功")
+                    finish()
                 }
                 is LoginViewModel.LoginState.Error -> {
                     when (state.errorType) {
@@ -86,6 +95,12 @@ class LoginActivity : DdToolsBaseActivity() {
             }
         )
     }
+    override fun setupStatusBar() {
+        window.statusBarColor = Color.parseColor("#2766CCFF")
+        WindowInsetsControllerCompat(window, window.decorView).apply {
+            isAppearanceLightStatusBars = true
+        }
+    }
 
     class LoginWatching(private val onTextChanged: (CharSequence?) -> Unit) : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -95,10 +110,4 @@ class LoginActivity : DdToolsBaseActivity() {
         override fun afterTextChanged(s: Editable?) {}
     }
 
-    override fun setupStatusBar() {
-        window.statusBarColor = Color.parseColor("#2766CCFF")
-        WindowInsetsControllerCompat(window, window.decorView).apply {
-            isAppearanceLightStatusBars = true
-        }
-    }
 }

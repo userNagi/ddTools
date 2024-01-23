@@ -7,11 +7,11 @@
     android:background="@drawable/bg_fragment_rounded_corners"
     tools:context=".ui.minepage.MinePageFragment">
 
-    <com.google.android.material.imageview.ShapeableImageView
+    <com.nagi.ddtools.ui.widget.NetImageView
         android:id="@+id/login_view_image"
         android:layout_width="66dp"
         android:layout_height="66dp"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="25dp"
         android:layout_marginTop="20dp"
         android:background="#C9CACC"
         android:src="@drawable/baseline_user_unlogin"
@@ -20,13 +20,70 @@
         app:shapeAppearance="@style/circleStyle" />
 
     <TextView
-        android:id="@+id/login_view_text"
+        android:id="@+id/login_nickname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="5dp"
         android:text="@string/clock_login"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        app:layout_constraintStart_toEndOf="@+id/login_view_image"
+        app:layout_constraintTop_toTopOf="@+id/login_view_image"
+        tools:ignore="SpUsage" />
+
+    <TextView
+        android:id="@+id/login_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="5dp"
+        android:text="@string/username"
+        android:textColor="@color/black"
+        android:textSize="12dp"
         app:layout_constraintBottom_toBottomOf="@+id/login_view_image"
         app:layout_constraintStart_toEndOf="@+id/login_view_image"
-        app:layout_constraintTop_toTopOf="@+id/login_view_image" />
+        tools:ignore="SpUsage" />
+
+    <com.nagi.ddtools.ui.widget.MineLinearView
+        android:id="@+id/mine_linear_feedback"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_view_image" />
+
+    <com.nagi.ddtools.ui.widget.MineLinearView
+        android:id="@+id/mine_linear_join_us"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mine_linear_feedback" />
+
+    <com.nagi.ddtools.ui.widget.MineLinearView
+        android:id="@+id/mine_linear_setting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mine_linear_join_us" />
+
+    <com.nagi.ddtools.ui.widget.MineLinearView
+        android:id="@+id/mine_linear_about"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mine_linear_setting" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

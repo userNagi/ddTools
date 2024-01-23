@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Bundle
 import android.os.Looper
 import android.view.View
 import android.widget.ProgressBar
@@ -67,7 +68,9 @@ object UiUtils {
     fun showLoading(context: Context) {
         hideLoading()
         loadingDialog = Dialog(context).apply {
-            setContentView(ProgressBar(context))
+            setContentView(ProgressBar(context).apply {
+                setTitle("加载中")
+            })
             setCancelable(false)
             window?.setBackgroundDrawableResource(android.R.color.transparent)
             show()
@@ -97,11 +100,15 @@ object UiUtils {
         this.startActivity(intent)
     }
 
-    fun Context.openPage(activity: Activity, page: Class<*>, needFinish: Boolean = false) {
+    fun openPage(
+        activity: Activity,
+        page: Class<*>,
+        needFinish: Boolean = false,
+        bundle: Bundle = Bundle()
+    ) {
         val intent = Intent(activity, page)
+        intent.putExtras(bundle)
         activity.startActivity(intent)
-        if (needFinish) {
-            activity.finish()
-        }
+        if (needFinish) activity.finish()
     }
 }

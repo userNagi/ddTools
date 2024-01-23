@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#2766CCFF"
+    tools:context=".ui.minepage.user.register.RegisterActivity">
+
+    <ImageView
+        android:id="@+id/register_title_back"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_marginStart="15dp"
+        android:src="@drawable/baseline_arrow_back"
+        app:layout_constraintBottom_toBottomOf="@+id/register_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/register_title"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/register_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/register"
+        android:textColor="@color/black"
+        android:textSize="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SpUsage" />
+
+    <View
+        android:id="@+id/register_main_body"
+        android:layout_width="0dp"
+        android:layout_height="450dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/bg_60_round"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/register_title" />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/register_user_name_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="15dp"
+        app:layout_constraintEnd_toEndOf="@+id/register_main_body"
+        app:layout_constraintStart_toStartOf="@+id/register_main_body"
+        app:layout_constraintTop_toTopOf="@+id/register_main_body">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/register_user_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#2766CCFF"
+            android:maxLength="18"
+            android:minLines="6"
+            android:hint="@string/username"
+            android:inputType="textNoSuggestions|textVisiblePassword" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/register_password_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="15dp"
+        app:endIconMode="password_toggle"
+        app:layout_constraintEnd_toEndOf="@+id/register_main_body"
+        app:layout_constraintStart_toStartOf="@+id/register_main_body"
+        app:layout_constraintTop_toBottomOf="@id/register_user_name_layout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/register_pass_word"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#2766CCFF"
+            android:hint="@string/password"
+            android:maxLength="18"
+            android:inputType="textPassword" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/register_password_again_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="15dp"
+        app:endIconMode="password_toggle"
+        app:layout_constraintEnd_toEndOf="@+id/register_main_body"
+        app:layout_constraintStart_toStartOf="@+id/register_main_body"
+        app:layout_constraintTop_toBottomOf="@id/register_password_layout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/register_pass_word_again"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#2766CCFF"
+            android:maxLength="18"
+            android:hint="@string/password_again"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/register_email_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="15dp"
+        app:layout_constraintEnd_toEndOf="@id/register_main_body"
+        app:layout_constraintStart_toStartOf="@id/register_main_body"
+        app:layout_constraintTop_toBottomOf="@id/register_password_again_layout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/register_email_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#2766CCFF"
+            android:hint="@string/email"
+            android:maxLength="100"
+            android:inputType="textEmailAddress" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/register_nickname_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="15dp"
+        app:layout_constraintEnd_toEndOf="@id/register_main_body"
+        app:layout_constraintStart_toStartOf="@id/register_main_body"
+        app:layout_constraintTop_toBottomOf="@id/register_email_layout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/register_nickname_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#2766CCFF"
+            android:hint="@string/nickname"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/register_agree_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="@string/agree_user"
+        android:textSize="13dp"
+        app:layout_constraintBottom_toBottomOf="@+id/register_main_body"
+        app:layout_constraintEnd_toEndOf="@+id/register_main_body"
+        app:layout_constraintStart_toStartOf="@+id/register_main_body"
+        tools:ignore="SpUsage" />
+
+    <TextView
+        android:id="@+id/register_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/bg_avla"
+        android:text="@string/register"
+        android:textSize="12dp"
+        app:layout_constraintEnd_toEndOf="@+id/register_main_body"
+        app:layout_constraintStart_toStartOf="@+id/register_main_body"
+        app:layout_constraintTop_toBottomOf="@+id/register_main_body"
+        tools:ignore="SpUsage" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

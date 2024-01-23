@@ -1,4 +1,4 @@
-package com.nagi.ddtools.ui.minepage.login
+package com.nagi.ddtools.ui.minepage.user.login
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,11 +7,10 @@ import com.nagi.ddtools.data.Resource
 import com.nagi.ddtools.database.AppDatabase
 import com.nagi.ddtools.database.user.User
 import com.nagi.ddtools.resourceGet.NetGet
+import com.nagi.ddtools.utils.DataUtils
 
 class LoginViewModel : ViewModel() {
     private val _loginState = MutableLiveData<LoginState>()
-    private val _user = MutableLiveData<User>()
-    val user: LiveData<User> = _user
     val loginState: LiveData<LoginState> = _loginState
 
     fun onLoginClicked(username: String, password: String) {
@@ -23,15 +22,14 @@ class LoginViewModel : ViewModel() {
             updateLoginState(LoginState.Error(ErrorType.PASSWORD, "请输入密码"))
             return
         }
-        if (!checkPassword(password)) {
-            updateLoginState(LoginState.Error(ErrorType.PASSWORD, "密码长度需要在6-18位之间"))
+        if (!DataUtils.checkInput(password) || !DataUtils.checkInputText(username)) {
+            updateLoginState(LoginState.Error(ErrorType.PASSWORD, "输入需要数字字母且在6-18位之间"))
             return
         }
         doLoginRequest(username, password)
     }
 
     private fun updateUser(user: User) {
-        _user.postValue(user)
         AppDatabase.getInstance().userDao().insert(user)
     }
 
@@ -51,10 +49,6 @@ class LoginViewModel : ViewModel() {
             }
         }, username, password)
 
-    }
-
-    private fun checkPassword(pass: String): Boolean {
-        return pass.length in 6..18
     }
 
     private fun updateLoginState(state: LoginState) {

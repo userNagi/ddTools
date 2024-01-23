@@ -2,15 +2,15 @@ package com.nagi.ddtools.ui.widget
 
 import android.app.Activity
 import android.content.Context
-import android.graphics.drawable.Drawable
+import android.graphics.Color
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import com.google.android.material.imageview.ShapeableImageView
 import com.nagi.ddtools.R
 import com.nagi.ddtools.utils.UiUtils.openPage
-import com.nagi.ddtools.utils.UiUtils.openUrl
 
 class MineLinearView @JvmOverloads constructor(
     context: Context,
@@ -22,19 +22,48 @@ class MineLinearView @JvmOverloads constructor(
         inflater.inflate(R.layout.widget_mine_linear, this, true)
     }
 
-    fun setIcon(drawable: Drawable) {
-        findViewById<ShapeableImageView>(R.id.linear_image).setImageDrawable(drawable)
+    private fun setIcon(drawable: Int,color: String) {
+        findViewById<ShapeableImageView>(R.id.linear_image).apply {
+            setImageDrawable(
+                getDrawable(context, drawable)
+            )
+            when (color) {
+                "red" -> setBackgroundColor(Color.RED)
+                "green" -> setBackgroundColor(Color.GREEN)
+                "blue" -> setBackgroundColor(Color.BLUE)
+                "black" -> setBackgroundColor(Color.BLACK)
+                "yellow" -> setBackgroundColor(Color.YELLOW)
+                "gray" -> setBackgroundColor(Color.GRAY)
+                "lty" -> setBackgroundColor(Color.parseColor("#66ccff"))
+            }
+        }
     }
 
-    fun setText(text: String) {
+    private fun setText(text: String) {
         findViewById<TextView>(R.id.linear_text).text = text
     }
 
-    fun setBottomIcon(drawable: Drawable) {
-        findViewById<ShapeableImageView>(R.id.linear_image_bottom).setImageDrawable(drawable)
+    private fun setBottomIcon(drawable: Int) {
+        findViewById<ShapeableImageView>(R.id.linear_image_bottom).setImageDrawable(
+            getDrawable(context, drawable)
+        )
     }
 
     fun setOnClickListener(activity: Activity, page: Class<*>) {
-        context.openPage(activity, page)
+        setOnClickListener {
+            openPage(activity, page)
+        }
+    }
+
+    fun setData(
+        icon: Int,
+        text: String,
+        color: String = "",
+        bottom: Int = R.drawable.baseline_arrow_forward
+    ) {
+        setIcon(icon,color)
+        setText(text)
+        setBottomIcon(bottom)
+
     }
 }

@@ -2,7 +2,11 @@ package com.nagi.ddtools.utils
 
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import com.nagi.ddtools.data.Resource
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.FormBody
@@ -13,6 +17,7 @@ import okhttp3.Response
 import org.json.JSONObject
 import java.io.File
 import java.io.IOException
+import java.net.URL
 import java.util.concurrent.TimeUnit
 
 object NetUtils {
@@ -142,5 +147,24 @@ object NetUtils {
             callback(false, "Failed to save data: ${e.localizedMessage}")
         }
     }
-
+    suspend fun getBitmapFromURL(urlString: String): Bitmap? {
+        return withContext(Dispatchers.IO) {
+            try {
+                val imgUrl = URL(urlString)
+                val conn = imgUrl.openConnection().apply {
+                    connectTimeout = 6000
+                    readTimeout = 6000
+                    doInput = true
+                    useCaches = true
+                }
+                conn.connect()
+                conn.getInputStream().use { input ->
+                    BitmapFactory.decodeStream(input)
+                }
+            } catch (e: Exception) {
+                LogUtils.e("Error getting bitmap from URL: ${e.message}")
+                null
+            }
+        }
+    }
 }

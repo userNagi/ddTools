@@ -16,6 +16,7 @@ import java.io.File
 
 object NetGet {
     private const val ROOT_URL = "https://wiki.chika-idol.live/request/ddtools/"
+    private const val INFO_URL = "https://info.chika-idol.live/"
     private const val IDOL_GROUP_LIST_URL = "getChikaIdolList.php/"
     private const val ACTIVITY_LIST_URL = "getActivity.php/"
     private const val CHECK_UPDATE_URL = "getUpdateInfo.php/"
@@ -134,5 +135,10 @@ object NetGet {
         }
     }
 
-
+    fun getUrl(url: String): String =
+        when (url) {
+            "info" -> INFO_URL
+            "login" -> ROOT_URL + USER_LOGIN
+            else -> ""
+        }
 }

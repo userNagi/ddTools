@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ddTools</string>
+    <string name="app_name">DDTools</string>
     <string name="dd">DD</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_home">首页</string>
@@ -41,4 +41,8 @@
     <string name="login_dialog_message">虽然我也不知道应该写什么，但是似乎大家都写了那我也写一下吧\n
         点击确定的话，就是同意了，就是可以登录了\n点击取消的话，那就是不同意了，那就是不可以登录了\n至于什么用户隐私什么的……呃，反正这app也不涉及什么隐私（笑）</string>
     <string name="login_dialog_title">登录协议</string>
+    <string name="password_again">重复密码</string>
+    <string name="email">邮箱</string>
+    <string name="nickname">昵称</string>
+    <string name="about_me">关于</string>
 </resources>

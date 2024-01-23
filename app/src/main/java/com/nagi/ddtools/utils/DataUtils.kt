@@ -5,7 +5,7 @@ import java.security.MessageDigest
 object DataUtils {
     fun hashPassword(username: String, password: String): String {
         val saltedPassword = username + password
-        val digest = MessageDigest.getInstance("SHA-256")
+        val digest = MessageDigest.getInstance("MD5")
         val hash = digest.digest(saltedPassword.toByteArray(Charsets.UTF_8))
         return bytesToHex(hash)
     }
@@ -20,5 +20,15 @@ object DataUtils {
             hexString.append(hex)
         }
         return hexString.toString()
+    }
+    fun checkInputText(text: String): Boolean {
+        return text.matches(Regex("^[a-zA-Z0-9_]+$"))
+    }
+    fun checkTextLength(text: String): Boolean {
+        return text.length in 6..18
+    }
+
+    fun checkInput(text: String): Boolean {
+        return checkInputText(text) && checkTextLength(text)
     }
 }

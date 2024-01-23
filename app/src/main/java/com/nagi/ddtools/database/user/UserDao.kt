@@ -7,6 +7,8 @@ import androidx.room.Query
 
 @Dao
 interface UserDao {
+    @Query("SELECT * FROM User")
+    fun getAll(): List<User>
     @Query("SELECT * FROM User where id =:id")
     fun getById(id: Int): User
 
