@@ -18,6 +18,7 @@ class ActivityListAdapter(private val dataList: MutableList<ActivityList>) :
         dataList.addAll(newData)
         diffResult.dispatchUpdatesTo(this)
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
             ListActivityViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -32,22 +33,26 @@ class ActivityListAdapter(private val dataList: MutableList<ActivityList>) :
     class ViewHolder(private val binding: ListActivityViewBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: ActivityList) {
-            binding.activityLocation.text = data.location
-            binding.activityLocationDesc.text = data.location_desc
-            binding.activityName.text = data.name
-            binding.activityTime.text = data.duration_time
-            binding.activityMoney.text = data.price
-            binding.activityBuy.setOnClickListener {
-                binding.root.context.openUrl(data.buy_url)
-            }
-            binding.activityWeibo.setOnClickListener {
-                binding.root.context.openUrl(data.weibo_url)
+            binding.apply {
+                activityLocation.text = data.location
+                activityLocationDesc.text = data.location_desc
+                activityName.text = data.name
+                activityTimeDesc.text = data.duration_date
+                activityTime.text = data.duration_time
+                activityMoney.text = data.price
+                activityBuy.setOnClickListener {
+                    root.context.openUrl(data.buy_url)
+                }
+                activityWeibo.setOnClickListener {
+                    root.context.openUrl(data.weibo_url)
+                }
             }
             itemView.setOnClickListener {
 
             }
         }
     }
+
     class ActivityListDiffCallback(
         private val oldList: List<ActivityList>,
         private val newList: List<ActivityList>
@@ -57,6 +62,7 @@ class ActivityListAdapter(private val dataList: MutableList<ActivityList>) :
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
             return oldList[oldItemPosition].id == newList[newItemPosition].id
         }
+
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
             return oldList[oldItemPosition] == newList[newItemPosition]
         }

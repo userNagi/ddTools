@@ -12,7 +12,7 @@
         android:layout_width="66dp"
         android:layout_height="66dp"
         android:layout_marginStart="25dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="@dimen/dp_20"
         android:background="#C9CACC"
         android:src="@drawable/baseline_user_unlogin"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,37 +21,30 @@
 
     <TextView
         android:id="@+id/login_nickname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        style="@style/TextBigStyle"
+        android:layout_marginStart="@dimen/dp_20"
         android:layout_marginTop="5dp"
         android:text="@string/clock_login"
-        android:textColor="@color/black"
-        android:textSize="20dp"
         app:layout_constraintStart_toEndOf="@+id/login_view_image"
-        app:layout_constraintTop_toTopOf="@+id/login_view_image"
-        tools:ignore="SpUsage" />
+        app:layout_constraintTop_toTopOf="@+id/login_view_image"/>
 
     <TextView
         android:id="@+id/login_username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
+        style="@style/TextSmailStyle"
+        android:layout_marginStart="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_20"
         android:layout_marginBottom="5dp"
         android:text="@string/username"
         android:textColor="@color/black"
-        android:textSize="12dp"
         app:layout_constraintBottom_toBottomOf="@+id/login_view_image"
-        app:layout_constraintStart_toEndOf="@+id/login_view_image"
-        tools:ignore="SpUsage" />
+        app:layout_constraintStart_toEndOf="@+id/login_view_image" />
 
     <com.nagi.ddtools.ui.widget.MineLinearView
         android:id="@+id/mine_linear_feedback"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginStart="@dimen/dp_15"
+        android:layout_marginTop="@dimen/dp_50"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_view_image" />
@@ -60,8 +53,8 @@
         android:id="@+id/mine_linear_join_us"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="@dimen/dp_15"
+        android:layout_marginTop="@dimen/dp_20"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mine_linear_feedback" />
@@ -70,8 +63,8 @@
         android:id="@+id/mine_linear_setting"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="@dimen/dp_15"
+        android:layout_marginTop="@dimen/dp_20"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mine_linear_join_us" />
@@ -80,8 +73,8 @@
         android:id="@+id/mine_linear_about"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="@dimen/dp_15"
+        android:layout_marginTop="@dimen/dp_20"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mine_linear_setting" />

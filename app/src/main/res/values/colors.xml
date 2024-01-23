@@ -8,4 +8,6 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="lty">#66ccff</color>
+    <color name="register_input">#2766CCFF</color>
+    <color name="gray">#F7F8FA</color>
 </resources>

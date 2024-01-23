@@ -2,72 +2,68 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:gravity="center_vertical">
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
 
     <TextView
         android:id="@+id/colorOptionText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/TextBigStyle"
         android:layout_marginEnd="8dp"
-        android:textColor="@color/black"
-        android:textSize="20dp"
-        tools:ignore="SpUsage"
         tools:text="颜色选择：" />
 
     <FrameLayout
         android:id="@+id/colorOption1"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="@dimen/dp_20"
+        android:layout_height="@dimen/dp_20"
         android:layout_marginEnd="8dp"
         android:background="@drawable/bordered_box" />
 
     <FrameLayout
         android:id="@+id/colorOption2"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="@dimen/dp_20"
+        android:layout_height="@dimen/dp_20"
         android:layout_marginEnd="8dp"
         android:background="@drawable/bordered_box" />
 
     <FrameLayout
         android:id="@+id/colorOption3"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="@dimen/dp_20"
+        android:layout_height="@dimen/dp_20"
         android:layout_marginEnd="8dp"
         android:background="@drawable/bordered_box" />
 
     <FrameLayout
         android:id="@+id/colorOption4"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="@dimen/dp_20"
+        android:layout_height="@dimen/dp_20"
         android:layout_marginEnd="8dp"
         android:background="@drawable/bordered_box" />
 
     <FrameLayout
         android:id="@+id/colorOption5"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="@dimen/dp_20"
+        android:layout_height="@dimen/dp_20"
         android:layout_marginEnd="8dp"
         android:background="@drawable/bordered_box" />
 
     <FrameLayout
         android:id="@+id/colorOption6"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="@dimen/dp_20"
+        android:layout_height="@dimen/dp_20"
         android:layout_marginEnd="8dp"
         android:background="@drawable/bordered_box" />
 
     <FrameLayout
         android:id="@+id/colorOption7"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="@dimen/dp_20"
+        android:layout_height="@dimen/dp_20"
         android:layout_marginEnd="8dp"
         android:background="@drawable/bordered_box" />
 
     <FrameLayout
         android:id="@+id/colorCustom"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="@dimen/dp_20"
+        android:layout_height="@dimen/dp_20"
         android:background="@drawable/bordered_box_colorful" />
 
 </LinearLayout>

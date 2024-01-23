@@ -1,4 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+
     <style name="Base.Theme.DdTools" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/lty</item>
@@ -11,6 +12,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
     </style>
+
     <style name="Theme.DdTools" parent="Base.Theme.DdTools" />
 
     <style name="Base.Theme.DdTools.Splash" parent="Base.Theme.DdTools">
@@ -28,5 +30,29 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
+
+    <style name="TextBigStyle" parent="TitleTextStyle">
+        <item name="android:textSize" tools:ignore="SpUsage">@dimen/dp_20</item>
+    </style>
+
+    <style name="TitleTextStyle" parent="TextSmailStyle">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize" tools:ignore="SpUsage">18dp</item>
+    </style>
+
+    <style name="TextSmailStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize" tools:ignore="SpUsage">12dp</item>
+    </style>
+
+    <style name="RegisterTextInputLayoutStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/dp_15</item>
+        <item name="android:layout_marginTop">@dimen/dp_20</item>
+        <item name="android:layout_marginEnd">@dimen/dp_15</item>
+    </style>
+
 
 </resources>

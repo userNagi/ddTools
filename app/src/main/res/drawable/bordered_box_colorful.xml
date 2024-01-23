@@ -4,6 +4,6 @@
         android:startColor="#FF0000"
         android:endColor="#00FF00"
         android:angle="45"/>
-    <stroke android:width="2dp" android:color="#000000" /> <!-- 边框颜色 -->
-    <corners android:radius="2dp" />
+    <stroke android:width="@dimen/dp_2" android:color="#000000" />
+    <corners android:radius="@dimen/dp_2" />
 </shape>

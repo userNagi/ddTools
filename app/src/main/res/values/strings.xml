@@ -45,4 +45,5 @@
     <string name="email">邮箱</string>
     <string name="nickname">昵称</string>
     <string name="about_me">关于</string>
+    <string name="inputText">输入文字：</string>
 </resources>
