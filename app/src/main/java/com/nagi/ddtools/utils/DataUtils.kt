@@ -1,6 +1,12 @@
 package com.nagi.ddtools.utils
 
 import java.security.MessageDigest
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 object DataUtils {
     fun hashPassword(username: String, password: String): String {
@@ -21,9 +27,11 @@ object DataUtils {
         }
         return hexString.toString()
     }
+
     fun checkInputText(text: String): Boolean {
         return text.matches(Regex("^[a-zA-Z0-9_]+$"))
     }
+
     fun checkTextLength(text: String): Boolean {
         return text.length in 6..18
     }
@@ -31,4 +39,22 @@ object DataUtils {
     fun checkInput(text: String): Boolean {
         return checkInputText(text) && checkTextLength(text)
     }
+
+    fun getCurrentDateString(): String {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        return dateFormat.format(Date())
+    }
+
+    fun parseDate(dateStr: String): Array<String> {
+        val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val localDate = LocalDate.parse(dateStr, dateFormatter)
+
+        val day = localDate.dayOfMonth.toString()
+        val month = localDate.monthValue.toString()
+        val year = localDate.year.toString()
+
+        return arrayOf(day, month, year)
+    }
+
+
 }

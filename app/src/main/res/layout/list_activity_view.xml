@@ -27,6 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="6dp"
+        android:maxLines="1"
         android:textColor="#805540"
         android:textSize="14dp"
         app:layout_constraintBottom_toBottomOf="@+id/activity_location"

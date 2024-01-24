@@ -19,6 +19,9 @@
         android:theme="@style/Theme.DdTools"
         tools:targetApi="31">
         <activity
+            android:name=".ui.toolpage.tools.activitysearch.details.ActivityDetailsActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.base.WebViewActivity"
             android:exported="false" />
         <activity

@@ -32,6 +32,7 @@ class IdolSearchViewModel : ViewModel() {
                     idolGroupList.groupingBy { it.location }.eachCount()
                 _locationData.postValue(locationCountMap)
                 _idolGroupData.postValue(idolGroupList)
+                database.clear()
                 database.insertAll(idolGroupList)
             }
         }

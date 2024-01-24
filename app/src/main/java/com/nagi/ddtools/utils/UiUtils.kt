@@ -111,4 +111,11 @@ object UiUtils {
         activity.startActivity(intent)
         if (needFinish) activity.finish()
     }
+
+    fun Context.copyToClipboard(text: String) {
+        val clipboardManager =
+            this.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+        val clipData = android.content.ClipData.newPlainText("text", text)
+        clipboardManager.setPrimaryClip(clipData)
+    }
 }

@@ -1,11 +1,18 @@
 package com.nagi.ddtools.ui.adapter
 
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.nagi.ddtools.database.activityList.ActivityList
 import com.nagi.ddtools.databinding.ListActivityViewBinding
+import com.nagi.ddtools.ui.toolpage.tools.activitysearch.details.ActivityDetailsActivity
+import com.nagi.ddtools.utils.DataUtils
+import com.nagi.ddtools.utils.MapUtils
+import com.nagi.ddtools.utils.UiUtils.openPage
 import com.nagi.ddtools.utils.UiUtils.openUrl
 
 class ActivityListAdapter(private val dataList: MutableList<ActivityList>) :
@@ -32,12 +39,14 @@ class ActivityListAdapter(private val dataList: MutableList<ActivityList>) :
 
     class ViewHolder(private val binding: ListActivityViewBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
         fun bind(data: ActivityList) {
+            val date = DataUtils.parseDate(data.duration_date)
             binding.apply {
+                @SuppressLint("SetTextI18n")
+                activityTimeDesc.text = "${date[1]}月${date[0]}日"
                 activityLocation.text = data.location
-                activityLocationDesc.text = data.location_desc
                 activityName.text = data.name
-                activityTimeDesc.text = data.duration_date
                 activityTime.text = data.duration_time
                 activityMoney.text = data.price
                 activityBuy.setOnClickListener {
@@ -46,9 +55,17 @@ class ActivityListAdapter(private val dataList: MutableList<ActivityList>) :
                 activityWeibo.setOnClickListener {
                     root.context.openUrl(data.weibo_url)
                 }
+                activityLocationDesc.apply {
+                    text = data.location_desc
+                    setOnClickListener { MapUtils.chooseLocation(context, data.location_desc) }
+                }
             }
             itemView.setOnClickListener {
-
+                openPage(binding.root.context as Activity,
+                    ActivityDetailsActivity::class.java,
+                    false,
+                    Bundle().apply { putInt("id",data.id) }
+                )
             }
         }
     }

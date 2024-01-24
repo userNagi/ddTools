@@ -37,4 +37,7 @@ interface ActivityListDao {
     @Delete
     fun delete(activity: ActivityList)
 
+    @Query("DELETE FROM ActivityList")
+    fun clear()
+
 }

@@ -13,7 +13,7 @@ interface IdolGroupListDao {
     fun getAll(): List<IdolGroupList>
 
     @Query("SELECT * FROM IdolGroupList WHERE id = :id")
-    fun getById(id: Int): IdolGroupList
+    fun getById(id: String): IdolGroupList
 
     @Query("SELECT * FROM IdolGroupList WHERE location = :location")
     fun getByLocation(location:String):List<IdolGroupList>
@@ -30,4 +30,7 @@ interface IdolGroupListDao {
 
     @Delete
     fun delete(info: IdolGroupList)
+
+    @Query("DELETE FROM idolgrouplist")
+    fun clear()
 }

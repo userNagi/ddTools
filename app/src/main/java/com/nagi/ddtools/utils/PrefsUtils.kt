@@ -2,9 +2,7 @@ package com.nagi.ddtools.utils
 
 import android.content.Context
 import android.content.SharedPreferences
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import com.nagi.ddtools.utils.DataUtils.getCurrentDateString
 
 object PrefsUtils {
     private const val PREFS_NAME = "DdToolsPrefs"
@@ -16,10 +14,6 @@ object PrefsUtils {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
     }
 
-    private fun getCurrentDateString(): String {
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        return dateFormat.format(Date())
-    }
 
     fun isFirstRun(context: Context): Boolean {
         return getSharedPreferences(context).getBoolean(KEY_FIRST_RUN, true)

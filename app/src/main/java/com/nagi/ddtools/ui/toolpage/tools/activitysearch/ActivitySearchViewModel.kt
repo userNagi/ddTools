@@ -9,6 +9,7 @@ import com.google.gson.reflect.TypeToken
 import com.nagi.ddtools.database.AppDatabase
 import com.nagi.ddtools.database.activityList.ActivityList
 import com.nagi.ddtools.database.activityList.ActivityListDao
+import com.nagi.ddtools.utils.DataUtils.getCurrentDateString
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -36,6 +37,7 @@ class ActivitySearchViewModel : ViewModel() {
                 _activityData.postValue(activityList)
                 _locationData.postValue(locationList)
                 _dateData.postValue(dateList)
+                database.clear()
                 database.insertAll(activityList)
             }
         }
@@ -60,9 +62,7 @@ class ActivitySearchViewModel : ViewModel() {
     }
 
     fun getActivityListByStatus(date: String) {
-        val currentDate = LocalDate.now()
-        val dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        val dateString = currentDate.format(dateFormat)
+        val dateString = getCurrentDateString()
 
         viewModelScope.launch {
             val result = withContext(Dispatchers.IO) {
