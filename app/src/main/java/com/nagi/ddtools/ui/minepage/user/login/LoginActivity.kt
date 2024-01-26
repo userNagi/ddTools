@@ -11,7 +11,9 @@ import com.nagi.ddtools.databinding.ActivityLoginBinding
 import com.nagi.ddtools.ui.base.DdToolsBaseActivity
 import com.nagi.ddtools.ui.minepage.user.register.RegisterActivity
 import com.nagi.ddtools.utils.UiUtils.dialog
+import com.nagi.ddtools.utils.UiUtils.hideLoading
 import com.nagi.ddtools.utils.UiUtils.openPage
+import com.nagi.ddtools.utils.UiUtils.showLoading
 import com.nagi.ddtools.utils.UiUtils.toast
 
 class LoginActivity : DdToolsBaseActivity() {
@@ -30,6 +32,7 @@ class LoginActivity : DdToolsBaseActivity() {
     private fun initView() {
         binding.apply {
             loginButton.setOnClickListener {
+                showLoading(binding.root.context)
                 viewModel.onLoginClicked(
                     loginUserName.text.toString(),
                     loginPassWord.text.toString()
@@ -57,6 +60,7 @@ class LoginActivity : DdToolsBaseActivity() {
 
     private fun setupObservers() {
         viewModel.loginState.observe(this) { state ->
+            hideLoading()
             when (state) {
                 is LoginViewModel.LoginState.Success -> {
                     applicationContext.toast("登录成功")

@@ -9,6 +9,7 @@ import com.nagi.ddtools.R
 import com.nagi.ddtools.data.Resource
 import com.nagi.ddtools.database.idolGroupList.IdolGroupList
 import com.nagi.ddtools.databinding.ActivityIdolSearchBinding
+import com.nagi.ddtools.resourceGet.NetGet.getUrl
 import com.nagi.ddtools.ui.adapter.IdolGroupListAdapter
 import com.nagi.ddtools.ui.base.DdToolsBaseActivity
 import com.nagi.ddtools.utils.FileUtils
@@ -69,12 +70,17 @@ class IdolSearchActivity : DdToolsBaseActivity() {
     }
 
     private fun updateIdolGroupData() {
-        viewModel.locationData.observe(this) { options ->
-            val dataMap = options.toMap()
+        if (viewModel.locationData.value?.isNotEmpty() == true) {
+            val dataMap = viewModel.locationData.value?.toMap()
             val data = ArrayList<String>()
-            dataMap.forEach { (key, value) -> data.add("$key($value)") }
+            val location = ArrayList<String>()
+            dataMap?.forEach { (key, value) ->
+                data.add("$key($value)")
+                location.add(key)
+            }
             val builder = AlertDialog.Builder(this)
             data.add(0, resources.getText(R.string.search_location_choose).toString())
+            location.add(0, resources.getText(R.string.search_location_choose).toString())
             builder.setTitle(resources.getText(R.string.please_choose).toString())
             builder.setSingleChoiceItems(
                 data.toTypedArray(),
@@ -84,14 +90,13 @@ class IdolSearchActivity : DdToolsBaseActivity() {
             }
             builder.setPositiveButton(getText(R.string.confirm)) { _, _ ->
                 binding.searchLocation.text = data[chooseWhich]
-                viewModel.getIdolGroupListByLocation(data[chooseWhich])
+                viewModel.getIdolGroupListByLocation(location[chooseWhich])
             }
             builder.setNegativeButton(getText(R.string.cancel)) { _, _ -> }
             val dialog = builder.create()
             dialog.show()
+
         }
-
-
     }
 
     private var lastClickTime: Long = 0
@@ -103,23 +108,20 @@ class IdolSearchActivity : DdToolsBaseActivity() {
             UiUtils.showLoading(this)
             try {
                 NetUtils.fetchAndSave(
-                    url = "https://wiki.chika-idol.live/request/ddtools/getChikaIdolList.php/.",
-                    method = NetUtils.HttpMethod.POST,
-                    params = emptyMap(),
-                    internalPath = File(filesDir, FileUtils.IDOL_GROUP_FILE).path,
-                    callback = { resource ->
-                        when (resource) {
-                            is Resource.Success -> {
-                                runOnUiThread { initAdapter() }
-                            }
+                    getUrl("group"), NetUtils.HttpMethod.POST,
+                    emptyMap(), File(filesDir, FileUtils.IDOL_GROUP_FILE).path
+                ) { resource ->
+                    when (resource) {
+                        is Resource.Success ->
+                            runOnUiThread { initAdapter() }
 
-                            is Resource.Error -> {
-                                LogUtils.e("Failed to fetch idol group list: ${resource.message}")
-                            }
+                        is Resource.Error -> {
+                            LogUtils.e("Failed to fetch idol group list: ${resource.message}")
+                            toast("获取失败，请稍后重试"  )
                         }
-                        UiUtils.hideLoading()
                     }
-                )
+                    UiUtils.hideLoading()
+                }
 
             } catch (e: Exception) {
                 LogUtils.e("Exception during fetching idol group list: ${e.message}")

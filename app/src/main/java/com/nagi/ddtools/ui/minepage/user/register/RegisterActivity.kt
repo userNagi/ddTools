@@ -10,6 +10,8 @@ import com.nagi.ddtools.R
 import com.nagi.ddtools.databinding.ActivityRegisterBinding
 import com.nagi.ddtools.ui.base.DdToolsBaseActivity
 import com.nagi.ddtools.utils.UiUtils.dialog
+import com.nagi.ddtools.utils.UiUtils.hideLoading
+import com.nagi.ddtools.utils.UiUtils.showLoading
 import com.nagi.ddtools.utils.UiUtils.toast
 
 class RegisterActivity : DdToolsBaseActivity() {
@@ -27,6 +29,7 @@ class RegisterActivity : DdToolsBaseActivity() {
     private fun initView() {
         binding.apply {
             registerButton.setOnClickListener {
+                showLoading(applicationContext)
                 viewModel.onRegisterClick(
                     userName = registerUserName.text.toString(),
                     password = registerPassWord.text.toString(),
@@ -60,6 +63,7 @@ class RegisterActivity : DdToolsBaseActivity() {
 
     private fun setupObservers() {
         viewModel.registerState.observe(this) { state ->
+            hideLoading()
             when (state) {
                 is RegisterViewModel.RegisterState.Success -> {
                     toast("注册成功")

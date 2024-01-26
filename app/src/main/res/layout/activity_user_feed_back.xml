@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray"
+    tools:context=".ui.minepage.feedback.UserFeedBack"
+    tools:ignore="HardcodedText">
+
+    <include
+        android:id="@+id/title_include"
+        layout="@layout/include_page_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/feedback_text"
+        style="@style/TitleTextStyle"
+        android:layout_marginStart="@dimen/dp_15"
+        android:text="反馈内容"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_include" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/feedback_input_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_40"
+        android:layout_marginEnd="@dimen/dp_40"
+        android:background="@null"
+        app:boxStrokeWidth="0dp"
+        app:hintEnabled="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/feedback_text">
+
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+            android:id="@+id/feedback_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20"
+            android:background="@color/gray"
+            android:gravity="top|start"
+            android:hint="请输入想反馈的内容，也欢迎各种建设性的意见，比如增加功能、更改信息等，如果想加入我们，也可以返回点击加入我们"
+            android:inputType="textMultiLine"
+            android:maxLength="1000"
+            android:maxLines="10"
+            android:minHeight="150dp"
+            android:padding="8dp"
+            android:scrollbars="vertical"
+            android:textSize="@dimen/dp_15"
+            app:boxBackgroundMode="none"
+            tools:ignore="SpUsage">
+
+        </com.google.android.material.textfield.MaterialAutoCompleteTextView>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/contact_information_text"
+        style="@style/TitleTextStyle"
+        android:layout_marginTop="@dimen/dp_20"
+        android:text="联系方式"
+        app:layout_constraintStart_toStartOf="@+id/feedback_text"
+        app:layout_constraintTop_toBottomOf="@+id/feedback_input_layout" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/contact_information_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_40"
+        android:layout_marginEnd="@dimen/dp_40"
+        android:background="@null"
+        app:boxStrokeWidth="0dp"
+        app:hintEnabled="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contact_information_text">
+
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+            android:id="@+id/contact_information"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20"
+            android:background="@color/gray"
+            android:gravity="top|start"
+            android:hint="请输入接受反馈的联系方式，QQ、Email、微博都可以"
+            android:inputType="textMultiLine"
+            android:padding="8dp"
+            android:scrollbars="vertical"
+            android:textSize="@dimen/dp_15"
+            app:boxBackgroundMode="none"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/contact_information_text"
+            tools:ignore="SpUsage">
+
+        </com.google.android.material.textfield.MaterialAutoCompleteTextView>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/feedback_up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_60_round_green"
+        android:gravity="center"
+        android:maxLines="100"
+        android:paddingHorizontal="@dimen/dp_60"
+        android:paddingVertical="@dimen/dp_10"
+        android:text="提交反馈"
+        android:textColor="@color/white"
+        android:textSize="@dimen/dp_20"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contact_information_layout"
+        tools:ignore="SpUsage" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

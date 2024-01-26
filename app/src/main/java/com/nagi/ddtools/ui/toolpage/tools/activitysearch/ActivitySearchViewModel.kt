@@ -13,8 +13,6 @@ import com.nagi.ddtools.utils.DataUtils.getCurrentDateString
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 class ActivitySearchViewModel : ViewModel() {
     private val _activityData = MutableLiveData<List<ActivityList>>()

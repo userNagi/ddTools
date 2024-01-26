@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/import_from_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/dp_40"
+        android:paddingVertical="@dimen/dp_10"
+        android:textSize="@dimen/dp_20"
+        app:cornerRadius="@dimen/dp_20"
+        app:strokeColor="@color/gray"
+        app:strokeWidth="@dimen/dp_2"
+        tools:text="从活动导入"
+        tools:ignore="SpUsage" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/import_from_custom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/dp_40"
+        android:paddingVertical="@dimen/dp_10"
+        android:textSize="@dimen/dp_20"
+        app:cornerRadius="@dimen/dp_20"
+        app:strokeColor="@color/gray"
+        app:strokeWidth="@dimen/dp_2"
+        tools:text="自定义导入"
+        tools:ignore="SpUsage" />
+
+</LinearLayout>

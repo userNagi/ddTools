@@ -30,7 +30,4 @@ interface IdolGroupListDao {
 
     @Delete
     fun delete(info: IdolGroupList)
-
-    @Query("DELETE FROM idolgrouplist")
-    fun clear()
 }

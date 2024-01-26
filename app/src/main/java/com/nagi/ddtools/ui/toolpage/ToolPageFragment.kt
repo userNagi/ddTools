@@ -10,11 +10,11 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.nagi.ddtools.databinding.DialogChooseSelectedWayBinding
 import com.nagi.ddtools.databinding.FragmentToolBinding
 import com.nagi.ddtools.ui.toolpage.tools.activitysearch.ActivitySearchActivity
 import com.nagi.ddtools.ui.toolpage.tools.fanboard.FanBoardActivity
 import com.nagi.ddtools.ui.toolpage.tools.idolsearch.IdolSearchActivity
-import com.nagi.ddtools.ui.widget.ChooseWhoDialog
 import com.nagi.ddtools.utils.UiUtils.dialog
 
 class ToolPageFragment : Fragment() {
@@ -37,9 +37,6 @@ class ToolPageFragment : Fragment() {
         initViews()
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
     private fun initViews() {
         initViewModel()
         binding.toolMainBody.setOnClickListener {
@@ -68,9 +65,7 @@ class ToolPageFragment : Fragment() {
             openPage(requireActivity(), ActivitySearchActivity::class.java)
         }
         binding.toolChooseWho.setOnClickListener {
-            val dialog = ChooseWhoDialog()
-            dialog.show(childFragmentManager, "customDialog")
-
+            showIncludeDialog()
         }
         binding.toolChoosePosture.setOnClickListener {
 
@@ -84,6 +79,28 @@ class ToolPageFragment : Fragment() {
         viewModel.title.observe(viewLifecycleOwner) {
             binding.toolMainBody.text = it
         }
+    }
+
+    private fun showIncludeDialog() {
+        val dialogBinding = DialogChooseSelectedWayBinding.inflate(LayoutInflater.from(context))
+        dialogBinding.importFromActivity.apply {
+            text = "从活动导入"
+        }
+        dialogBinding.importFromCustom.apply {
+            text = "自定义导入"
+        }
+        requireContext().dialog(
+            title = "选择",
+            message = "选择",
+            positiveButtonText = "",
+            negativeButtonText = "",
+            onPositive = {
+            },
+            onNegative = {
+            },
+            customView = dialogBinding.root
+
+        )
     }
 
     private fun openPage(

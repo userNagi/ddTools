@@ -89,6 +89,7 @@ object NetUtils {
                         }
                     }
                 }
+
                 is Resource.Error -> callback(resource)
             }
         }
@@ -147,6 +148,7 @@ object NetUtils {
             callback(false, "Failed to save data: ${e.localizedMessage}")
         }
     }
+
     suspend fun getBitmapFromURL(urlString: String): Bitmap? {
         return withContext(Dispatchers.IO) {
             try {

@@ -55,8 +55,7 @@
             android:background="@color/register_input"
             android:hint="@string/username"
             android:inputType="textNoSuggestions|textVisiblePassword"
-            android:maxLength="18"
-            android:minLines="6" />
+            android:maxLength="18" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

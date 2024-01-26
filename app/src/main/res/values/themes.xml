@@ -31,7 +31,7 @@
         <item name="cornerSize">50%</item>
     </style>
 
-    <style name="textPageTitleStyle">
+    <style name="textPageTitleStyle" parent="TextBigStyle">
         <item name="android:textSize" tools:ignore="SpUsage">@dimen/dp_30</item>
     </style>
 

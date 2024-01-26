@@ -11,6 +11,7 @@ import com.nagi.ddtools.R
 import com.nagi.ddtools.database.user.User
 import com.nagi.ddtools.databinding.FragmentMineBinding
 import com.nagi.ddtools.ui.minepage.about.AboutActivity
+import com.nagi.ddtools.ui.minepage.feedback.UserFeedBack
 import com.nagi.ddtools.ui.minepage.user.login.LoginActivity
 import com.nagi.ddtools.utils.UiUtils.openPage
 
@@ -19,7 +20,6 @@ class MinePageFragment : Fragment() {
     private var _binding: FragmentMineBinding? = null
     private val binding get() = _binding ?: throw IllegalStateException("Binding is error")
     private val viewModel: MinePageViewModel by viewModels()
-    private var loginState = false
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -46,6 +46,7 @@ class MinePageFragment : Fragment() {
         binding.apply {
             mineLinearFeedback.apply {
                 setData(R.drawable.ic_feedback, "用户反馈", "red")
+                setOnClickListener(requireActivity(), UserFeedBack::class.java)
             }
             mineLinearJoinUs.apply {
                 setData(R.drawable.ic_join_us, "加入我们", "gray")
@@ -74,6 +75,9 @@ class MinePageFragment : Fragment() {
                     loginUsername.text = "用户名：${userInfo.username}"
                     if (userInfo.avatar_url.isNotEmpty() && userInfo.avatar_url.isNotBlank()) {
                         loginViewImage.setImageUrl(userInfo.avatar_url)
+                        loginViewImage.setOnClickListener {
+                                loginViewImage.onCLick(userInfo.avatar_url)
+                        }
                     }
                 }
             }

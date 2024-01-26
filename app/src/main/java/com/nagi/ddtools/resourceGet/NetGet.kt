@@ -22,6 +22,7 @@ object NetGet {
     private const val CHECK_UPDATE_URL = "getUpdateInfo.php/"
     private const val USER_LOGIN = "userLogin.php/"
     private const val USER_REGISTER = "registerUser.php/"
+    private const val USER_FEEDBACK = "userFeedback.php/"
     fun getIdolGroupList(context: Context) {
         NetUtils.fetchAndSave(
             ROOT_URL + IDOL_GROUP_LIST_URL,
@@ -102,13 +103,7 @@ object NetGet {
         username: String,
         password: String,
         email: String,
-        nickname: String,
-        avatarUrl: String? = null,
-        bio: String? = null,
-        role: String? = null,
-        experience: Int? = null,
-        status: String? = null,
-        ext: Map<String, Any>? = null
+        nickname: String
     ) {
         val requestBody = mutableMapOf(
             "username" to username,
@@ -116,13 +111,6 @@ object NetGet {
             "email" to email,
             "nickname" to nickname
         )
-        avatarUrl?.let { requestBody["avatar_url"] = it }
-        bio?.let { requestBody["bio"] = it }
-        role?.let { requestBody["role"] = it }
-        experience?.let { requestBody["experience"] = it.toString() }
-        status?.let { requestBody["status"] = it }
-        ext?.let { requestBody["ext"] = Gson().toJson(it) }
-
         NetUtils.fetch(
             ROOT_URL + USER_REGISTER,
             NetUtils.HttpMethod.POST,
@@ -135,10 +123,22 @@ object NetGet {
         }
     }
 
+    fun userFeedBack(content: String, info: String) {
+        NetUtils.fetch(
+            ROOT_URL + USER_FEEDBACK,
+            NetUtils.HttpMethod.POST,
+            mapOf(
+                "content" to content,
+                "info" to info
+            )
+        ) {}
+    }
+
     fun getUrl(url: String): String =
         when (url) {
             "info" -> INFO_URL
             "login" -> ROOT_URL + USER_LOGIN
+            "group" -> ROOT_URL + IDOL_GROUP_LIST_URL
             else -> ""
         }
 }
