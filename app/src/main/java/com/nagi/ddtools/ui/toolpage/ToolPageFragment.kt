@@ -14,8 +14,12 @@ import com.nagi.ddtools.databinding.DialogChooseSelectedWayBinding
 import com.nagi.ddtools.databinding.FragmentToolBinding
 import com.nagi.ddtools.ui.toolpage.tools.activitysearch.ActivitySearchActivity
 import com.nagi.ddtools.ui.toolpage.tools.fanboard.FanBoardActivity
+import com.nagi.ddtools.ui.toolpage.tools.groupwho.ChooseWhoActivity
 import com.nagi.ddtools.ui.toolpage.tools.idolsearch.IdolSearchActivity
+import com.nagi.ddtools.ui.widget.dialog.IncludeFromActivityDialog
+import com.nagi.ddtools.utils.UiUtils
 import com.nagi.ddtools.utils.UiUtils.dialog
+import com.nagi.ddtools.utils.UiUtils.hideDialog
 
 class ToolPageFragment : Fragment() {
 
@@ -85,21 +89,33 @@ class ToolPageFragment : Fragment() {
         val dialogBinding = DialogChooseSelectedWayBinding.inflate(LayoutInflater.from(context))
         dialogBinding.importFromActivity.apply {
             text = "从活动导入"
+            setOnClickListener {
+                hideDialog()
+                showIncludeFromActivity()
+            }
         }
         dialogBinding.importFromCustom.apply {
             text = "自定义导入"
+            setOnClickListener {
+                openChooseWho()
+            }
         }
         requireContext().dialog(
-            title = "选择",
-            message = "选择",
-            positiveButtonText = "",
-            negativeButtonText = "",
-            onPositive = {
-            },
-            onNegative = {
-            },
-            customView = dialogBinding.root
+            "选择", "请选择，使用活动导入需要选择活动", "",
+            "", customView = dialogBinding.root
+        )
+    }
 
+    private fun showIncludeFromActivity() {
+        val dialogFragment = IncludeFromActivityDialog()
+        dialogFragment.show(childFragmentManager, "customDialog")
+    }
+
+    private fun openChooseWho() {
+        UiUtils.openPage(
+            requireActivity(),
+            ChooseWhoActivity::class.java,
+            false,
         )
     }
 

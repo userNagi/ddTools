@@ -32,11 +32,11 @@ class ActivitySearchViewModel : ViewModel() {
                 val activityList: List<ActivityList> = Gson().fromJson(jsonString, itemType)
                 val dateList:Set<String> = activityList.map { it.duration_date }.toSet()
                 val locationList:Set<String> = activityList.map { it.location }.toSet()
-                _activityData.postValue(activityList)
                 _locationData.postValue(locationList)
                 _dateData.postValue(dateList)
                 database.clear()
                 database.insertAll(activityList)
+                _activityData.postValue(database.getByDateAfter(getCurrentDateString()))
             }
         }
     }

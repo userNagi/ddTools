@@ -14,7 +14,7 @@ import com.nagi.ddtools.utils.UiUtils.openUrl
 class IdolGroupListAdapter(
     private var dataList: MutableList<IdolGroupList>
 ) : RecyclerView.Adapter<IdolGroupListAdapter.ViewHolder>() {
-
+    var swipeToDeleteEnabled = false
     fun updateData(newData: List<IdolGroupList>) {
         val diffCallback = IdolGroupListDiffCallback(dataList, newData)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
@@ -23,7 +23,10 @@ class IdolGroupListAdapter(
         dataList.addAll(newData)
         diffResult.dispatchUpdatesTo(this)
     }
-
+    fun removeAt(position: Int) {
+        dataList.removeAt(position)
+        notifyItemRemoved(position)
+    }
     class ViewHolder(private val binding: ListIdolGroupViewBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: IdolGroupList) {
@@ -45,7 +48,11 @@ class IdolGroupListAdapter(
                 if (extAsJson.has("weibo")) {
                     if (extAsJson["weibo"].asString.isNotEmpty()) {
                         binding.jumpWeibo.visibility = View.VISIBLE
-                        binding.jumpWeibo.setOnClickListener { binding.root.context.openUrl(extAsJson["weibo"].asString) }
+                        binding.jumpWeibo.setOnClickListener {
+                            binding.root.context.openUrl(
+                                extAsJson["weibo"].asString
+                            )
+                        }
                     }
                 }
                 if (extAsJson.has("bili")) {

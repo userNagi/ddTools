@@ -17,7 +17,7 @@ class ActivitySearchActivity : DdToolsBaseActivity() {
     private var isAdapterInitialized = false
     private val viewModel: ActivitySearchViewModel by viewModels()
     private var loChoose = 0
-    private var stChoose = 0
+    private var stChoose = 1
     private var daChoose = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

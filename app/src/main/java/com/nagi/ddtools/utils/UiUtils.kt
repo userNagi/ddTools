@@ -28,6 +28,7 @@ import kotlinx.coroutines.withContext
 
 object UiUtils {
     private var currentToast: Toast? = null
+    private var currentDialog: AlertDialog? = null
     private var loadingDialog: Dialog? = null
     private var loadingJob: Job? = null
 
@@ -53,7 +54,9 @@ object UiUtils {
         onNegative: (() -> Unit)? = null,
         customView: View? = null
     ) {
-        AlertDialog.Builder(this).apply {
+
+        currentDialog?.dismiss()
+        currentDialog = AlertDialog.Builder(this).apply {
             setTitle(title)
             setMessage(message)
             if (customView != null) {
@@ -61,7 +64,8 @@ object UiUtils {
             }
             setPositiveButton(positiveButtonText) { _, _ -> onPositive?.invoke() }
             setNegativeButton(negativeButtonText) { _, _ -> onNegative?.invoke() }
-        }.show()
+        }.create()
+        currentDialog?.show()
     }
 
     @Synchronized
@@ -90,6 +94,12 @@ object UiUtils {
         loadingDialog?.dismiss()
         loadingDialog = null
         loadingJob?.cancel()
+    }
+
+    @Synchronized
+    fun hideDialog() {
+        currentDialog?.dismiss()
+        currentDialog = null
     }
 
     fun Context.openUrl(url: String) {

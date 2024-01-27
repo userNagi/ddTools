@@ -13,7 +13,7 @@ interface IdolGroupListDao {
     fun getAll(): List<IdolGroupList>
 
     @Query("SELECT * FROM IdolGroupList WHERE id = :id")
-    fun getById(id: String): IdolGroupList
+    fun getById(id: Int): IdolGroupList
 
     @Query("SELECT * FROM IdolGroupList WHERE location = :location")
     fun getByLocation(location:String):List<IdolGroupList>

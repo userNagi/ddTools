@@ -14,6 +14,8 @@ interface ActivityListDao {
     @Query("SELECT * FROM ActivityList WHERE id = :id")
     fun getById(id: String): ActivityList
 
+    @Query("SELECT * FROM ActivityList WHERE name = :name")
+    fun getByName(name: String): ActivityList
     @Query("SELECT * FROM ActivityList WHERE location = :location")
     fun getByLocation(location: String): List<ActivityList>
 

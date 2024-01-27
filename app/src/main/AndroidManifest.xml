@@ -37,7 +37,7 @@
             android:name=".ui.minepage.user.login.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.toolpage.tools.groupwho.GroupWhoAcivity"
+            android:name=".ui.toolpage.tools.groupwho.ChooseWhoActivity"
             android:exported="false" />
         <activity
             android:name=".ui.toolpage.tools.activitysearch.ActivitySearchActivity"

@@ -1,11 +1,9 @@
-package com.nagi.ddtools.ui.toolpage.tools.activitysearch.details
+package com.nagi.ddtools.ui.toolpage.tools.groupwho
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.nagi.ddtools.database.AppDatabase
 import com.nagi.ddtools.database.activityList.ActivityList
 import com.nagi.ddtools.database.activityList.ActivityListDao
@@ -16,7 +14,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
 
-class ActivityDetailsViewModel : ViewModel() {
+class ChooseWhoViewModel : ViewModel() {
     private val _data = MutableLiveData<ActivityList>()
     val data: LiveData<ActivityList> = _data
 
@@ -30,10 +28,10 @@ class ActivityDetailsViewModel : ViewModel() {
         AppDatabase.getInstance().idolGroupListDao()
     }
 
-    fun setId(id: Int) {
+    fun initData(name: String) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                val activityList = activityListDao.getById("$id")
+                val activityList = activityListDao.getByName(name)
                 _data.postValue(activityList)
                 val participatingGroupJson = activityList.participating_group
                 val groupItemsJsonArray = JSONArray(participatingGroupJson)
@@ -49,6 +47,14 @@ class ActivityDetailsViewModel : ViewModel() {
                 }
                 _groupList.postValue(resultList)
             }
+        }
+    }
+
+    fun removeData(position: Int) {
+        val currentList = _groupList.value!!.toMutableList()
+        if (position >= 0 && position < currentList.size) {
+            currentList.removeAt(position)
+            _groupList.value = currentList
         }
     }
 
