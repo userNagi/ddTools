@@ -21,6 +21,12 @@ class ChooseWhoViewModel : ViewModel() {
     private val _groupList = MutableLiveData<List<IdolGroupList>>()
     val groupList: LiveData<List<IdolGroupList>> = _groupList
 
+    private val _groupData = MutableLiveData<List<IdolGroupList>>()
+    val groupData: LiveData<List<IdolGroupList>> = _groupData
+
+    private val _location = MutableLiveData<Set<String>>()
+    val location: LiveData<Set<String>> = _location
+
     private val activityListDao: ActivityListDao by lazy {
         AppDatabase.getInstance().activityListDao()
     }
@@ -50,6 +56,16 @@ class ChooseWhoViewModel : ViewModel() {
         }
     }
 
+    fun getGroupData() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                val groupList = groupListDao.getAll()
+                _location.postValue(groupList.map { it.location }.toSet())
+                _groupData.postValue(groupList)
+            }
+        }
+    }
+
     fun removeData(position: Int) {
         val currentList = _groupList.value!!.toMutableList()
         if (position >= 0 && position < currentList.size) {
@@ -58,4 +74,9 @@ class ChooseWhoViewModel : ViewModel() {
         }
     }
 
+    fun addData(data: IdolGroupList) {
+        val currentList = _groupList.value?.toMutableList()?: mutableListOf()
+        currentList.add(data)
+        _groupList.value = currentList
+    }
 }

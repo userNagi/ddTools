@@ -2,6 +2,7 @@ package com.nagi.ddtools.ui.toolpage.tools.groupwho
 
 import android.os.Bundle
 import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -9,11 +10,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.nagi.ddtools.database.idolGroupList.IdolGroupList
 import com.nagi.ddtools.databinding.ActivityGroupWhoAcivityBinding
+import com.nagi.ddtools.databinding.DialogAddGroupChooseBinding
 import com.nagi.ddtools.ui.adapter.IdolGroupListAdapter
 import com.nagi.ddtools.ui.base.DdToolsBindingBaseActivity
+import com.nagi.ddtools.utils.UiUtils
 import com.nagi.ddtools.utils.UiUtils.dialog
 
 class ChooseWhoActivity : DdToolsBindingBaseActivity<ActivityGroupWhoAcivityBinding>() {
+
     private val viewModel: ChooseWhoViewModel by viewModels()
     private lateinit var adapter: IdolGroupListAdapter
     private var isAdapterInitialized = false
@@ -34,13 +38,17 @@ class ChooseWhoActivity : DdToolsBindingBaseActivity<ActivityGroupWhoAcivityBind
 
     private fun initView() {
         binding.apply {
-            titleInclude.titleText.text = "今天切谁？"
+            titleInclude.titleText.text = "今天切谁"
             titleInclude.titleBack.setOnClickListener {
                 finish()
             }
             pageTitle.text = "已选列表"
             chooseWhoAdd.text = "点我添加选项"
             chooseWhoClick.text = "开始随机"
+            chooseWhoAdd.setOnClickListener {
+                addData()
+            }
+            chooseWhoClick.visibility = View.GONE
         }
         initAdapter()
     }
@@ -86,6 +94,59 @@ class ChooseWhoActivity : DdToolsBindingBaseActivity<ActivityGroupWhoAcivityBind
             }
         }
     }
+
+    private fun addData() {
+        val dialogBinding = DialogAddGroupChooseBinding.inflate(layoutInflater)
+        val dialogView = dialogBinding.root
+
+        viewModel.location.observe(this) { locations ->
+            dialogBinding.spinnerLocation.adapter = locations.toSpinnerAdapter()
+        }
+
+        viewModel.getGroupData()
+
+        dialogBinding.spinnerLocation.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View,
+                    position: Int,
+                    id: Long
+                ) {
+                    val selectedLocation = parent.getItemAtPosition(position) as String
+                    viewModel.groupData.value?.let { groups ->
+                        val filteredGroups = groups.filter { it.location == selectedLocation }
+                        dialogBinding.spinnerGroup.adapter =
+                            filteredGroups.map { it.name }.toSpinnerAdapter()
+                    }
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {
+                    dialogBinding.spinnerGroup.adapter = null
+                }
+            }
+
+        dialogBinding.buttonConfirm.setOnClickListener {
+            val selectedGroupName = dialogBinding.spinnerGroup.selectedItem as String
+            viewModel.groupData.value?.find { it.name == selectedGroupName }?.let { newData ->
+                viewModel.addData(newData)
+            }
+        }
+        dialogBinding.buttonCancel.setOnClickListener { UiUtils.hideDialog() }
+        dialog("添加选项", "请选择", "", "", {}, {}, dialogView
+        )
+    }
+
+    private fun Collection<String>.toSpinnerAdapter(): ArrayAdapter<String> {
+        return ArrayAdapter(
+            applicationContext,
+            android.R.layout.simple_spinner_item,
+            this.toList()
+        ).also {
+            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        }
+    }
+
 
     private fun updateAdapter(data: List<IdolGroupList>) {
         adapter.updateData(data)

@@ -25,6 +25,7 @@ object DataSet {
                 val jsonString = inputStream.bufferedReader().use { it.readText() }
                 val itemType = object : TypeToken<List<ActivityList>>() {}.type
                 val activityList: List<ActivityList> = Gson().fromJson(jsonString, itemType)
+                database.activityListDao().deleteAll()
                 database.activityListDao().insertAll(activityList)
             }
         }
@@ -38,6 +39,7 @@ object DataSet {
                 val jsonString = inputStream.bufferedReader().use { it.readText() }
                 val itemType = object : TypeToken<List<IdolGroupList>>() {}.type
                 val idolGroupList: List<IdolGroupList> = Gson().fromJson(jsonString, itemType)
+                database.idolGroupListDao().deleteAll()
                 database.idolGroupListDao().insertAll(idolGroupList)
             }
         }
