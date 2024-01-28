@@ -1,4 +1,4 @@
-package com.nagi.ddtools.database.homePagLis
+package com.nagi.ddtools.database.homePagList
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -13,5 +13,7 @@ import androidx.room.PrimaryKey
 data class HomePageList(
     @PrimaryKey(autoGenerate = true) val id: Int,
     val imgUrl: String,
-    val name: String
+    val name: String,
+    val info: String? = "",
+    val parent: Int? = 0,
 )

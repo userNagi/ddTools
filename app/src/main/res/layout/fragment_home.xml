@@ -7,12 +7,22 @@
     android:background="@drawable/bg_fragment_rounded_corners"
     tools:context=".ui.homepage.HomeFragment">
 
+    <TextView
+        android:id="@+id/home_page_sum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginStart="@dimen/dp_20"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="共x类" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/home_page_listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="@dimen/dp_15"
-        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_40"
         android:layout_marginEnd="@dimen/dp_15"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -27,5 +37,16 @@
         android:src="@drawable/ic_baseline_add"
         android:visibility="gone"
         tools:ignore="ContentDescription" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/home_page_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_40"
+        android:layout_marginBottom="@dimen/dp_60"
+        android:importantForAccessibility="no"
+        android:src="@drawable/baseline_edit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

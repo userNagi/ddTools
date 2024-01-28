@@ -1,4 +1,4 @@
-package com.nagi.ddtools.database.homePagLis
+package com.nagi.ddtools.database.homePagList
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -23,7 +23,8 @@ interface HomePageListDao {
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun update(info: HomePageList)
-
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(info:List<HomePageList>)
     @Delete
     fun delete(info: HomePageList)
 }

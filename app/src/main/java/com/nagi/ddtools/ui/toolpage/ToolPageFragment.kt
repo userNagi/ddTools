@@ -1,7 +1,5 @@
 package com.nagi.ddtools.ui.toolpage
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -16,10 +14,11 @@ import com.nagi.ddtools.ui.toolpage.tools.activitysearch.ActivitySearchActivity
 import com.nagi.ddtools.ui.toolpage.tools.fanboard.FanBoardActivity
 import com.nagi.ddtools.ui.toolpage.tools.groupwho.ChooseWhoActivity
 import com.nagi.ddtools.ui.toolpage.tools.idolsearch.IdolSearchActivity
+import com.nagi.ddtools.ui.toolpage.tools.posture.ChoosePostureActivity
 import com.nagi.ddtools.ui.widget.dialog.IncludeFromActivityDialog
-import com.nagi.ddtools.utils.UiUtils
 import com.nagi.ddtools.utils.UiUtils.dialog
 import com.nagi.ddtools.utils.UiUtils.hideDialog
+import com.nagi.ddtools.utils.UiUtils.openPage
 
 class ToolPageFragment : Fragment() {
 
@@ -38,11 +37,13 @@ class ToolPageFragment : Fragment() {
 
     override fun onViewCreated(view: View, bundle: Bundle?) {
         super.onViewCreated(view, bundle)
+        viewModel.title.observe(viewLifecycleOwner) {
+            binding.toolMainBody.text = it
+        }
         initViews()
     }
 
     private fun initViews() {
-        initViewModel()
         binding.toolMainBody.setOnClickListener {
             val editText = EditText(requireContext()).apply {
                 gravity = Gravity.CENTER
@@ -72,16 +73,16 @@ class ToolPageFragment : Fragment() {
             showIncludeDialog()
         }
         binding.toolChoosePosture.setOnClickListener {
-
+            requireActivity().dialog(
+                "提示",
+                "暂不可用（主要是没有图）请耐心等待（找到图再开放），有图可以通过反馈联系",
+                "确定",
+                "取消"
+            )
+//            openPage(requireActivity(), ChoosePostureActivity::class.java)
         }
         binding.toolFanBoard.setOnClickListener {
             openPage(requireActivity(), FanBoardActivity::class.java)
-        }
-    }
-
-    private fun initViewModel() {
-        viewModel.title.observe(viewLifecycleOwner) {
-            binding.toolMainBody.text = it
         }
     }
 
@@ -97,7 +98,7 @@ class ToolPageFragment : Fragment() {
         dialogBinding.importFromCustom.apply {
             text = "自定义导入"
             setOnClickListener {
-                openChooseWho()
+                openPage(requireActivity(), ChooseWhoActivity::class.java, false)
             }
         }
         requireContext().dialog(
@@ -111,26 +112,6 @@ class ToolPageFragment : Fragment() {
         dialogFragment.show(childFragmentManager, "customDialog")
     }
 
-    private fun openChooseWho() {
-        UiUtils.openPage(
-            requireActivity(),
-            ChooseWhoActivity::class.java,
-            false,
-        )
-    }
-
-    private fun openPage(
-        activity: Activity,
-        page: Class<*>,
-        needClose: Boolean = false,
-        bundle: Bundle? = null
-    ) {
-        val intent = Intent()
-        intent.setClass(requireContext(), page)
-        intent.extras?.putAll(bundle)
-        activity.startActivity(intent)
-        if (needClose) activity.finish()
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottomSheetContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:ignore="HardcodedText">
+
+
+    <Button
+        android:id="@+id/dialog_delete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="删除" />
+
+
+    <Button
+        android:id="@+id/dialog_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="编辑" />
+
+
+    <Button
+        android:id="@+id/dialog_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="取消" />
+
+</LinearLayout>

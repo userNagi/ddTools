@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import com.nagi.ddtools.data.ProgressListener
 import com.nagi.ddtools.data.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -16,7 +17,9 @@ import okhttp3.Request
 import okhttp3.Response
 import org.json.JSONObject
 import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
+import java.io.InputStream
 import java.net.URL
 import java.util.concurrent.TimeUnit
 
@@ -148,6 +151,65 @@ object NetUtils {
             callback(false, "Failed to save data: ${e.localizedMessage}")
         }
     }
+
+    //下载并保存文件
+    fun downloadFileWithProgress(
+        downloadUrl: String,
+        directoryPath: String,
+        progressListener: ProgressListener,
+        callback: (String?, Exception?) -> Unit
+    ) {
+        val client = OkHttpClient()
+
+        val request = Request.Builder()
+            .url(downloadUrl)
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                callback(null, e)
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if (!response.isSuccessful) {
+                    callback(null, IOException("Unexpected code $response"))
+                    return
+                }
+
+                val responseBody = response.body
+                val contentLength = responseBody?.contentLength() ?: -1
+                var bytesRead: Long = 0
+                val buffer = ByteArray(2048)
+                val inputStream: InputStream? = responseBody?.byteStream()
+                val file = File(directoryPath, File(downloadUrl).name)
+
+                val directory = File(directoryPath)
+                if (!directory.exists()) {
+                    directory.mkdirs()
+                }
+
+                try {
+                    val outputStream = FileOutputStream(file)
+                    var read: Int
+                    while (inputStream!!.read(buffer).also { read = it } != -1) {
+                        bytesRead += read
+                        outputStream.write(buffer, 0, read)
+                        val progress = if (contentLength > 0) (bytesRead * 100 / contentLength).toInt() else -1
+                        progressListener.onProgress(progress)
+                    }
+                    outputStream.flush()
+                    outputStream.close()
+                    inputStream.close()
+
+                    callback(file.absolutePath, null)
+                } catch (e: IOException) {
+                    callback(null, e)
+                }
+            }
+        })
+    }
+
+
 
     suspend fun getBitmapFromURL(urlString: String): Bitmap? {
         return withContext(Dispatchers.IO) {

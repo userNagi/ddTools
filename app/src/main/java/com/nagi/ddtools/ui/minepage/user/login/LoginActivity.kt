@@ -55,6 +55,9 @@ class LoginActivity : DdToolsBaseActivity() {
                     RegisterActivity::class.java
                 )
             }
+            loginTitleBack.setOnClickListener {
+                finish()
+            }
         }
     }
 

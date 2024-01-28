@@ -28,6 +28,7 @@ class RegisterActivity : DdToolsBaseActivity() {
 
     private fun initView() {
         binding.apply {
+            registerTitleBack.setOnClickListener { finish() }
             registerButton.setOnClickListener {
                 showLoading(applicationContext)
                 viewModel.onRegisterClick(

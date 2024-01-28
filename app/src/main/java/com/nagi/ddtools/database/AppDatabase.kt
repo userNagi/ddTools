@@ -6,8 +6,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.nagi.ddtools.database.activityList.ActivityList
 import com.nagi.ddtools.database.activityList.ActivityListDao
-import com.nagi.ddtools.database.homePagLis.HomePageListDao
-import com.nagi.ddtools.database.homePagLis.HomePageList
+import com.nagi.ddtools.database.homePagList.HomePageListDao
+import com.nagi.ddtools.database.homePagList.HomePageList
 import com.nagi.ddtools.database.idolGroupList.IdolGroupList
 import com.nagi.ddtools.database.idolGroupList.IdolGroupListDao
 import com.nagi.ddtools.database.user.User

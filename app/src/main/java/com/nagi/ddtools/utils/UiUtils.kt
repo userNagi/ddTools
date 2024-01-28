@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Looper
 import android.view.View
+import android.widget.AutoCompleteTextView.OnDismissListener
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -52,7 +53,8 @@ object UiUtils {
         negativeButtonText: String = "取消",
         onPositive: (() -> Unit)? = null,
         onNegative: (() -> Unit)? = null,
-        customView: View? = null
+        customView: View? = null,
+        onDismiss: (() -> Unit)? = null
     ) {
 
         currentDialog?.dismiss()
@@ -64,6 +66,9 @@ object UiUtils {
             }
             setPositiveButton(positiveButtonText) { _, _ -> onPositive?.invoke() }
             setNegativeButton(negativeButtonText) { _, _ -> onNegative?.invoke() }
+            setOnDismissListener {
+                onDismiss?.invoke()
+            }
         }.create()
         currentDialog?.show()
     }
