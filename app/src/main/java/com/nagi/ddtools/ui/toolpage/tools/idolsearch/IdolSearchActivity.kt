@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.RecyclerView
 import com.nagi.ddtools.R
 import com.nagi.ddtools.data.Resource
 import com.nagi.ddtools.database.idolGroupList.IdolGroupList
@@ -45,6 +46,15 @@ class IdolSearchActivity : DdToolsBaseActivity() {
         binding.searchSwitchSearch.setOnCheckedChangeListener { _, isChecked ->
 //            updateSwitch(isChecked)
         }
+        binding.searchRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy > 0) {
+                    binding.searchResearch.hide()
+                } else if (dy < 0) {
+                    binding.searchResearch.show()
+                }
+            }
+        })
         initAdapter()
     }
 

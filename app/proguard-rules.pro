@@ -45,3 +45,7 @@
      <fields>;
      <init>(...);
  }
+ -keep class com.nagi.ddtools.data.TagsList {
+      <fields>;
+      <init>(...);
+  }

@@ -45,6 +45,7 @@ class ChooseWhoActivity : DdToolsBindingBaseActivity<ActivityGroupWhoAcivityBind
             pageTitle.text = "已选列表"
             chooseWhoAdd.text = "点我添加选项"
             chooseWhoClick.text = "开始随机"
+            pageSubtitle.text = "左滑可删除"
             chooseWhoAdd.setOnClickListener {
                 addData()
             }

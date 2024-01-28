@@ -23,6 +23,8 @@ object NetGet {
     private const val USER_LOGIN = "userLogin.php/"
     private const val USER_REGISTER = "registerUser.php/"
     private const val USER_FEEDBACK = "userFeedback.php/"
+    private const val USER_EVALUATE = "updateTags.php"
+    private const val GET_TAGS_URL = "getTags.php"
     fun getIdolGroupList(context: Context) {
         NetUtils.fetchAndSave(
             ROOT_URL + IDOL_GROUP_LIST_URL,
@@ -123,6 +125,51 @@ object NetGet {
         }
     }
 
+    fun getTags(
+        type: String,
+        typeId: String,
+        callback: (Resource<String>) -> Unit
+    ) {
+        NetUtils.fetch(
+            ROOT_URL + GET_TAGS_URL,
+            NetUtils.HttpMethod.POST,
+            mutableMapOf(
+                "tag_type" to type,
+                "type_id" to typeId
+            )
+        ) { resource ->
+            when (resource) {
+                is Resource.Success -> callback(Resource.Success(resource.data))
+                is Resource.Error -> callback(Resource.Error(resource.message))
+            }
+        }
+    }
+
+    fun sendEvaluate(
+        type: String,
+        typeId: Int,
+        content: String,
+        userId: Int,
+        callback: (Resource<String>) -> Unit
+    ) {
+        val requestBody = mutableMapOf(
+            "tag_type" to type,
+            "type_id" to typeId.toString(),
+            "content" to content,
+            "user_id" to userId.toString(),
+        )
+        NetUtils.fetch(
+            ROOT_URL + USER_EVALUATE,
+            NetUtils.HttpMethod.POST,
+            requestBody
+        ) { resource ->
+            when (resource) {
+                is Resource.Success -> callback(Resource.Success(resource.data))
+                is Resource.Error -> callback(Resource.Error(resource.message))
+            }
+        }
+    }
+
     fun userFeedBack(content: String, info: String) {
         NetUtils.fetch(
             ROOT_URL + USER_FEEDBACK,
@@ -139,6 +186,7 @@ object NetGet {
             "info" -> INFO_URL
             "login" -> ROOT_URL + USER_LOGIN
             "group" -> ROOT_URL + IDOL_GROUP_LIST_URL
+            "activity" -> ROOT_URL + ACTIVITY_LIST_URL
             else -> ""
         }
 }

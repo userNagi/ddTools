@@ -81,4 +81,6 @@ dependencies {
     implementation("com.google.code.gson:gson:2.9.0")
     // OkHttp
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    //标签的交叉样式
+    implementation("com.google.android.flexbox:flexbox:3.0.0")
 }

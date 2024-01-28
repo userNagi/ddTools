@@ -1,14 +1,22 @@
 package com.nagi.ddtools.ui.toolpage.tools.activitysearch
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.RecyclerView
 import com.nagi.ddtools.R
+import com.nagi.ddtools.data.Resource
 import com.nagi.ddtools.database.activityList.ActivityList
 import com.nagi.ddtools.databinding.ActivityActivitySearchBinding
+import com.nagi.ddtools.resourceGet.NetGet
 import com.nagi.ddtools.ui.adapter.ActivityListAdapter
 import com.nagi.ddtools.ui.base.DdToolsBaseActivity
 import com.nagi.ddtools.utils.FileUtils
+import com.nagi.ddtools.utils.LogUtils
+import com.nagi.ddtools.utils.NetUtils
+import com.nagi.ddtools.utils.UiUtils
+import com.nagi.ddtools.utils.UiUtils.toast
 import java.io.File
 
 class ActivitySearchActivity : DdToolsBaseActivity() {
@@ -33,6 +41,16 @@ class ActivitySearchActivity : DdToolsBaseActivity() {
         binding.searchActivityActivity.setOnClickListener { updateActivityByStatus() }
         binding.searchLocation.setOnClickListener { updateActivityByLocation() }
         binding.searchDate.setOnClickListener { updateActivityByDate() }
+        binding.searchResearch.setOnClickListener { reGetData() }
+        binding.searchRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy > 0) {
+                    binding.searchResearch.hide()
+                } else if (dy < 0) {
+                    binding.searchResearch.show()
+                }
+            }
+        })
         initAdapter()
     }
 
@@ -78,6 +96,7 @@ class ActivitySearchActivity : DdToolsBaseActivity() {
             }
         ).show()
     }
+
     private fun updateActivityByDate() {
         viewModel.dateListData.observe(this) { dates ->
             val dataList = ArrayList(dates)
@@ -93,6 +112,7 @@ class ActivitySearchActivity : DdToolsBaseActivity() {
             ).show()
         }
     }
+
     private fun createSingleChoiceDialog(
         title: String,
         items: List<String>,
@@ -110,9 +130,43 @@ class ActivitySearchActivity : DdToolsBaseActivity() {
         }
         return builder.create()
     }
-
     private fun updateAdapter(data: List<ActivityList>) {
         adapter.updateData(data)
+    }
+
+
+    private var lastClickTime: Long = 0
+    private val debounceTime: Long = 10000
+    private fun reGetData() {
+        val currentTime = System.currentTimeMillis()
+        if (currentTime - lastClickTime >= debounceTime) {
+            lastClickTime = currentTime
+            UiUtils.showLoading(this)
+
+            try {
+                NetUtils.fetchAndSave(
+                    NetGet.getUrl("activity"), NetUtils.HttpMethod.POST,
+                    emptyMap(), File(filesDir, FileUtils.ACTIVITY_LIS_FILE).path
+                ) { resource ->
+                    when (resource) {
+                        is Resource.Success ->
+                            runOnUiThread { initAdapter() }
+
+                        is Resource.Error -> {
+                            LogUtils.e("Failed to fetch idol group list: ${resource.message}")
+                            toast("获取失败，请稍后重试")
+                        }
+                    }
+                    UiUtils.hideLoading()
+                }
+
+            } catch (e: Exception) {
+                LogUtils.e("Exception during fetching idol group list: ${e.message}")
+                UiUtils.hideLoading()
+            }
+        } else {
+            toast("请等待10秒后再尝试", Toast.LENGTH_LONG)
+        }
     }
 
 }
