@@ -33,7 +33,7 @@
             tools:text="当清晨的第一道裂缝出现时我所见到的" />
 
         <TextView
-            android:id="@+id/details_sum"
+            android:id="@+id/details_location"
             style="@style/TitleTextStyle"
             android:layout_marginTop="@dimen/dp_10"
             android:text="统计："
@@ -41,10 +41,10 @@
             app:layout_constraintTop_toBottomOf="@+id/details_title" />
 
         <TextView
-            android:id="@+id/details_sum_text"
+            android:id="@+id/details_location_text"
             style="@style/TitleTextStyle"
-            app:layout_constraintStart_toEndOf="@id/details_sum"
-            app:layout_constraintTop_toTopOf="@id/details_sum"
+            app:layout_constraintStart_toEndOf="@id/details_location"
+            app:layout_constraintTop_toTopOf="@id/details_location"
             tools:text="共X张" />
 
         <TextView
@@ -52,8 +52,8 @@
             style="@style/TitleTextStyle"
             android:layout_marginTop="@dimen/dp_10"
             android:text="介绍："
-            app:layout_constraintStart_toStartOf="@+id/details_sum"
-            app:layout_constraintTop_toBottomOf="@+id/details_sum" />
+            app:layout_constraintStart_toStartOf="@+id/details_location"
+            app:layout_constraintTop_toBottomOf="@+id/details_location" />
 
         <TextView
             android:id="@+id/details_info_text"

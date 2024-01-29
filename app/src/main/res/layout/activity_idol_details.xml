@@ -1,9 +1,156 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.toolpage.tools.idolsearch.details.IdolDetails">
+    android:background="@color/gray"
+    android:fillViewport="true"
+    tools:context=".ui.toolpage.tools.idolsearch.details.IdolDetailsActivity"
+    tools:ignore="HardcodedText">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/title_include"
+            layout="@layout/include_page_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/details_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_20"
+            android:textColor="@color/lty"
+            android:textSize="@dimen/dp_25"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title_include"
+            tools:ignore="SpUsage"
+            tools:text="当清晨的第一道裂缝出现时我所见到的" />
+
+
+        <TextView
+            android:id="@+id/details_location"
+            style="@style/TitleTextStyle"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="地点："
+            app:layout_constraintStart_toStartOf="@+id/details_title"
+            app:layout_constraintTop_toBottomOf="@+id/details_title" />
+
+        <TextView
+            android:id="@+id/details_location_text"
+            style="@style/TitleTextStyle"
+            app:layout_constraintStart_toEndOf="@id/details_location"
+            app:layout_constraintTop_toTopOf="@id/details_location"
+            tools:text="北京" />
+
+        <TextView
+            android:id="@+id/details_info"
+            style="@style/TitleTextStyle"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="介绍："
+            app:layout_constraintStart_toStartOf="@+id/details_location"
+            app:layout_constraintTop_toBottomOf="@+id/details_location" />
+
+        <TextView
+            android:id="@+id/details_info_text"
+            style="@style/TitleTextStyle"
+            android:layout_width="0dp"
+            android:drawablePadding="@dimen/dp_5"
+            android:maxLength="500"
+            android:maxLines="10"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/details_info"
+            app:layout_constraintTop_toTopOf="@id/details_info"
+            tools:text="当清晨的第一道裂缝出现时我所见到的当清晨的第一道裂缝出现时我所见到的" />
+
+        <TextView
+            android:id="@+id/details_group_media"
+            style="@style/TitleTextStyle"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="组合媒体："
+            app:layout_constraintStart_toStartOf="@+id/details_info"
+            app:layout_constraintTop_toBottomOf="@+id/details_info_text" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/details_group_media_list"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/details_group_media"
+            app:layout_constraintTop_toTopOf="@+id/details_group_media"
+            tools:listitem="@layout/list_idol_media" />
+
+        <TextView
+            android:id="@+id/details_group_member"
+            style="@style/TitleTextStyle"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="组合成员："
+            app:layout_constraintStart_toStartOf="@+id/details_group_media"
+            app:layout_constraintTop_toBottomOf="@+id/details_group_media_list" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/details_group_member_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/dp_10"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/details_group_member"
+            tools:listitem="@layout/list_idol_group_view" />
+
+        <TextView
+            android:id="@+id/details_part_activity"
+            style="@style/TitleTextStyle"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="参与活动："
+            app:layout_constraintStart_toStartOf="@id/details_group_member"
+            app:layout_constraintTop_toBottomOf="@id/details_group_member_list" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/details_part_activity_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/dp_10"
+            app:layout_constraintTop_toBottomOf="@id/details_part_activity"
+            tools:listitem="@layout/list_activity_view" />
+
+        <TextView
+            android:id="@+id/details_evaluate"
+            style="@style/TitleTextStyle"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="评价："
+            app:layout_constraintStart_toStartOf="@id/details_part_activity"
+            app:layout_constraintTop_toBottomOf="@id/details_part_activity_list" />
+
+        <TextView
+            android:id="@+id/details_evaluate_include"
+            style="@style/TextSmailStyle"
+            android:layout_marginTop="10dp"
+            android:text="当前暂无评价，点我添加"
+            android:textSize="@dimen/dp_15"
+            app:layout_constraintStart_toStartOf="@+id/details_evaluate"
+            app:layout_constraintTop_toBottomOf="@id/details_evaluate"
+            tools:ignore="SpUsage" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/details_evaluate_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_10"
+            android:nestedScrollingEnabled="false"
+            android:visibility="gone"
+            app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
+            app:layout_constraintTop_toBottomOf="@+id/details_evaluate_include"
+            tools:listitem="@layout/list_evaluate_tag"
+            tools:visibility="visible" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

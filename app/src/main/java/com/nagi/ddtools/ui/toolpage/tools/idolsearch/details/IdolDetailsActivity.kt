@@ -1,4 +1,4 @@
-package com.nagi.ddtools.ui.toolpage.tools.activitysearch.details
+package com.nagi.ddtools.ui.toolpage.tools.idolsearch.details
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -10,26 +10,29 @@ import androidx.activity.viewModels
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import com.nagi.ddtools.data.MediaList
 import com.nagi.ddtools.data.TagsList
 import com.nagi.ddtools.database.activityList.ActivityList
 import com.nagi.ddtools.database.idolGroupList.IdolGroupList
-import com.nagi.ddtools.databinding.ActivityDetailsActivityBinding
+import com.nagi.ddtools.databinding.ActivityIdolDetailsBinding
+import com.nagi.ddtools.ui.adapter.ActivityListAdapter
 import com.nagi.ddtools.ui.adapter.IdolGroupListAdapter
+import com.nagi.ddtools.ui.adapter.IdolMediaList
 import com.nagi.ddtools.ui.adapter.TagListAdapter
 import com.nagi.ddtools.ui.base.DdToolsBindingBaseActivity
 import com.nagi.ddtools.ui.minepage.user.login.LoginActivity
-import com.nagi.ddtools.utils.MapUtils
+import com.nagi.ddtools.utils.UiUtils
 import com.nagi.ddtools.utils.UiUtils.dialog
-import com.nagi.ddtools.utils.UiUtils.openPage
 import com.nagi.ddtools.utils.UiUtils.toast
 
-class ActivityDetailsActivity : DdToolsBindingBaseActivity<ActivityDetailsActivityBinding>() {
-    private val viewModel: ActivityDetailsViewModel by viewModels()
-    private lateinit var groupAdapter: IdolGroupListAdapter
-    private var isAdapterInitialized = false
-    private var id = 0
-    override fun createBinding(): ActivityDetailsActivityBinding {
-        return ActivityDetailsActivityBinding.inflate(layoutInflater)
+class IdolDetailsActivity : DdToolsBindingBaseActivity<ActivityIdolDetailsBinding>() {
+    private val viewModel: IdolDetailsViewModel by viewModels()
+    private var id: Int = 0
+    private lateinit var mediaAdapter: IdolMediaList
+    private lateinit var idolAdapter: IdolGroupListAdapter
+    private lateinit var activityAdapter: ActivityListAdapter
+    override fun createBinding(): ActivityIdolDetailsBinding {
+        return ActivityIdolDetailsBinding.inflate(layoutInflater)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,57 +50,68 @@ class ActivityDetailsActivity : DdToolsBindingBaseActivity<ActivityDetailsActivi
         binding.apply {
             titleInclude.apply {
                 titleBack.setOnClickListener { finish() }
-                titleText.text = "活动详情"
+                titleText.text = "组合详情"
             }
-            detailsEvaluate.text = "评价"
             val layoutManager = FlexboxLayoutManager(applicationContext).apply {
                 flexDirection = FlexDirection.ROW
                 justifyContent = JustifyContent.FLEX_START
             }
             detailsEvaluateList.layoutManager = layoutManager
         }
-        initGroupAdapter()
+        initMediaAdapter()
+        initIdolAdapter()
+        initActivityAdapter()
     }
 
     private fun initViewModel() {
         id = intent.extras?.getInt("id") ?: 0
         viewModel.getUser()
         viewModel.setId(id)
-        viewModel.getTags("activity", id.toString())
+        viewModel.getTags("group", id.toString())
         updateTagAdapter(emptyList())
         viewModel.data.observe(this) {
             updateView(it)
         }
-        viewModel.groupList.observe(this) { data ->
-            upGroupAdapter(data)
+        viewModel.medias.observe(this) {
+            updateMediaAdapter(it)
         }
-        viewModel.tags.observe(this) { data ->
-            updateTagAdapter(data)
+        viewModel.memberList.observe(this) {
+            updateMemberAdapter(it)
         }
-
+        viewModel.activityList.observe(this) {
+            updateActivityAdapter(it)
+        }
+        viewModel.tags.observe(this) {
+            updateTagAdapter(it)
+        }
     }
 
-    private fun initGroupAdapter() {
-        if (!isAdapterInitialized) {
-            groupAdapter = IdolGroupListAdapter(mutableListOf())
-        }
-        binding.detailsGroupList.adapter = groupAdapter
-        isAdapterInitialized = true
+    private fun initMediaAdapter() {
+        mediaAdapter = IdolMediaList(mutableListOf())
+        binding.detailsGroupMediaList.adapter = mediaAdapter
     }
 
-    private fun updateView(data: ActivityList) {
+    private fun initIdolAdapter() {
+        idolAdapter = IdolGroupListAdapter(mutableListOf())
+        binding.detailsGroupMemberList.adapter = idolAdapter
+    }
+
+    private fun initActivityAdapter() {
+        activityAdapter = ActivityListAdapter(mutableListOf())
+        binding.detailsPartActivityList.adapter = activityAdapter
+    }
+
+    private fun updateMediaAdapter(data: List<MediaList>) = mediaAdapter.updateDate(data)
+
+    private fun updateMemberAdapter(data: List<IdolGroupList>) = idolAdapter.updateData(data)
+
+    private fun updateActivityAdapter(data: List<ActivityList>) = activityAdapter.updateData(data)
+
+    private fun updateView(data: IdolGroupList) {
         binding.apply {
             detailsTitle.text = data.name
-            detailsVideoLink.visibility = View.GONE
-            detailsDateText.text = data.durationDate
-            detailsTimeText.text = data.durationTime
-            detailsLocationText.apply {
-                text = data.locationDesc
-                setOnClickListener { MapUtils.chooseLocation(context, data.locationDesc) }
-            }
-            if (data.biliUrl?.isNotEmpty() == true) {
-                detailsVideoLink.visibility = View.VISIBLE
-            }
+            detailsLocationText.text = data.location
+            detailsInfoText.text = data.groupDesc
         }
     }
 
@@ -138,7 +152,6 @@ class ActivityDetailsActivity : DdToolsBindingBaseActivity<ActivityDetailsActivi
             }
         })
     }
-
 
     private fun checkUserLoginAndPrompt() {
         if (viewModel.users.value == null) {
@@ -185,7 +198,7 @@ class ActivityDetailsActivity : DdToolsBindingBaseActivity<ActivityDetailsActivi
             "为了安全起见，添加/点赞 暂只支持已登录用户使用，请先登录",
             "去登录",
             "我就看看",
-            { openPage(this@ActivityDetailsActivity, LoginActivity::class.java) }
+            { UiUtils.openPage(this@IdolDetailsActivity, LoginActivity::class.java) }
         )
     }
 
@@ -197,9 +210,4 @@ class ActivityDetailsActivity : DdToolsBindingBaseActivity<ActivityDetailsActivi
             "create_tag" -> toast("创建标签成功")
         }
     }
-    private fun upGroupAdapter(data: List<IdolGroupList>) {
-        groupAdapter.updateData(data)
-    }
-
-
 }

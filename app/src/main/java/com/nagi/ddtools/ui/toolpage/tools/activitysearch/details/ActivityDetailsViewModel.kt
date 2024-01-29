@@ -20,7 +20,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class ActivityDetailsViewModel : ViewModel() {
+open class ActivityDetailsViewModel : ViewModel() {
 
     private val _users = MutableLiveData<User>()
     val users: LiveData<User> = _users

@@ -1,5 +1,7 @@
 package com.nagi.ddtools.ui.adapter
 
+import android.app.Activity
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +11,8 @@ import com.google.gson.JsonParser
 import com.nagi.ddtools.R
 import com.nagi.ddtools.database.idolGroupList.IdolGroupList
 import com.nagi.ddtools.databinding.ListIdolGroupViewBinding
+import com.nagi.ddtools.ui.toolpage.tools.idolsearch.details.IdolDetailsActivity
+import com.nagi.ddtools.utils.UiUtils.openPage
 import com.nagi.ddtools.utils.UiUtils.openUrl
 
 class IdolGroupListAdapter(
@@ -23,10 +27,12 @@ class IdolGroupListAdapter(
         dataList.addAll(newData)
         diffResult.dispatchUpdatesTo(this)
     }
+
     fun removeAt(position: Int) {
         dataList.removeAt(position)
         notifyItemRemoved(position)
     }
+
     class ViewHolder(private val binding: ListIdolGroupViewBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: IdolGroupList) {
@@ -41,7 +47,13 @@ class IdolGroupListAdapter(
                 binding.idolGroupInfo.text = item.groupDesc
             }
             itemView.setOnClickListener {
-                binding.idolGroupInfo.text = item.groupDesc
+                openPage(
+                    binding.root.context as Activity,
+                    IdolDetailsActivity::class.java,
+                    false,
+                    Bundle().apply {
+                        putInt("id", item.id)
+                    })
             }
             if (item.ext.isNotEmpty()) {
                 val extAsJson = JsonParser.parseString(item.ext).asJsonObject
