@@ -7,7 +7,10 @@ import com.nagi.ddtools.data.TagsList
 import com.nagi.ddtools.databinding.ListEvaluateTagBinding
 
 
-class TagListAdapter(private val tags: List<TagsList>) :
+class TagListAdapter(
+    private val tags: List<TagsList>,
+    private val onTagClickListener: OnTagClickListener
+) :
     RecyclerView.Adapter<TagListAdapter.TagViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TagViewHolder {
@@ -17,18 +20,17 @@ class TagListAdapter(private val tags: List<TagsList>) :
     }
 
     override fun onBindViewHolder(holder: TagViewHolder, position: Int) {
-        val likes = tags[position].likes
-        val tagContent = tags[position].content
-        holder.bind(tagContent, likes)
+        holder.bind(tags[position],onTagClickListener)
     }
 
     override fun getItemCount(): Int = tags.size
 
     class TagViewHolder(private val binding: ListEvaluateTagBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(tagContent: String, likes: Int) {
-            binding.textViewTagContent.text = tagContent
-            binding.textViewTagLikes.text = formatLikes(likes)
+        fun bind(tag:TagsList, onTagClickListener: OnTagClickListener) {
+            binding.textViewTagContent.text = tag.content
+            binding.textViewTagLikes.text = formatLikes(tag.likes)
+            itemView.setOnClickListener { onTagClickListener.onTagClick(tag) }
         }
 
         private fun formatLikes(likes: Int): String {
@@ -38,4 +40,9 @@ class TagListAdapter(private val tags: List<TagsList>) :
             }
         }
     }
+
+    interface OnTagClickListener {
+        fun onTagClick(tag: TagsList)
+    }
+
 }

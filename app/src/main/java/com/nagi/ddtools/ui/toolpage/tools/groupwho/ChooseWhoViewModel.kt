@@ -39,7 +39,7 @@ class ChooseWhoViewModel : ViewModel() {
             withContext(Dispatchers.IO) {
                 val activityList = activityListDao.getByName(name)
                 _data.postValue(activityList)
-                val participatingGroupJson = activityList.participating_group
+                val participatingGroupJson = activityList.participatingGroup
                 val groupItemsJsonArray = JSONArray(participatingGroupJson)
                 val resultList = mutableListOf<IdolGroupList>()
                 for (i in 0 until groupItemsJsonArray.length()) {

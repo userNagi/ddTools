@@ -58,7 +58,7 @@ class IncludeFromActivityDialog : DialogFragment() {
 
             withContext(Dispatchers.Main) {
                 val locations = data.map { it.location }.distinct()
-                val dates = data.map { it.duration_date }.distinct()
+                val dates = data.map { it.durationDate }.distinct()
                 spinnerLocation.adapter =
                     ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, locations)
                 spinnerDate.adapter =
@@ -98,7 +98,7 @@ class IncludeFromActivityDialog : DialogFragment() {
         val selectedLocation = spinnerLocation.selectedItem as? String
         val selectedDate = spinnerDate.selectedItem as? String
         val filteredData = data.filter {
-            (selectedLocation == null || it.location == selectedLocation) && (selectedDate == null || it.duration_date == selectedDate)
+            (selectedLocation == null || it.location == selectedLocation) && (selectedDate == null || it.durationDate == selectedDate)
         }
         val names = filteredData.map { it.name }
         spinnerName.adapter =

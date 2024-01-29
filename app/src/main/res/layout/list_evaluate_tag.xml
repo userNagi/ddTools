@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?><!-- res/layout/item_tag.xml -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/dp_5"
+    android:layout_marginVertical="@dimen/dp_2"
     android:background="@drawable/ic_cylinder"
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:paddingHorizontal="@dimen/dp_10"
-    android:paddingVertical="5dp">
+    android:paddingVertical="@dimen/dp_5">
 
     <TextView
         android:id="@+id/textViewTagContent"
@@ -23,17 +24,17 @@
 
     <View
         android:layout_width="1dp"
-        android:layout_height="16dp"
+        android:layout_height="10dp"
         android:layout_marginHorizontal="5dp"
         android:background="#000" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textViewTagLikes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:maxEms="3"
         android:textColor="#149AA8"
         android:textSize="14sp"
-        app:drawableStartCompat="@drawable/ic_gread"
         tools:text="99+" />
 </LinearLayout>

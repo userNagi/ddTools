@@ -34,14 +34,14 @@ class IdolGroupListAdapter(
             binding.idolGroupName.text = item.name
             binding.idolGroupLocation.text = item.location
             binding.idolGroupLocation.text = item.location
-            if (item.group_desc.isEmpty()) {
+            if (item.groupDesc.isEmpty()) {
                 binding.idolGroupInfo.visibility = View.GONE
             } else {
                 binding.idolGroupInfo.visibility = View.VISIBLE
-                binding.idolGroupInfo.text = item.group_desc
+                binding.idolGroupInfo.text = item.groupDesc
             }
             itemView.setOnClickListener {
-                binding.idolGroupInfo.text = item.group_desc
+                binding.idolGroupInfo.text = item.groupDesc
             }
             if (item.ext.isNotEmpty()) {
                 val extAsJson = JsonParser.parseString(item.ext).asJsonObject

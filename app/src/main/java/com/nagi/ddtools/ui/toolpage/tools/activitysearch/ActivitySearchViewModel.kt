@@ -30,7 +30,7 @@ class ActivitySearchViewModel : ViewModel() {
             withContext(Dispatchers.IO) {
                 val itemType = object : TypeToken<List<ActivityList>>() {}.type
                 val activityList: List<ActivityList> = Gson().fromJson(jsonString, itemType)
-                val dateList:Set<String> = activityList.map { it.duration_date }.toSet()
+                val dateList:Set<String> = activityList.map { it.durationDate }.toSet()
                 val locationList:Set<String> = activityList.map { it.location }.toSet()
                 _locationData.postValue(locationList)
                 _dateData.postValue(dateList)

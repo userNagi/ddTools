@@ -41,23 +41,23 @@ class ActivityListAdapter(private val dataList: MutableList<ActivityList>) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(data: ActivityList) {
-            val date = DataUtils.parseDate(data.duration_date)
+            val date = DataUtils.parseDate(data.durationDate)
             binding.apply {
                 @SuppressLint("SetTextI18n")
                 activityTimeDesc.text = "${date[1]}月${date[0]}日"
                 activityLocation.text = data.location
                 activityName.text = data.name
-                activityTime.text = data.duration_time
+                activityTime.text = data.durationTime
                 activityMoney.text = data.price
                 activityBuy.setOnClickListener {
-                    root.context.openUrl(data.buy_url)
+                    root.context.openUrl(data.buyUrl)
                 }
                 activityWeibo.setOnClickListener {
-                    root.context.openUrl(data.weibo_url)
+                    root.context.openUrl(data.weiboUrl)
                 }
                 activityLocationDesc.apply {
-                    text = data.location_desc
-                    setOnClickListener { MapUtils.chooseLocation(context, data.location_desc) }
+                    text = data.locationDesc
+                    setOnClickListener { MapUtils.chooseLocation(context, data.locationDesc) }
                 }
             }
             itemView.setOnClickListener {

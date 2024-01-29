@@ -16,11 +16,9 @@ import com.nagi.ddtools.database.idolGroupList.IdolGroupListDao
 import com.nagi.ddtools.database.user.User
 import com.nagi.ddtools.resourceGet.NetGet
 import com.nagi.ddtools.utils.LogUtils
-import com.nagi.ddtools.utils.NetUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.json.JSONArray
 
 class ActivityDetailsViewModel : ViewModel() {
 
@@ -48,19 +46,19 @@ class ActivityDetailsViewModel : ViewModel() {
             withContext(Dispatchers.IO) {
                 val activityList = activityListDao.getById("$id")
                 _data.postValue(activityList)
-                val participatingGroupJson = activityList.participating_group
-                val groupItemsJsonArray = JSONArray(participatingGroupJson)
                 val resultList = mutableListOf<IdolGroupList>()
-                for (i in 0 until groupItemsJsonArray.length()) {
-                    val groupItemJson = groupItemsJsonArray.getJSONObject(i)
-                    val groupName = groupItemJson.optString("name")
-                    if (groupName.isNotBlank()) {
-                        groupListDao.getById(groupName.toInt()).let { group ->
-                            resultList.add(group)
+                val groupIdListString = activityList.participatingGroup
+                if (!groupIdListString.isNullOrEmpty()) {
+                    val groupIdList = groupIdListString.split(",")
+                    for (groupId in groupIdList) {
+                        if (groupId.isNotEmpty()) {
+                            groupListDao.getById(groupId.toInt()).let { group ->
+                                resultList.add(group)
+                            }
                         }
                     }
+                    _groupList.postValue(resultList)
                 }
-                _groupList.postValue(resultList)
             }
         }
     }
@@ -92,11 +90,15 @@ class ActivityDetailsViewModel : ViewModel() {
         }
     }
 
-    fun addTags(type: String, typeId: Int, content: String) {
+    fun addTags(type: String, typeId: Int, content: String, callback: (String) -> Unit) {
         users.value?.let {
-            NetGet.sendEvaluate(
-                type, typeId, content, it.id
-            ) {}
+            NetGet.sendEvaluate(type, typeId, content, it.id) { result ->
+                when (result) {
+                    is Resource.Success -> callback(result.data)
+                    is Resource.Error -> callback("error")
+                }
+            }
+            getTags(type, typeId.toString())
         }
     }
 
