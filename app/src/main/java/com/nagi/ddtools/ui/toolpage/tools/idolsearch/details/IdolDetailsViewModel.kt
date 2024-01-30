@@ -85,7 +85,7 @@ class IdolDetailsViewModel : ViewModel() {
                     try {
                         val mediaJson = JsonParser.parseString(detailsData.ext).asJsonObject
                         if (mediaJson.has("media")) {
-                            val mediaList = mediaJson.get("medias").asJsonArray
+                            val mediaList = mediaJson.get("media").asJsonArray
                             val itemType = object : TypeToken<List<MediaList>>() {}.type
                             mediaResult = Gson().fromJson(mediaList, itemType)
                         }

@@ -7,8 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import com.google.gson.JsonParser
+import com.google.gson.reflect.TypeToken
 import com.nagi.ddtools.R
+import com.nagi.ddtools.data.MediaList
 import com.nagi.ddtools.database.idolGroupList.IdolGroupList
 import com.nagi.ddtools.databinding.ListIdolGroupViewBinding
 import com.nagi.ddtools.ui.toolpage.tools.idolsearch.details.IdolDetailsActivity
@@ -56,21 +59,29 @@ class IdolGroupListAdapter(
                     })
             }
             if (item.ext.isNotEmpty()) {
+                var mediaResult = mutableListOf<MediaList>()
                 val extAsJson = JsonParser.parseString(item.ext).asJsonObject
-                if (extAsJson.has("weibo")) {
-                    if (extAsJson["weibo"].asString.isNotEmpty()) {
-                        binding.jumpWeibo.visibility = View.VISIBLE
-                        binding.jumpWeibo.setOnClickListener {
-                            binding.root.context.openUrl(
-                                extAsJson["weibo"].asString
-                            )
+                if (extAsJson.has("media")) {
+                    val mediaList = extAsJson.get("media").asJsonArray
+                    val itemType = object : TypeToken<List<MediaList>>() {}.type
+                    mediaResult = Gson().fromJson(mediaList, itemType)
+                    for (media in mediaResult) {
+                        if (media.type == "weibo") {
+                            binding.jumpWeibo.visibility = View.VISIBLE
+                            binding.jumpWeibo.setOnClickListener {
+                                binding.root.context.openUrl(
+                                    media.url
+                                )
+                            }
                         }
-                    }
-                }
-                if (extAsJson.has("bili")) {
-                    if (extAsJson["bili"].asString.isNotEmpty()) {
-                        binding.jumpBili.visibility = View.VISIBLE
-                        binding.jumpBili.setOnClickListener { binding.root.context.openUrl(extAsJson["bili"].asString) }
+                        if (media.type == "bili") {
+                            binding.jumpWeibo.visibility = View.VISIBLE
+                            binding.jumpWeibo.setOnClickListener {
+                                binding.root.context.openUrl(
+                                    media.url
+                                )
+                            }
+                        }
                     }
                 }
             }

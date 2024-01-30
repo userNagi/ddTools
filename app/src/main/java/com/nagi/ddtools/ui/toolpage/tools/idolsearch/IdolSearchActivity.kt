@@ -132,7 +132,8 @@ class IdolSearchActivity : DdToolsBaseActivity() {
                     }
                     UiUtils.hideLoading()
                 }
-
+                chooseWhich = 0
+                binding.searchLocation.text = "全世界"
             } catch (e: Exception) {
                 LogUtils.e("Exception during fetching idol group list: ${e.message}")
                 UiUtils.hideLoading()
