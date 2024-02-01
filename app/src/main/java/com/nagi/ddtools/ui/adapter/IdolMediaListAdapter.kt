@@ -11,8 +11,8 @@ import com.nagi.ddtools.data.MediaList
 import com.nagi.ddtools.databinding.ListIdolMediaBinding
 import com.nagi.ddtools.utils.UiUtils.openUrl
 
-class IdolMediaList(private val data: MutableList<MediaList>) :
-    RecyclerView.Adapter<IdolMediaList.IdolMediaViewHolder>() {
+class IdolMediaListAdapter(private val data: MutableList<MediaList>) :
+    RecyclerView.Adapter<IdolMediaListAdapter.IdolMediaViewHolder>() {
 
     fun updateDate(newDate: List<MediaList>) {
         val diffCallback = IdolMediaListDiffCallback(data, newDate)

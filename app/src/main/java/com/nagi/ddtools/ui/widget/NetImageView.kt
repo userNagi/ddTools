@@ -33,14 +33,14 @@ class NetImageView @JvmOverloads constructor(
     private var currentLoadJob: Job? = null
     private val cacheDir = context.cacheDir
 
-    fun setImageUrl(url: String) {
+    fun setImageUrl(url: String, useSLT: Boolean = true) {
         currentLoadJob?.cancel()
         currentLoadJob = NetImageLoader.coroutineScope.launch {
             try {
                 val basename = url.substringBeforeLast(".")
                 val extension = url.substringAfterLast(".")
 
-                val urlSLT = "${basename}_slt.$extension"
+                val urlSLT = if (!useSLT) url else "${basename}_slt.$extension"
 
 
                 val cachedBitmap = getCachedBitmap(urlSLT)

@@ -39,16 +39,13 @@ class ChooseWhoViewModel : ViewModel() {
             withContext(Dispatchers.IO) {
                 val activityList = activityListDao.getByName(name)
                 _data.postValue(activityList)
-                val participatingGroupJson = activityList.participatingGroup
-                val groupItemsJsonArray = JSONArray(participatingGroupJson)
+                val participatingGroupString = activityList.participatingGroup
+                val partGroupList = participatingGroupString?.split(",")
                 val resultList = mutableListOf<IdolGroupList>()
-                for (i in 0 until groupItemsJsonArray.length()) {
-                    val groupItemJson = groupItemsJsonArray.getJSONObject(i)
-                    val groupName = groupItemJson.optString("name")
-                    if (groupName.isNotBlank()) {
-                        groupListDao.getById(groupName.toInt()).let { group ->
-                            resultList.add(group)
-                        }
+                for (groupInfo in partGroupList ?: emptyList()) {
+                    val groupId = groupInfo.split("-")[0].toInt()
+                    groupListDao.getById(groupId).let { group ->
+                        resultList.add(group)
                     }
                 }
                 _groupList.postValue(resultList)
@@ -75,7 +72,7 @@ class ChooseWhoViewModel : ViewModel() {
     }
 
     fun addData(data: IdolGroupList) {
-        val currentList = _groupList.value?.toMutableList()?: mutableListOf()
+        val currentList = _groupList.value?.toMutableList() ?: mutableListOf()
         currentList.add(data)
         _groupList.value = currentList
     }

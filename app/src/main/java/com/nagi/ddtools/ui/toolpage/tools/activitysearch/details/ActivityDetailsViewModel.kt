@@ -48,14 +48,12 @@ open class ActivityDetailsViewModel : ViewModel() {
                 _data.postValue(activityList)
                 val resultList = mutableListOf<IdolGroupList>()
                 val groupIdListString = activityList.participatingGroup
-                if (!groupIdListString.isNullOrEmpty()) {
-                    val groupIdList = groupIdListString.split(",")
-                    for (groupId in groupIdList) {
-                        if (groupId.isNotEmpty()) {
-                            groupListDao.getById(groupId.toInt()).let { group ->
-                                resultList.add(group)
-                            }
-                        }
+                val groupIdList = groupIdListString?.split(",")
+                for (groupInfo in groupIdList ?: emptyList()) {
+                    val groupId = groupInfo.split("-")[0]
+                    groupListDao.getById(groupId.toInt()).let { group ->
+                        resultList.add(group)
+
                     }
                     _groupList.postValue(resultList)
                 }

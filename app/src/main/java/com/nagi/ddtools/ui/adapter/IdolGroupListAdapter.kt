@@ -39,7 +39,7 @@ class IdolGroupListAdapter(
     class ViewHolder(private val binding: ListIdolGroupViewBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: IdolGroupList) {
-            binding.idolGroupImg.setImageResource(R.color.lty)
+            binding.idolGroupImg.setImageUrl(item.imgUrl,false)
             binding.idolGroupName.text = item.name
             binding.idolGroupLocation.text = item.location
             binding.idolGroupLocation.text = item.location
@@ -59,7 +59,7 @@ class IdolGroupListAdapter(
                     })
             }
             if (item.ext.isNotEmpty()) {
-                var mediaResult = mutableListOf<MediaList>()
+                val mediaResult: MutableList<MediaList>
                 val extAsJson = JsonParser.parseString(item.ext).asJsonObject
                 if (extAsJson.has("media")) {
                     val mediaList = extAsJson.get("media").asJsonArray
@@ -83,6 +83,7 @@ class IdolGroupListAdapter(
                             }
                         }
                     }
+
                 }
             }
         }

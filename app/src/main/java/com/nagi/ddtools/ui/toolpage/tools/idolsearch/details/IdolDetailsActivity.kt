@@ -10,14 +10,12 @@ import androidx.activity.viewModels
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
-import com.nagi.ddtools.data.MediaList
 import com.nagi.ddtools.data.TagsList
-import com.nagi.ddtools.database.activityList.ActivityList
 import com.nagi.ddtools.database.idolGroupList.IdolGroupList
 import com.nagi.ddtools.databinding.ActivityIdolDetailsBinding
 import com.nagi.ddtools.ui.adapter.ActivityListAdapter
 import com.nagi.ddtools.ui.adapter.IdolGroupListAdapter
-import com.nagi.ddtools.ui.adapter.IdolMediaList
+import com.nagi.ddtools.ui.adapter.IdolMediaListAdapter
 import com.nagi.ddtools.ui.adapter.TagListAdapter
 import com.nagi.ddtools.ui.base.DdToolsBindingBaseActivity
 import com.nagi.ddtools.ui.minepage.user.login.LoginActivity
@@ -28,7 +26,7 @@ import com.nagi.ddtools.utils.UiUtils.toast
 class IdolDetailsActivity : DdToolsBindingBaseActivity<ActivityIdolDetailsBinding>() {
     private val viewModel: IdolDetailsViewModel by viewModels()
     private var id: Int = 0
-    private lateinit var mediaAdapter: IdolMediaList
+    private lateinit var mediaAdapter: IdolMediaListAdapter
     private lateinit var idolAdapter: IdolGroupListAdapter
     private lateinit var activityAdapter: ActivityListAdapter
     override fun createBinding(): ActivityIdolDetailsBinding {
@@ -58,9 +56,9 @@ class IdolDetailsActivity : DdToolsBindingBaseActivity<ActivityIdolDetailsBindin
             }
             detailsEvaluateList.layoutManager = layoutManager
         }
+        initActivityAdapter()
         initMediaAdapter()
         initIdolAdapter()
-        initActivityAdapter()
     }
 
     private fun initViewModel() {
@@ -73,13 +71,13 @@ class IdolDetailsActivity : DdToolsBindingBaseActivity<ActivityIdolDetailsBindin
             updateView(it)
         }
         viewModel.medias.observe(this) {
-            updateMediaAdapter(it)
+            mediaAdapter.updateDate(it)
         }
         viewModel.memberList.observe(this) {
-            updateMemberAdapter(it)
+            idolAdapter.updateData(it)
         }
         viewModel.activityList.observe(this) {
-            updateActivityAdapter(it)
+            activityAdapter.updateData(it, id)
         }
         viewModel.tags.observe(this) {
             updateTagAdapter(it)
@@ -87,25 +85,25 @@ class IdolDetailsActivity : DdToolsBindingBaseActivity<ActivityIdolDetailsBindin
     }
 
     private fun initMediaAdapter() {
-        mediaAdapter = IdolMediaList(mutableListOf())
+        if (!this::mediaAdapter.isInitialized) {
+            mediaAdapter = IdolMediaListAdapter(mutableListOf())
+        }
         binding.detailsGroupMediaList.adapter = mediaAdapter
     }
 
     private fun initIdolAdapter() {
-        idolAdapter = IdolGroupListAdapter(mutableListOf())
+        if (!this::idolAdapter.isInitialized) {
+            idolAdapter = IdolGroupListAdapter(mutableListOf())
+        }
         binding.detailsGroupMemberList.adapter = idolAdapter
     }
 
     private fun initActivityAdapter() {
-        activityAdapter = ActivityListAdapter(mutableListOf())
+        if (!this::activityAdapter.isInitialized) {
+            activityAdapter = ActivityListAdapter(mutableListOf(), id)
+        }
         binding.detailsPartActivityList.adapter = activityAdapter
     }
-
-    private fun updateMediaAdapter(data: List<MediaList>) = mediaAdapter.updateDate(data)
-
-    private fun updateMemberAdapter(data: List<IdolGroupList>) = idolAdapter.updateData(data)
-
-    private fun updateActivityAdapter(data: List<ActivityList>) = activityAdapter.updateData(data)
 
     private fun updateView(data: IdolGroupList) {
         binding.apply {

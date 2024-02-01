@@ -116,6 +116,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/details_part_activity_list"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/dp_10"
@@ -146,11 +147,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_10"
             android:nestedScrollingEnabled="false"
-            android:visibility="gone"
             app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
             app:layout_constraintTop_toBottomOf="@+id/details_evaluate_include"
-            tools:listitem="@layout/list_evaluate_tag"
-            tools:visibility="visible" />
+            tools:listitem="@layout/list_evaluate_tag" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>
