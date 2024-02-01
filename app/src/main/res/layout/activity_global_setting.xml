@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray"
+    tools:context=".ui.minepage.setting.GlobalSettingActivity">
+
+    <include
+        android:id="@+id/title_include"
+        layout="@layout/include_page_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.nagi.ddtools.ui.widget.GlobalSettingLineView
+        android:id="@+id/global_setting_user"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dp_8"
+        app:layout_constraintTop_toBottomOf="@+id/title_include" />
+
+    <com.nagi.ddtools.ui.widget.GlobalSettingLineView
+        android:id="@+id/global_setting_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dp_8"
+        android:layout_marginTop="@dimen/dp_10"
+        app:layout_constraintTop_toBottomOf="@+id/global_setting_user" />
+
+    <com.nagi.ddtools.ui.widget.GlobalSettingLineView
+        android:id="@+id/global_setting_check_update"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dp_8"
+        app:layout_constraintTop_toBottomOf="@+id/global_setting_location" />
+
+    <com.nagi.ddtools.ui.widget.GlobalSettingLineView
+        android:id="@+id/global_setting_login_out"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dp_8"
+        android:layout_marginTop="@dimen/dp_10"
+        app:layout_constraintTop_toBottomOf="@+id/global_setting_check_update" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

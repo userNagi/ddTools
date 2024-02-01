@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:paddingHorizontal="@dimen/dp_8"
+    android:paddingVertical="@dimen/dp_8">
+
+    <TextView
+        android:id="@+id/setting_left_text"
+        style="@style/TitleTextStyle"
+        android:gravity="start|center"
+        tools:text="个人设置" />
+
+
+    <TextView
+        android:id="@+id/setting_right_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@+id/setting_left_text"
+        android:gravity="end|center"
+        android:textSize="@dimen/dp_16"
+        app:drawableEndCompat="@drawable/baseline_arrow_forward_gray"
+        tools:ignore="SpUsage"
+        tools:text="修改个人设置" />
+
+</RelativeLayout>

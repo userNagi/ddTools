@@ -1,32 +1,29 @@
 package com.nagi.ddtools.ui.widget
 
 import android.app.Activity
+import com.nagi.ddtools.utils.UiUtils.openPage
+
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.RelativeLayout
-import android.widget.TextView
-import androidx.appcompat.content.res.AppCompatResources.getDrawable
-import com.google.android.material.imageview.ShapeableImageView
+import androidx.core.content.ContextCompat.getDrawable
 import com.nagi.ddtools.R
-import com.nagi.ddtools.utils.UiUtils.openPage
+import com.nagi.ddtools.databinding.WidgetMineLinearBinding
 
 class MineLinearView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : RelativeLayout(context, attrs, defStyleAttr) {
-    init {
-        val inflater = LayoutInflater.from(context)
-        inflater.inflate(R.layout.widget_mine_linear, this, true)
-    }
 
-    private fun setIcon(drawable: Int,color: String) {
-        findViewById<ShapeableImageView>(R.id.linear_image).apply {
-            setImageDrawable(
-                getDrawable(context, drawable)
-            )
+    private val binding: WidgetMineLinearBinding =
+        WidgetMineLinearBinding.inflate(LayoutInflater.from(context), this, true)
+
+    private fun setIcon(drawable: Int, color: String) {
+        binding.linearImage.apply {
+            setImageDrawable(getDrawable(context, drawable))
             when (color) {
                 "red" -> setBackgroundColor(Color.RED)
                 "green" -> setBackgroundColor(Color.GREEN)
@@ -40,13 +37,11 @@ class MineLinearView @JvmOverloads constructor(
     }
 
     private fun setText(text: String) {
-        findViewById<TextView>(R.id.linear_text).text = text
+        binding.linearText.text = text
     }
 
     private fun setBottomIcon(drawable: Int) {
-        findViewById<ShapeableImageView>(R.id.linear_image_bottom).setImageDrawable(
-            getDrawable(context, drawable)
-        )
+        binding.linearImageBottom.setImageDrawable(getDrawable(context, drawable))
     }
 
     fun setOnClickListener(activity: Activity, page: Class<*>) {
@@ -61,9 +56,8 @@ class MineLinearView @JvmOverloads constructor(
         color: String = "",
         bottom: Int = R.drawable.baseline_arrow_forward
     ) {
-        setIcon(icon,color)
+        setIcon(icon, color)
         setText(text)
         setBottomIcon(bottom)
-
     }
 }

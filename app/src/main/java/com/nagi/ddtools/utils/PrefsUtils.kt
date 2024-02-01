@@ -9,6 +9,7 @@ object PrefsUtils {
     private const val KEY_FIRST_RUN = "firstRun"
     private const val KEY_LAST_RUN_DATE = "lastRunDate"
     private const val KEY_TOOL_TITLE = "toolTitle"
+    private const val USER_SETTINGS_LOCATION = "userSettingLocation"
 
     private fun getSharedPreferences(context: Context): SharedPreferences {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -41,5 +42,13 @@ object PrefsUtils {
     fun setToolTitle(context: Context, title: String) {
         getSharedPreferences(context).edit().putString(KEY_TOOL_TITLE, title).apply()
     }
+
+    fun setSettingLocation(context: Context, location: String) {
+        getSharedPreferences(context).edit().putString(USER_SETTINGS_LOCATION, location).apply()
+    }
+    fun getSettingLocation(context: Context): String? {
+        return getSharedPreferences(context).getString(USER_SETTINGS_LOCATION, "全世界")
+    }
+
 }
 

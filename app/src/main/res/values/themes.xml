@@ -39,8 +39,7 @@
         <item name="android:textSize" tools:ignore="SpUsage">@dimen/dp_20</item>
     </style>
 
-    <style name="TitleTextStyle" parent="TextSmailStyle">
-        <item name="android:textColor">@color/black</item>
+    <style name="TitleTextStyle" parent="Text">
         <item name="android:textSize" tools:ignore="SpUsage">18dp</item>
     </style>
 
