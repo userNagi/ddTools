@@ -12,6 +12,7 @@ import com.nagi.ddtools.database.user.User
 import com.nagi.ddtools.databinding.FragmentMineBinding
 import com.nagi.ddtools.ui.minepage.about.AboutActivity
 import com.nagi.ddtools.ui.minepage.feedback.UserFeedBack
+import com.nagi.ddtools.ui.minepage.setting.GlobalSettingActivity
 import com.nagi.ddtools.ui.minepage.user.login.LoginActivity
 import com.nagi.ddtools.utils.UiUtils.openPage
 
@@ -53,6 +54,7 @@ class MinePageFragment : Fragment() {
             }
             mineLinearSetting.apply {
                 setData(R.drawable.ic_mine_setting, "全局设置", "blue")
+                setOnClickListener(requireActivity(), GlobalSettingActivity::class.java)
             }
             mineLinearAbout.apply {
                 setData(R.drawable.ic_about, "关于", "lty")

@@ -25,17 +25,20 @@ class ActivitySearchViewModel : ViewModel() {
     val dateListData: LiveData<Set<String>> = _dateData
     val locationListData: LiveData<Set<String>> = _locationData
     val activityListData: LiveData<List<ActivityList>> = _activityData
-    fun loadActivityList(jsonString: String) {
+    fun loadActivityList(jsonString: String, lo: String) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 val itemType = object : TypeToken<List<ActivityList>>() {}.type
                 val activityList: List<ActivityList> = Gson().fromJson(jsonString, itemType)
-                val dateList:Set<String> = activityList.map { it.durationDate }.toSet()
-                val locationList:Set<String> = activityList.map { it.location }.toSet()
+                val dateList: Set<String> = activityList.map { it.durationDate }.toSet()
+                val locationList: Set<String> = activityList.map { it.location }.toSet()
                 _locationData.postValue(locationList)
                 _dateData.postValue(dateList)
                 database.insertAll(activityList)
-                _activityData.postValue(database.getByDateAfter(getCurrentDateString()))
+                _activityData.postValue(
+                    database.getByDateAfter(getCurrentDateString()).filter {
+                        lo.isEmpty() || lo == it.location
+                    })
             }
         }
     }

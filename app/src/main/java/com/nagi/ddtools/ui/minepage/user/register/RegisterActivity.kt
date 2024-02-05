@@ -30,7 +30,7 @@ class RegisterActivity : DdToolsBaseActivity() {
         binding.apply {
             registerTitleBack.setOnClickListener { finish() }
             registerButton.setOnClickListener {
-                showLoading(applicationContext)
+                showLoading(this@RegisterActivity)
                 viewModel.onRegisterClick(
                     userName = registerUserName.text.toString(),
                     password = registerPassWord.text.toString(),

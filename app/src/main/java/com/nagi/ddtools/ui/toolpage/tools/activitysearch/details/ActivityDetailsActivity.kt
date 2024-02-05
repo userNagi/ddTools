@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.text.InputFilter
 import android.view.Gravity
 import android.view.View
-import android.widget.EditText
 import androidx.activity.viewModels
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -14,6 +13,7 @@ import com.nagi.ddtools.data.TagsList
 import com.nagi.ddtools.database.activityList.ActivityList
 import com.nagi.ddtools.database.idolGroupList.IdolGroupList
 import com.nagi.ddtools.databinding.ActivityDetailsActivityBinding
+import com.nagi.ddtools.databinding.DialogSingleInputBinding
 import com.nagi.ddtools.ui.adapter.IdolGroupListAdapter
 import com.nagi.ddtools.ui.adapter.TagListAdapter
 import com.nagi.ddtools.ui.base.DdToolsBindingBaseActivity
@@ -74,7 +74,6 @@ class ActivityDetailsActivity : DdToolsBindingBaseActivity<ActivityDetailsActivi
         viewModel.tags.observe(this) { data ->
             updateTagAdapter(data)
         }
-
     }
 
     private fun initGroupAdapter() {
@@ -124,20 +123,20 @@ class ActivityDetailsActivity : DdToolsBindingBaseActivity<ActivityDetailsActivi
     }
 
     private var lastClickTime: Long = 0
-    private fun createTagListAdapter(data: List<TagsList>): TagListAdapter {
-        return TagListAdapter(data, object : TagListAdapter.OnTagClickListener {
+    private fun createTagListAdapter(data: List<TagsList>) =
+        TagListAdapter(data, object : TagListAdapter.OnTagClickListener {
             override fun onTagClick(tag: TagsList) {
                 val currentTime = System.currentTimeMillis()
                 if (currentTime - lastClickTime >= 2000) {
                     lastClickTime = currentTime
-                    viewModel.addTags("activity", id, tag.content) { toastBack(it) }
-                    viewModel.getTags("activity", id.toString())
+                    viewModel.addTags("activity", id, tag.content, "like_tag", tag.id) {
+                        toastBack(it)
+                    }
                 } else {
                     toast("每2秒只能点一次，请不要频繁点击")
                 }
             }
         })
-    }
 
 
     private fun checkUserLoginAndPrompt() {
@@ -149,7 +148,8 @@ class ActivityDetailsActivity : DdToolsBindingBaseActivity<ActivityDetailsActivi
     }
 
     private fun showAddTagDialog() {
-        val editText = EditText(applicationContext).apply {
+        val editBinding = DialogSingleInputBinding.inflate(layoutInflater)
+        editBinding.inputText.apply {
             gravity = Gravity.CENTER
             hint = "请输入标签内容，最多十个字"
             filters = arrayOf<InputFilter>(InputFilter.LengthFilter(10))
@@ -161,16 +161,17 @@ class ActivityDetailsActivity : DdToolsBindingBaseActivity<ActivityDetailsActivi
             positiveButtonText = "确定",
             negativeButtonText = "取消",
             onPositive = {
-                content = editText.text.toString()
+                content = editBinding.inputText.text.toString()
                 if (content.isEmpty()) {
                     toast("未填写内容")
                 } else {
-                    viewModel.addTags("activity", id, content) { toastBack(it) }
-                    viewModel.getTags("activity", id.toString())
+                    viewModel.addTags("activity", id, content, "create_tag", "") {
+                        toastBack(it)
+                    }
                 }
             },
             onNegative = {},
-            customView = editText,
+            customView = editBinding.root,
             onDismiss = {
                 if (content.isEmpty()) {
                     toast("未填写内容")
@@ -190,6 +191,7 @@ class ActivityDetailsActivity : DdToolsBindingBaseActivity<ActivityDetailsActivi
     }
 
     private fun toastBack(type: String) {
+        viewModel.getTags("activity", id.toString(), viewModel.users.value?.id)
         when (type) {
             "error" -> toast("错误")
             "cancel_like" -> toast("取消点赞成功")
@@ -197,9 +199,8 @@ class ActivityDetailsActivity : DdToolsBindingBaseActivity<ActivityDetailsActivi
             "create_tag" -> toast("创建标签成功")
         }
     }
+
     private fun upGroupAdapter(data: List<IdolGroupList>) {
         groupAdapter.updateData(data)
     }
-
-
 }

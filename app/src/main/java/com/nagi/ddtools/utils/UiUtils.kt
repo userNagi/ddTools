@@ -86,7 +86,7 @@ object UiUtils {
         }
         loadingJob = MainScope().launch {
             withContext(Dispatchers.Main) {
-                delay(10000)
+                delay(9000)
                 context.toast("加载超时，请检查网络或稍后再试。")
                 hideLoading()
             }

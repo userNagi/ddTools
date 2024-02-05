@@ -18,13 +18,24 @@ interface HomePageListDao {
     @Query("SELECT * FROM HomePageList")
     fun getAll(): List<HomePageList>
 
+    @Query("SELECT * FROM HomePageList WHERE id = :id")
+    fun getById(id: Int): HomePageList
+
+    @Query("SELECT * FROM HomePageList WHERE parent = :id")
+    fun getByParent(id: Int): List<HomePageList>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(info: HomePageList)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun update(info: HomePageList)
+
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(info:List<HomePageList>)
+    fun insertAll(info: List<HomePageList>)
+
     @Delete
     fun delete(info: HomePageList)
+
+    @Query("DELETE FROM HomePageList WHERE parent = :id")
+    fun deleteByParent(id: Int)
 }

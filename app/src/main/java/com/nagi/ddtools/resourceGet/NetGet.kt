@@ -128,6 +128,7 @@ object NetGet {
     fun getTags(
         type: String,
         typeId: String,
+        userId: Int? = 0,
         callback: (Resource<String>) -> Unit
     ) {
         NetUtils.fetch(
@@ -135,7 +136,8 @@ object NetGet {
             NetUtils.HttpMethod.POST,
             mutableMapOf(
                 "tag_type" to type,
-                "type_id" to typeId
+                "type_id" to typeId,
+                "user_id" to userId.toString()
             )
         ) { resource ->
             when (resource) {
@@ -150,13 +152,17 @@ object NetGet {
         typeId: Int,
         content: String,
         userId: Int,
+        action:String,
+        tagId:String,
         callback: (Resource<String>) -> Unit
     ) {
         val requestBody = mutableMapOf(
-            "tag_type" to type,
-            "type_id" to typeId.toString(),
+            "taggable_type" to type,
+            "taggable_id" to typeId.toString(),
             "content" to content,
             "user_id" to userId.toString(),
+            "action" to action,
+            "tag_id" to tagId
         )
         NetUtils.fetch(
             ROOT_URL + USER_EVALUATE,

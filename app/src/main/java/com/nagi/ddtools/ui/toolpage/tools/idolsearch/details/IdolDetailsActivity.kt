@@ -63,7 +63,6 @@ class IdolDetailsActivity : DdToolsBindingBaseActivity<ActivityIdolDetailsBindin
 
     private fun initViewModel() {
         id = intent.extras?.getInt("id") ?: 0
-        viewModel.getUser()
         viewModel.setId(id)
         viewModel.getTags("group", id.toString())
         updateTagAdapter(emptyList())
@@ -82,26 +81,23 @@ class IdolDetailsActivity : DdToolsBindingBaseActivity<ActivityIdolDetailsBindin
         viewModel.tags.observe(this) {
             updateTagAdapter(it)
         }
+        viewModel.users.observe(this) {
+            viewModel.getTags("group", id.toString(), it.id)
+        }
     }
 
     private fun initMediaAdapter() {
-        if (!this::mediaAdapter.isInitialized) {
-            mediaAdapter = IdolMediaListAdapter(mutableListOf())
-        }
+        mediaAdapter = IdolMediaListAdapter(mutableListOf())
         binding.detailsGroupMediaList.adapter = mediaAdapter
     }
 
     private fun initIdolAdapter() {
-        if (!this::idolAdapter.isInitialized) {
-            idolAdapter = IdolGroupListAdapter(mutableListOf())
-        }
+        idolAdapter = IdolGroupListAdapter(mutableListOf())
         binding.detailsGroupMemberList.adapter = idolAdapter
     }
 
     private fun initActivityAdapter() {
-        if (!this::activityAdapter.isInitialized) {
-            activityAdapter = ActivityListAdapter(mutableListOf(), id)
-        }
+        activityAdapter = ActivityListAdapter(mutableListOf(), id)
         binding.detailsPartActivityList.adapter = activityAdapter
     }
 
@@ -142,8 +138,13 @@ class IdolDetailsActivity : DdToolsBindingBaseActivity<ActivityIdolDetailsBindin
                 val currentTime = System.currentTimeMillis()
                 if (currentTime - lastClickTime >= 2000) {
                     lastClickTime = currentTime
-                    viewModel.addTags("activity", id, tag.content) { toastBack(it) }
-                    viewModel.getTags("activity", id.toString())
+                    if (viewModel.users.value == null) {
+                        promptUserToLogin()
+                    } else {
+                        viewModel.addTags("group", id, tag.content, "like_tag", tag.id) {
+                            toastBack(it)
+                        }
+                    }
                 } else {
                     toast("每2秒只能点一次，请不要频繁点击")
                 }
@@ -173,20 +174,15 @@ class IdolDetailsActivity : DdToolsBindingBaseActivity<ActivityIdolDetailsBindin
             negativeButtonText = "取消",
             onPositive = {
                 content = editText.text.toString()
-                if (content.isEmpty()) {
-                    toast("未填写内容")
-                } else {
-                    viewModel.addTags("activity", id, content) { toastBack(it) }
-                    viewModel.getTags("activity", id.toString())
+                if (content.isEmpty()) toast("未填写内容") else {
+                    viewModel.addTags("group", id, content, "create_tag", "") {
+                        toastBack(it)
+                    }
                 }
             },
             onNegative = {},
             customView = editText,
-            onDismiss = {
-                if (content.isEmpty()) {
-                    toast("未填写内容")
-                }
-            }
+            onDismiss = { if (content.isEmpty()) toast("未填写内容") }
         )
     }
 
@@ -201,6 +197,7 @@ class IdolDetailsActivity : DdToolsBindingBaseActivity<ActivityIdolDetailsBindin
     }
 
     private fun toastBack(type: String) {
+        viewModel.getTags("group", id.toString(), viewModel.users.value?.id)
         when (type) {
             "error" -> toast("错误")
             "cancel_like" -> toast("取消点赞成功")

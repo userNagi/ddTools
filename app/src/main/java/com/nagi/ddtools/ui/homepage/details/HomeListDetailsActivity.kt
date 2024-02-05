@@ -12,9 +12,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import com.nagi.ddtools.database.AppDatabase
 import com.nagi.ddtools.database.homePagList.HomePageList
 import com.nagi.ddtools.databinding.ActivityHomeListDetailsBinding
+import com.nagi.ddtools.databinding.DialogSingleInputBinding
 import com.nagi.ddtools.ui.adapter.HomePageListAdapter
 import com.nagi.ddtools.ui.base.DdToolsBindingBaseActivity
 import com.nagi.ddtools.ui.homepage.HomeViewModel
@@ -94,8 +94,8 @@ class HomeListDetailsActivity : DdToolsBindingBaseActivity<ActivityHomeListDetai
     private fun handleActivityResult(result: ActivityResult) {
         if (result.resultCode == Activity.RESULT_OK) {
             result.data?.data?.let { uri ->
-                val editText = EditText(this).apply {
-                    gravity = Gravity.CENTER
+                val editBinding = DialogSingleInputBinding.inflate(layoutInflater)
+                editBinding.inputText.apply {
                     hint = "请输入保存名"
                 }
                 val endUrl = FileUtils.moveImage(this, uri, "homePageList").toString()
@@ -107,7 +107,7 @@ class HomeListDetailsActivity : DdToolsBindingBaseActivity<ActivityHomeListDetai
                     positiveButtonText = "确定",
                     negativeButtonText = "取消",
                     onPositive = {
-                        name = editText.text.toString()
+                        name = editBinding.inputText.text.toString()
                         if (name.isNotEmpty()) {
                             val data = HomePageList(
                                 System.currentTimeMillis().toString().substring(5).toInt(),
@@ -124,7 +124,7 @@ class HomeListDetailsActivity : DdToolsBindingBaseActivity<ActivityHomeListDetai
                     },
                     onNegative = {
                     },
-                    customView = editText,
+                    customView = editBinding.root,
                     onDismiss = { if (name.isEmpty()) FileUtils.deleteWithPath(endUrl) }
                 )
             }
@@ -149,23 +149,23 @@ class HomeListDetailsActivity : DdToolsBindingBaseActivity<ActivityHomeListDetai
     }
 
     private fun updateData(data: HomePageList) {
-        val editText = EditText(this@HomeListDetailsActivity).apply {
-            gravity = Gravity.CENTER
+        val editBinding = DialogSingleInputBinding.inflate(layoutInflater)
+        editBinding.inputText.apply {
             hint = "请输入简介"
         }
         dialog(
-            title = "",
+            title = "输入简介",
             message = "",
             positiveButtonText = "确定",
             negativeButtonText = "取消",
             onPositive = {
-                binding.detailsInfoText.text = editText.text
+                binding.detailsInfoText.text = editBinding.inputText.text
                 val dataForUpdate = data.copy(info = binding.detailsInfoText.text.toString())
                 viewModel.updateData(dataForUpdate)
             },
             onNegative = {
             },
-            customView = editText,
+            customView = editBinding.root,
             onDismiss = {
             }
         )

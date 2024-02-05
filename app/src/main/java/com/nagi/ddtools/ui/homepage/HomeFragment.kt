@@ -4,11 +4,9 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -22,6 +20,7 @@ import com.nagi.ddtools.data.Resource
 import com.nagi.ddtools.data.UpdateInfo
 import com.nagi.ddtools.database.homePagList.HomePageList
 import com.nagi.ddtools.databinding.DialogLongClickBinding
+import com.nagi.ddtools.databinding.DialogSingleInputBinding
 import com.nagi.ddtools.databinding.FragmentHomeBinding
 import com.nagi.ddtools.resourceGet.NetGet
 import com.nagi.ddtools.ui.adapter.HomePageListAdapter
@@ -34,7 +33,6 @@ import com.nagi.ddtools.utils.PrefsUtils
 import com.nagi.ddtools.utils.UiUtils.dialog
 import com.nagi.ddtools.utils.UiUtils.toast
 import kotlinx.coroutines.launch
-import okhttp3.internal.notify
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -129,19 +127,19 @@ class HomeFragment : Fragment() {
     private fun processResult(result: ActivityResult, onConfirm: (String, String) -> Unit) {
         if (result.resultCode == Activity.RESULT_OK) {
             result.data?.data?.let { uri ->
-                val editText = EditText(requireContext()).apply {
-                    gravity = Gravity.CENTER
+                val editBinding = DialogSingleInputBinding.inflate(layoutInflater)
+                editBinding.inputText.apply {
                     hint = "请输入名称"
                 }
                 val endUrl = moveImage(requireContext(), uri, "homePageList").toString()
                 var name = ""
                 requireContext().dialog(
-                    title = "",
-                    message = "",
+                    title = "输入名称",
+                    message = "输入的内容最多两行，超出会被省略",
                     positiveButtonText = "确定",
                     negativeButtonText = "取消",
                     onPositive = {
-                        name = editText.text.toString()
+                        name = editBinding.inputText.toString()
                         if (name.isNotEmpty()) {
                             onConfirm(name, endUrl)
                         } else {
@@ -149,7 +147,7 @@ class HomeFragment : Fragment() {
                         }
                     },
                     onNegative = {},
-                    customView = editText,
+                    customView = editBinding.root,
                     onDismiss = {
                         if (name.isEmpty()) {
                             FileUtils.deleteWithPath(endUrl)
@@ -214,6 +212,7 @@ class HomeFragment : Fragment() {
             onPositive = {
                 adapter.removeAt(position)
                 viewModel.removeData(data)
+                viewModel.removeChildData(data)
                 FileUtils.deleteWithPath(data.imgUrl)
             },
             negativeButtonText = "取消",

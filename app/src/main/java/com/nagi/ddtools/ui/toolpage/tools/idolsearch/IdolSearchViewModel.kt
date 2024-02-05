@@ -23,7 +23,7 @@ class IdolSearchViewModel : ViewModel() {
     val idolGroupData: LiveData<List<IdolGroupList>> = _idolGroupData
     val locationData: LiveData<Map<String, Int>> = _locationData
 
-    fun loadIdolGroupData(jsonString: String) {
+    fun loadIdolGroupData(jsonString: String, lo: String) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 val itemType = object : TypeToken<List<IdolGroupList>>() {}.type
@@ -31,7 +31,9 @@ class IdolSearchViewModel : ViewModel() {
                 val locationCountMap: Map<String, Int> =
                     idolGroupList.groupingBy { it.location }.eachCount()
                 _locationData.postValue(locationCountMap)
-                _idolGroupData.postValue(idolGroupList)
+                _idolGroupData.postValue(idolGroupList.filter {
+                    lo.isEmpty() || lo == it.location
+                })
                 database.insertAll(idolGroupList)
             }
         }

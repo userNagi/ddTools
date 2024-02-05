@@ -15,6 +15,7 @@ import com.nagi.ddtools.ui.base.DdToolsBaseActivity
 import com.nagi.ddtools.utils.FileUtils
 import com.nagi.ddtools.utils.LogUtils
 import com.nagi.ddtools.utils.NetUtils
+import com.nagi.ddtools.utils.PrefsUtils
 import com.nagi.ddtools.utils.UiUtils
 import com.nagi.ddtools.utils.UiUtils.toast
 import java.io.File
@@ -27,6 +28,7 @@ class ActivitySearchActivity : DdToolsBaseActivity() {
     private var loChoose = 0
     private var stChoose = 1
     private var daChoose = 0
+    private var location = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityActivitySearchBinding.inflate(layoutInflater).also {
@@ -37,6 +39,8 @@ class ActivitySearchActivity : DdToolsBaseActivity() {
     }
 
     private fun initView() {
+        location = PrefsUtils.getSettingLocation(applicationContext) ?: ""
+        binding.searchLocation.text = location.ifEmpty { "全世界" }
         binding.searchTitleBack.setOnClickListener { finish() }
         binding.searchActivityActivity.setOnClickListener { updateActivityByStatus() }
         binding.searchLocation.setOnClickListener { updateActivityByLocation() }
@@ -57,8 +61,9 @@ class ActivitySearchActivity : DdToolsBaseActivity() {
     private fun initAdapter() {
         val inputStream = File(applicationContext.filesDir, FileUtils.ACTIVITY_LIS_FILE)
         val jsonString = inputStream.bufferedReader().use { it.readText() }
-        viewModel.loadActivityList(jsonString)
+        viewModel.loadActivityList(jsonString, "")
         if (!isAdapterInitialized) {
+            viewModel.loadActivityList(jsonString, location)
             adapter = ActivityListAdapter(mutableListOf())
         }
         binding.searchRecycler.adapter = adapter
@@ -130,6 +135,7 @@ class ActivitySearchActivity : DdToolsBaseActivity() {
         }
         return builder.create()
     }
+
     private fun updateAdapter(data: List<ActivityList>) {
         adapter.updateData(data)
     }
@@ -144,6 +150,7 @@ class ActivitySearchActivity : DdToolsBaseActivity() {
             UiUtils.showLoading(this)
 
             try {
+                binding.searchLocation.text = "全世界"
                 NetUtils.fetchAndSave(
                     NetGet.getUrl("activity"), NetUtils.HttpMethod.POST,
                     emptyMap(), File(filesDir, FileUtils.ACTIVITY_LIS_FILE).path

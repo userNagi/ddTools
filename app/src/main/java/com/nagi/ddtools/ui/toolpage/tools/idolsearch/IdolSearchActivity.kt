@@ -16,6 +16,7 @@ import com.nagi.ddtools.ui.base.DdToolsBaseActivity
 import com.nagi.ddtools.utils.FileUtils
 import com.nagi.ddtools.utils.LogUtils
 import com.nagi.ddtools.utils.NetUtils
+import com.nagi.ddtools.utils.PrefsUtils
 import com.nagi.ddtools.utils.UiUtils
 import com.nagi.ddtools.utils.UiUtils.toast
 import java.io.File
@@ -26,6 +27,7 @@ class IdolSearchActivity : DdToolsBaseActivity() {
     private lateinit var adapter: IdolGroupListAdapter
     private var isAdapterInitialized = false
     private var chooseWhich = 0
+    private var location: String = ""
     private val viewModel: IdolSearchViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,6 +40,8 @@ class IdolSearchActivity : DdToolsBaseActivity() {
     }
 
     private fun initView() {
+        location = PrefsUtils.getSettingLocation(applicationContext) ?: ""
+        binding.searchLocation.text = location.ifEmpty { "全世界" }
         binding.searchTitleBack.setOnClickListener { finish() }
         binding.searchResearch.setOnClickListener { reGetData() }
         binding.searchLocation.setOnClickListener { updateIdolGroupData() }
@@ -61,8 +65,8 @@ class IdolSearchActivity : DdToolsBaseActivity() {
     private fun initAdapter() {
         val inputStream = File(applicationContext.filesDir, FileUtils.IDOL_GROUP_FILE)
         val jsonString = inputStream.bufferedReader().use { it.readText() }
-        viewModel.loadIdolGroupData(jsonString)
         if (!isAdapterInitialized) {
+            viewModel.loadIdolGroupData(jsonString, location)
             adapter = IdolGroupListAdapter(mutableListOf())
         }
         binding.searchRecycler.adapter = adapter
@@ -127,7 +131,7 @@ class IdolSearchActivity : DdToolsBaseActivity() {
 
                         is Resource.Error -> {
                             LogUtils.e("Failed to fetch idol group list: ${resource.message}")
-                            toast("获取失败，请稍后重试"  )
+                            toast("获取失败，请稍后重试")
                         }
                     }
                     UiUtils.hideLoading()

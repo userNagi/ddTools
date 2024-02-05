@@ -53,7 +53,6 @@ open class ActivityDetailsViewModel : ViewModel() {
                     val groupId = groupInfo.split("-")[0]
                     groupListDao.getById(groupId.toInt()).let { group ->
                         resultList.add(group)
-
                     }
                     _groupList.postValue(resultList)
                 }
@@ -71,13 +70,12 @@ open class ActivityDetailsViewModel : ViewModel() {
         }
     }
 
-    fun getTags(type: String, typeId: String) {
-        NetGet.getTags(type, typeId) { resource ->
+    fun getTags(type: String, typeId: String, id: Int? = 0) {
+        NetGet.getTags(type, typeId, id) { resource ->
             when (resource) {
                 is Resource.Success -> {
                     val itemType = object : TypeToken<List<TagsList>>() {}.type
                     val tagList: List<TagsList> = Gson().fromJson(resource.data, itemType)
-
                     _tags.postValue(tagList)
                 }
 
@@ -88,15 +86,21 @@ open class ActivityDetailsViewModel : ViewModel() {
         }
     }
 
-    fun addTags(type: String, typeId: Int, content: String, callback: (String) -> Unit) {
+    fun addTags(
+        type: String,
+        typeId: Int,
+        content: String,
+        action: String,
+        tagId: String,
+        callback: (String) -> Unit
+    ) {
         users.value?.let {
-            NetGet.sendEvaluate(type, typeId, content, it.id) { result ->
+            NetGet.sendEvaluate(type, typeId, content, it.id, action, tagId) { result ->
                 when (result) {
                     is Resource.Success -> callback(result.data)
                     is Resource.Error -> callback("error")
                 }
             }
-            getTags(type, typeId.toString())
         }
     }
 

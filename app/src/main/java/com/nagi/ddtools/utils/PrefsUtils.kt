@@ -47,7 +47,7 @@ object PrefsUtils {
         getSharedPreferences(context).edit().putString(USER_SETTINGS_LOCATION, location).apply()
     }
     fun getSettingLocation(context: Context): String? {
-        return getSharedPreferences(context).getString(USER_SETTINGS_LOCATION, "全世界")
+        return getSharedPreferences(context).getString(USER_SETTINGS_LOCATION, "")
     }
 
 }

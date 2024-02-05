@@ -35,6 +35,15 @@ class HomeViewModel : ViewModel() {
         }
     }
 
+    fun removeChildData(data: HomePageList) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                database.deleteByParent(data.id)
+                loadHomePageList()
+            }
+        }
+    }
+
     fun updateData(data: HomePageList) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {

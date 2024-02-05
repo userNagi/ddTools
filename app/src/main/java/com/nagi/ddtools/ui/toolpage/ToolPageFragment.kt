@@ -5,16 +5,15 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.nagi.ddtools.databinding.DialogChooseSelectedWayBinding
+import com.nagi.ddtools.databinding.DialogSingleInputBinding
 import com.nagi.ddtools.databinding.FragmentToolBinding
 import com.nagi.ddtools.ui.toolpage.tools.activitysearch.ActivitySearchActivity
 import com.nagi.ddtools.ui.toolpage.tools.fanboard.FanBoardActivity
 import com.nagi.ddtools.ui.toolpage.tools.groupwho.ChooseWhoActivity
 import com.nagi.ddtools.ui.toolpage.tools.idolsearch.IdolSearchActivity
-import com.nagi.ddtools.ui.toolpage.tools.posture.ChoosePostureActivity
 import com.nagi.ddtools.ui.widget.dialog.IncludeFromActivityDialog
 import com.nagi.ddtools.utils.UiUtils.dialog
 import com.nagi.ddtools.utils.UiUtils.hideDialog
@@ -45,8 +44,9 @@ class ToolPageFragment : Fragment() {
 
     private fun initViews() {
         binding.toolMainBody.setOnClickListener {
-            val editText = EditText(requireContext()).apply {
-                gravity = Gravity.CENTER
+            val editBinding =
+                DialogSingleInputBinding.inflate(layoutInflater)
+            editBinding.inputText.apply {
                 setText(viewModel.title.value)
             }
             requireContext().dialog(
@@ -55,12 +55,12 @@ class ToolPageFragment : Fragment() {
                 positiveButtonText = "确定",
                 negativeButtonText = "取消",
                 onPositive = {
-                    val newTitle = editText.text.toString()
+                    val newTitle = editBinding.inputText.text.toString()
                     viewModel.setTitle(newTitle)
                 },
                 onNegative = {
                 },
-                customView = editText
+                customView = editBinding.root
             )
         }
         binding.toolSearchIdol.setOnClickListener {
