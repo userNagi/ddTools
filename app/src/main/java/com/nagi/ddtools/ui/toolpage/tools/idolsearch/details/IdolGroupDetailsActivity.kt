@@ -23,8 +23,8 @@ import com.nagi.ddtools.utils.UiUtils
 import com.nagi.ddtools.utils.UiUtils.dialog
 import com.nagi.ddtools.utils.UiUtils.toast
 
-class IdolDetailsActivity : DdToolsBindingBaseActivity<ActivityIdolDetailsBinding>() {
-    private val viewModel: IdolDetailsViewModel by viewModels()
+class IdolGroupDetailsActivity : DdToolsBindingBaseActivity<ActivityIdolDetailsBinding>() {
+    private val viewModel: IdolGroupDetailsViewModel by viewModels()
     private var id: Int = 0
     private lateinit var mediaAdapter: IdolMediaListAdapter
     private lateinit var idolAdapter: IdolGroupListAdapter
@@ -49,6 +49,17 @@ class IdolDetailsActivity : DdToolsBindingBaseActivity<ActivityIdolDetailsBindin
             titleInclude.apply {
                 titleBack.setOnClickListener { finish() }
                 titleText.text = "组合详情"
+                titleRight.visibility = View.VISIBLE
+                titleRight.text = "编辑"
+                titleRight.setOnClickListener {
+                    UiUtils.openPage(
+                        this@IdolGroupDetailsActivity,
+                        IdolGroupEditActivity::class.java,
+                        false,
+                        Bundle().apply {
+                            putInt("id", id)
+                        })
+                }
             }
             val layoutManager = FlexboxLayoutManager(applicationContext).apply {
                 flexDirection = FlexDirection.ROW
@@ -192,7 +203,7 @@ class IdolDetailsActivity : DdToolsBindingBaseActivity<ActivityIdolDetailsBindin
             "为了安全起见，添加/点赞 暂只支持已登录用户使用，请先登录",
             "去登录",
             "我就看看",
-            { UiUtils.openPage(this@IdolDetailsActivity, LoginActivity::class.java) }
+            { UiUtils.openPage(this@IdolGroupDetailsActivity, LoginActivity::class.java) }
         )
     }
 

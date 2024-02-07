@@ -19,13 +19,19 @@
         android:theme="@style/Theme.DdTools"
         tools:targetApi="31">
         <activity
+            android:name=".ui.minepage.join.JoinUsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.toolpage.tools.idolsearch.details.IdolGroupEditActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.minepage.user.userInfo.UserInfoActivity"
             android:exported="false" />
         <activity
             android:name=".ui.minepage.setting.GlobalSettingActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.toolpage.tools.idolsearch.details.IdolDetailsActivity"
+            android:name=".ui.toolpage.tools.idolsearch.details.IdolGroupDetailsActivity"
             android:exported="false" />
         <activity
             android:name=".ui.homepage.details.HomeListDetailsActivity"

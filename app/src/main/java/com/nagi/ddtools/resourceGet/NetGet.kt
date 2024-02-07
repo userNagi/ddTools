@@ -1,11 +1,13 @@
 package com.nagi.ddtools.resourceGet
 
 import android.content.Context
+import android.net.Uri
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import com.google.gson.reflect.TypeToken
 import com.nagi.ddtools.data.Resource
 import com.nagi.ddtools.data.UpdateInfo
+import com.nagi.ddtools.database.idolGroupList.IdolGroupList
 import com.nagi.ddtools.database.user.User
 import com.nagi.ddtools.utils.DataUtils
 import com.nagi.ddtools.utils.FileUtils.ACTIVITY_LIS_FILE
@@ -23,8 +25,11 @@ object NetGet {
     private const val USER_LOGIN = "userLogin.php/"
     private const val USER_REGISTER = "registerUser.php/"
     private const val USER_FEEDBACK = "userFeedback.php/"
-    private const val USER_EVALUATE = "updateTags.php"
-    private const val GET_TAGS_URL = "getTags.php"
+    private const val USER_EVALUATE = "updateTags.php/"
+    private const val GET_TAGS_URL = "getTags.php/"
+    private const val UPDATE_GROUP_INFO = "upDateGroupList.php/"
+    private const val UPLOAD_IMG = "uploadImg.php/"
+
     fun getIdolGroupList(context: Context) {
         NetUtils.fetchAndSave(
             ROOT_URL + IDOL_GROUP_LIST_URL,
@@ -152,8 +157,8 @@ object NetGet {
         typeId: Int,
         content: String,
         userId: Int,
-        action:String,
-        tagId:String,
+        action: String,
+        tagId: String,
         callback: (Resource<String>) -> Unit
     ) {
         val requestBody = mutableMapOf(
@@ -185,6 +190,42 @@ object NetGet {
                 "info" to info
             )
         ) {}
+    }
+
+    fun uploadImage(context:Context, uri: Uri, type: String, callback: (Resource<String>) -> Unit) {
+        NetUtils.uploadImage(
+            context,
+            ROOT_URL + UPLOAD_IMG,
+            uri,
+            type
+        ) { resource ->
+            when (resource) {
+                is Resource.Success -> callback(Resource.Success(resource.data))
+                is Resource.Error -> callback(Resource.Error(resource.message))
+            }
+        }
+    }
+
+    fun editGroupInfo(group: IdolGroupList, callback: (Resource<String>) -> Unit) {
+        NetUtils.fetch(
+            ROOT_URL + UPDATE_GROUP_INFO,
+            NetUtils.HttpMethod.POST,
+            mapOf(
+                "id" to group.id.toString(),
+                "name" to group.name,
+                "img_url" to group.imgUrl,
+                "location" to group.location,
+                "version" to group.version.toString(),
+                "group_desc" to group.groupDesc,
+                "ext" to group.ext
+            )
+        ) { resource ->
+            when (resource) {
+                is Resource.Success -> callback(Resource.Success(resource.data))
+                is Resource.Error -> callback(Resource.Error(resource.message))
+            }
+        }
+
     }
 
     fun getUrl(url: String): String =

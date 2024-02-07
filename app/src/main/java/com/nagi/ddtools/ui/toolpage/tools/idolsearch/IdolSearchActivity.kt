@@ -13,11 +13,13 @@ import com.nagi.ddtools.databinding.ActivityIdolSearchBinding
 import com.nagi.ddtools.resourceGet.NetGet.getUrl
 import com.nagi.ddtools.ui.adapter.IdolGroupListAdapter
 import com.nagi.ddtools.ui.base.DdToolsBaseActivity
+import com.nagi.ddtools.ui.toolpage.tools.idolsearch.details.IdolGroupEditActivity
 import com.nagi.ddtools.utils.FileUtils
 import com.nagi.ddtools.utils.LogUtils
 import com.nagi.ddtools.utils.NetUtils
 import com.nagi.ddtools.utils.PrefsUtils
 import com.nagi.ddtools.utils.UiUtils
+import com.nagi.ddtools.utils.UiUtils.openPage
 import com.nagi.ddtools.utils.UiUtils.toast
 import java.io.File
 
@@ -50,11 +52,16 @@ class IdolSearchActivity : DdToolsBaseActivity() {
         binding.searchSwitchSearch.setOnCheckedChangeListener { _, isChecked ->
 //            updateSwitch(isChecked)
         }
+        binding.searchAdd.setOnClickListener {
+            openPage(this@IdolSearchActivity, IdolGroupEditActivity::class.java)
+        }
         binding.searchRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (dy > 0) {
+                    binding.searchAdd.hide()
                     binding.searchResearch.hide()
                 } else if (dy < 0) {
+                    binding.searchAdd.show()
                     binding.searchResearch.show()
                 }
             }

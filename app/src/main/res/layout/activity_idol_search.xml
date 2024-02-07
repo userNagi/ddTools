@@ -98,6 +98,18 @@
         tools:listitem="@layout/list_idol_group_view" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/search_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="@dimen/dp_20"
+        android:clickable="true"
+        android:src="@drawable/baseline_edit"
+        app:layout_constraintBottom_toTopOf="@id/search_research"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/search_research"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

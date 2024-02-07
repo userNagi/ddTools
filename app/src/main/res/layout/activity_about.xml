@@ -59,7 +59,7 @@
         android:id="@+id/about_app_produce"
         style="@style/TitleTextStyle"
         android:layout_marginTop="@dimen/dp_20"
-        android:text="produce by : 《贡献者列表》"
+        android:text="produce by : GitHub"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

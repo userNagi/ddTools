@@ -42,8 +42,8 @@ class AboutActivity : DdToolsBindingBaseActivity<ActivityAboutBinding>() {
                     openPage(this@AboutActivity,
                         WebViewActivity::class.java, false,
                         Bundle().apply {
-                            putString("url", getUrl("info"))
-                            putString("title", "贡献者列表")
+                            putString("url", "https://github.com/userNagi/ddTools")
+                            putString("title", "github")
                         }
                     )
                 }

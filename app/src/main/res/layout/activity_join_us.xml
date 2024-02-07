@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray"
+    tools:context=".ui.minepage.join.JoinUsActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:ignore="HardcodedText">
+
+        <include
+            android:id="@+id/title_include"
+            layout="@layout/include_page_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/text_title"
+            style="@style/TitleTextStyle"
+            android:text="写在前面"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title_include" />
+
+        <TextView
+            android:id="@+id/text_content"
+            style="@style/Text"
+            android:layout_marginTop="@dimen/dp_20"
+            android:paddingHorizontal="@dimen/dp_20"
+            android:text="\t\t非常感谢你能来使用这款app，创作这款app的起因是我和我的朋友打算做一些好玩而有趣的事情，经过了一段时间的开发，我们做出了这款不知道在您看来怎么样的app。\n\t\t这款app的初版，开发者仅有我一人，由于我是设计和产品出身，导致做出来的东西可能只有基础的功能，在页面设计和细节上并不是那么优美。\n\t\t因此，如果您具备以下能力，或者是有想要提出的功能，或者是发现了什么bug，哪怕是单纯的想要提出一些自己的想法，都可以加入"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_title" />
+
+        <TextView
+            android:id="@+id/text_qq"
+            style="@style/Text"
+            android:text="QQ群：940195529"
+            android:textColor="@color/lty"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_content" />
+
+        <TextView
+            android:id="@+id/text_need_title"
+            style="@style/TitleTextStyle"
+            android:layout_marginTop="@dimen/dp_20"
+            android:text="目前急需："
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_qq" />
+        <TextView
+            android:id="@+id/text_need_text"
+            style="@style/Text"
+            android:layout_marginTop="@dimen/dp_20"
+            android:paddingHorizontal="@dimen/dp_20"
+            android:text="设计：\n目前app内大量页面设计简陋惨不忍睹（比如活动列表页）需要有稍微有一点点艺术设计能力的人来帮忙重新设计（至少我们是完全没有ORZ）\n
+\n\n产品：\n目前想做的，我们基本都做出来了，但是工具页依然有不少的空白等待补全，希望有能提出合理意见的产品来帮忙建设\n\n开发：\n目前app端使用的是Kotlin+不完全的MVVM结构，服务端采用php，如果可以帮忙开发维护就感激不尽了（同样也可以在github上提交来进行协助，地址请参考关于页）"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_need_title" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

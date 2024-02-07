@@ -22,7 +22,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class IdolDetailsViewModel : ViewModel() {
+class IdolGroupDetailsViewModel : ViewModel() {
     private val _users = MutableLiveData<User>()
     val users: LiveData<User> = _users
 

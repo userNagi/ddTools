@@ -1,9 +1,12 @@
 package com.nagi.ddtools.utils
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.icu.text.SimpleDateFormat
+import android.net.Uri
 import com.nagi.ddtools.data.ProgressListener
 import com.nagi.ddtools.data.Resource
 import kotlinx.coroutines.Dispatchers
@@ -12,8 +15,11 @@ import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.FormBody
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.Response
 import org.json.JSONObject
 import java.io.File
@@ -21,6 +27,8 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
 import java.net.URL
+import java.util.Date
+import java.util.Locale
 import java.util.concurrent.TimeUnit
 
 object NetUtils {
@@ -61,8 +69,11 @@ object NetUtils {
                         val message = json.optString("message")
 
                         if (status == "success") {
+                            LogUtils.e(message)
                             callback(Resource.Success(message))
                         } else {
+                            LogUtils.e(message)
+                            LogUtils.e(params.toString())
                             callback(Resource.Error(message ?: "未知错误"))
                         }
                     } else {
@@ -98,6 +109,73 @@ object NetUtils {
         }
     }
 
+    //上传文件
+    fun uploadImage(
+        context: Context,
+        url: String,
+        uri: Uri,
+        type: String,
+        callback: (Resource<String>) -> Unit
+    ) {
+        // 检测是否为支持的图片类型
+        val mimeType =
+            uriToMimeType(context, uri) ?: return callback(Resource.Error("不支持的文件类型"))
+        context.contentResolver.openInputStream(uri)?.use { inputStream ->
+            val tempFile = createTempFile(context)
+            tempFile.outputStream().use {
+                inputStream.copyTo(it)
+            }
+
+            val fileBody = tempFile.asRequestBody(mimeType.toMediaTypeOrNull())
+            val requestBody = MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("image", tempFile.name, fileBody)
+                .addFormDataPart("type", type) // 添加描述部分
+                .build()
+
+            val request = Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build()
+
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    tempFile.delete()
+                    callback(Resource.Error("请求失败: ${e.localizedMessage}"))
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    tempFile.delete()
+                    response.use {
+                        if (it.isSuccessful) {
+                            val responseBody = it.body?.string()
+                            val json = JSONObject(responseBody!!)
+                            val status = json.optString("status")
+                            val message = json.optString("message")
+                            if (status == "success") {
+                                callback(Resource.Success(message))
+                            } else {
+                                callback(Resource.Error(message ?: "未知错误"))
+                            }
+                        } else {
+                            callback(Resource.Error("响应失败: HTTP ${it.code}"))
+                        }
+                    }
+                }
+            })
+        }
+
+    }
+
+    private fun createTempFile(context: Context): File {
+        val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        val storageDir = context.externalCacheDir
+        return File.createTempFile("JPEG_${timestamp}_", ".jpg", storageDir)
+    }
+
+    private fun uriToMimeType(context: Context, uri: Uri): String? {
+        return context.contentResolver.getType(uri)
+    }
 
     // 根据请求类型创建Request对象
     private fun createRequest(
@@ -118,7 +196,12 @@ object NetUtils {
             HttpMethod.GET -> {
                 val httpUrlBuilder = url.toHttpUrlOrNull()?.newBuilder()
                     ?: throw IllegalArgumentException("Invalid URL: $url")
-                params.forEach { (key, value) -> httpUrlBuilder.addQueryParameter(key, value) }
+                params.forEach { (key, value) ->
+                    httpUrlBuilder.addQueryParameter(
+                        key,
+                        value
+                    )
+                }
                 builder.url(httpUrlBuilder.build())
             }
         }
@@ -194,7 +277,8 @@ object NetUtils {
                     while (inputStream!!.read(buffer).also { read = it } != -1) {
                         bytesRead += read
                         outputStream.write(buffer, 0, read)
-                        val progress = if (contentLength > 0) (bytesRead * 100 / contentLength).toInt() else -1
+                        val progress =
+                            if (contentLength > 0) (bytesRead * 100 / contentLength).toInt() else -1
                         progressListener.onProgress(progress)
                     }
                     outputStream.flush()
@@ -208,7 +292,6 @@ object NetUtils {
             }
         })
     }
-
 
 
     suspend fun getBitmapFromURL(urlString: String): Bitmap? {
@@ -232,3 +315,4 @@ object NetUtils {
         }
     }
 }
+

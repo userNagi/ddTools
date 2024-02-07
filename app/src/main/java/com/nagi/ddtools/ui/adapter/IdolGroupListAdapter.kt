@@ -10,11 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import com.google.gson.reflect.TypeToken
-import com.nagi.ddtools.R
 import com.nagi.ddtools.data.MediaList
 import com.nagi.ddtools.database.idolGroupList.IdolGroupList
 import com.nagi.ddtools.databinding.ListIdolGroupViewBinding
-import com.nagi.ddtools.ui.toolpage.tools.idolsearch.details.IdolDetailsActivity
+import com.nagi.ddtools.ui.toolpage.tools.idolsearch.details.IdolGroupDetailsActivity
 import com.nagi.ddtools.utils.UiUtils.openPage
 import com.nagi.ddtools.utils.UiUtils.openUrl
 
@@ -52,7 +51,7 @@ class IdolGroupListAdapter(
             itemView.setOnClickListener {
                 openPage(
                     binding.root.context as Activity,
-                    IdolDetailsActivity::class.java,
+                    IdolGroupDetailsActivity::class.java,
                     false,
                     Bundle().apply {
                         putInt("id", item.id)

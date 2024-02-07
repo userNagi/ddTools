@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/gray"
     android:fillViewport="true"
-    tools:context=".ui.toolpage.tools.idolsearch.details.IdolDetailsActivity"
+    tools:context=".ui.toolpage.tools.idolsearch.details.IdolGroupDetailsActivity"
     tools:ignore="HardcodedText">
 
     <androidx.constraintlayout.widget.ConstraintLayout
