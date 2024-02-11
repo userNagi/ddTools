@@ -49,54 +49,76 @@ class IdolGroupDetailsViewModel : ViewModel() {
     }
 
     fun setId(id: Int) {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                val detailsData = groupListDao.getById(id)
-                _data.postValue(detailsData)
-                val memberResult = mutableListOf<IdolGroupList>()
-                val memberResultString = detailsData.memberIds
-                if (!memberResultString.isNullOrEmpty()) {
-                    val memberResultList = memberResultString.split(",")
-                    for (memberId in memberResultList) {
-                        if (memberId.isNotEmpty()) {
-                            groupListDao.getById(memberId.toInt()).let { member ->
-                                memberResult.add(member)
-                            }
+        loadGroupData(id)
+        loadMemberData(id)
+        loadActivityData(id)
+        loadMediaData(id)
+    }
+
+    private fun loadGroupData(id: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val detailsData = groupListDao.getById(id)
+            _data.postValue(detailsData)
+        }
+    }
+
+    fun loadMemberData(groupId: Int, member: String = "") {
+        viewModelScope.launch(Dispatchers.IO) {
+            // (如果member不为空，则使用member的数据，否则正常读取数据库，这个是为了区分预览还是正式，下面同理)
+            val memberResult = mutableListOf<IdolGroupList>()
+            val memberResultString = member.ifEmpty { groupListDao.getById(groupId).memberIds }
+            if (!memberResultString.isNullOrEmpty()) {
+                val memberResultList = memberResultString.split(",")
+                for (memberId in memberResultList) {
+                    if (memberId.isNotEmpty()) {
+                        groupListDao.getById(memberId.toInt()).let { member ->
+                            memberResult.add(member)
                         }
                     }
-                    _memberList.postValue(memberResult)
                 }
-                val activityResult = mutableListOf<ActivityList>()
-                val activityIdListString = detailsData.activityIds
-                if (!activityIdListString.isNullOrEmpty()) {
-                    val activityIdList = activityIdListString.split(",")
-                    for (activityId in activityIdList) {
-                        if (activityId.isNotEmpty()) {
-                            activityListDao.getById(activityId).let { activity ->
-                                activityResult.add(activity)
-                            }
+                _memberList.postValue(memberResult)
+            }
+        }
+    }
+
+    fun loadActivityData(groupId: Int, activity: String = "") {
+        viewModelScope.launch(Dispatchers.IO) {
+            val activityResult = mutableListOf<ActivityList>()
+            val activityIdString = activity.ifEmpty { groupListDao.getById(groupId).activityIds }
+            if (!activityIdString.isNullOrEmpty()) {
+                val activityIdList = activityIdString.split(",")
+                for (activityId in activityIdList) {
+                    if (activityId.isNotEmpty()) {
+                        activityListDao.getById(activityId).let { activity ->
+                            activityResult.add(activity)
                         }
                     }
-                    _activityList.postValue(activityResult)
                 }
-                var mediaResult = mutableListOf<MediaList>()
-                val mediaJsonString = detailsData.ext
-                if (mediaJsonString.isNotEmpty()) {
-                    try {
-                        val mediaJson = JsonParser.parseString(detailsData.ext).asJsonObject
-                        if (mediaJson.has("media")) {
-                            val mediaList = mediaJson.get("media").asJsonArray
-                            val itemType = object : TypeToken<List<MediaList>>() {}.type
-                            mediaResult = Gson().fromJson(mediaList, itemType)
-                        }
-                        _medias.postValue(mediaResult)
-                    } catch (e: Exception) {
-                        LogUtils.e("Error getting media : + ${e.message}")
+                _activityList.postValue(activityResult)
+            }
+        }
+    }
+
+    fun loadMediaData(groupId: Int, ext: String = "") {
+        viewModelScope.launch(Dispatchers.IO) {
+            var mediaResult = mutableListOf<MediaList>()
+            val mediaJsonString = ext.ifEmpty { groupListDao.getById(groupId).ext }
+            if (mediaJsonString.isNotEmpty()) {
+                try {
+                    val mediaJson = JsonParser.parseString(mediaJsonString).asJsonObject
+                    if (mediaJson.has("media")) {
+                        val mediaList = mediaJson.get("media").asJsonArray
+                        val itemType = object : TypeToken<List<MediaList>>() {}.type
+                        mediaResult = Gson().fromJson(mediaList, itemType)
                     }
+                    _medias.postValue(mediaResult)
+                } catch (e: Exception) {
+                    LogUtils.e("Error getting media : + ${e.message}")
                 }
             }
         }
     }
+
 
     fun getUser() {
         viewModelScope.launch {

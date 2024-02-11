@@ -8,7 +8,7 @@ import androidx.room.Query
 import androidx.room.Update
 @Dao
 interface ActivityListDao {
-    @Query("SELECT * FROM ActivityList")
+    @Query("SELECT * FROM ActivityList ORDER BY duration_date ASC")
     fun getAll(): List<ActivityList>
 
     @Query("SELECT * FROM ActivityList WHERE id = :id")

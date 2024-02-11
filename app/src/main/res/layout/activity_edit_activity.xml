@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray"
+    tools:context=".ui.toolpage.tools.activitysearch.details.EditActivityActivity"
+    tools:ignore="HardcodedText">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include
+            android:id="@+id/title_include"
+            layout="@layout/include_page_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/activity_info_title"
+            style="@style/TitleTextStyle"
+            android:text="基本信息"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title_include" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/activity_name_layout"
+            style="@style/RegisterTextInputLayoutStyle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/activity_info_title">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/activity_name"
+                style="@style/RegisterTextInputTextStyle"
+                android:hint="活动名"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/activity_date_layout"
+            style="@style/RegisterTextInputLayoutStyle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/activity_name_layout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/activity_date"
+                style="@style/RegisterTextInputTextStyle"
+                android:hint="日期 (如2024/01/01）"
+                android:inputType="date" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/activity_location_layout"
+            style="@style/RegisterTextInputLayoutStyle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/activity_date_layout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/activity_location"
+                style="@style/RegisterTextInputTextStyle"
+                android:hint="城市" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/activity_location_desc_layout"
+            style="@style/RegisterTextInputLayoutStyle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/activity_location_layout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/activity_location_desc"
+                style="@style/RegisterTextInputTextStyle"
+                android:hint="详细地址" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/activity_desc_layout"
+            style="@style/RegisterTextInputLayoutStyle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/activity_location_desc_layout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/activity_desc"
+                style="@style/RegisterTextInputTextStyle"
+                android:hint="简介(可空，不会写可以空着)" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/activity_time_layout"
+            style="@style/RegisterTextInputLayoutStyle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/activity_desc_layout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/activity_time"
+                style="@style/RegisterTextInputTextStyle"
+                android:hint="时间" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/activity_price_layout"
+            style="@style/RegisterTextInputLayoutStyle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/activity_time_layout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/activity_price"
+                style="@style/RegisterTextInputTextStyle"
+                android:hint="票价" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/activity_buyUrl_layout"
+            style="@style/RegisterTextInputLayoutStyle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/activity_price_layout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/activity_buyUrl"
+                style="@style/RegisterTextInputTextStyle"
+                android:hint="购买地址" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/activity_weibo_layout"
+            style="@style/RegisterTextInputLayoutStyle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/activity_buyUrl_layout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/activity_weibo"
+                style="@style/RegisterTextInputTextStyle"
+                android:hint="微博地址(可为空，没有可填主办方地址)" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/activity_part_title"
+            style="@style/TitleTextStyle"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_20"
+            android:text="参与团体(可选,左滑可删除)"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/activity_weibo_layout" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/activity_part_list"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_0"
+            android:nestedScrollingEnabled="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@+id/activity_part_title"
+            tools:listitem="@layout/list_idol_group_view" />
+
+        <TextView
+            android:id="@+id/activity_part_add"
+            style="@style/Text"
+            android:layout_marginTop="@dimen/dp_20"
+            android:text="点我添加"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/activity_part_list" />
+
+        <TextView
+            android:id="@+id/activity_videos_title"
+            style="@style/TitleTextStyle"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_20"
+            android:text="视频（可选）"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/activity_part_add" />
+
+        <LinearLayout
+            android:id="@+id/activity_media_list"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_20"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/activity_videos_title" />
+
+        <TextView
+            android:id="@+id/activity_videos_add"
+            style="@style/Text"
+            android:layout_marginTop="@dimen/dp_20"
+            android:text="点我添加"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/activity_media_list" />
+
+        <TextView
+            android:id="@+id/activity_submit"
+            style="@style/TitleTextStyle"
+            android:layout_marginTop="@dimen/dp_50"
+            android:background="@drawable/bg_10_round"
+            android:paddingHorizontal="@dimen/dp_50"
+            android:paddingVertical="@dimen/dp_10"
+            android:text="@string/confirm"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/activity_videos_add" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

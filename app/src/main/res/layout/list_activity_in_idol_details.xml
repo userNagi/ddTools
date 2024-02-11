@@ -25,6 +25,7 @@
         <TextView
             android:id="@+id/activity_time_table"
             style="@style/Text"
+            android:layout_marginStart="6dp"
             android:textColor="#149AA8"
             tools:text="13:00-13:30" />
 

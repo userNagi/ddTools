@@ -27,9 +27,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/register_input"
+                style="@style/RegisterTextInputTextStyle"
                 android:hint="团体名"
                 android:inputType="text"
                 app:layout_constraintTop_toBottomOf="@+id/title_include"
@@ -54,9 +52,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_location"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/register_input"
+                style="@style/RegisterTextInputTextStyle"
                 android:hint="地点（直接输入，如：北京/辽宁/内蒙古）"
                 android:inputType="text"
                 app:layout_constraintTop_toBottomOf="@+id/title_include"
@@ -72,9 +68,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_desc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/register_input"
+                style="@style/RegisterTextInputTextStyle"
                 android:hint="组合简介"
                 android:inputType="textMultiLine"
                 app:layout_constraintTop_toBottomOf="@+id/title_include"
@@ -90,7 +84,7 @@
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="@+id/edit_desc_layout"
             app:layout_constraintStart_toStartOf="@+id/edit_desc_layout"
-            app:layout_constraintTop_toBottomOf="@+id/edit_desc_layout"/>
+            app:layout_constraintTop_toBottomOf="@+id/edit_desc_layout" />
 
         <TextView
             android:id="@+id/edit_media_add"
@@ -105,9 +99,23 @@
             app:layout_constraintTop_toBottomOf="@+id/edit_media_layout" />
 
         <TextView
+            android:id="@+id/edit_preview"
+            style="@style/TitleTextStyle"
+            android:layout_marginTop="@dimen/dp_30"
+            android:background="@drawable/bg_10_round"
+            android:paddingHorizontal="@dimen/dp_50"
+            android:paddingVertical="@dimen/dp_10"
+            android:text="预览"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_media_add" />
+
+        <TextView
             android:id="@+id/edit_submit"
             style="@style/TitleTextStyle"
-            android:layout_marginTop="@dimen/dp_50"
+            android:layout_marginTop="@dimen/dp_30"
             android:background="@drawable/bg_10_round"
             android:paddingHorizontal="@dimen/dp_50"
             android:paddingVertical="@dimen/dp_10"
@@ -116,7 +124,8 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_media_add" />
+            app:layout_constraintTop_toBottomOf="@+id/edit_preview" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

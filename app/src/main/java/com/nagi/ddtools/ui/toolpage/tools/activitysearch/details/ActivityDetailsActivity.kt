@@ -80,6 +80,7 @@ class ActivityDetailsActivity : DdToolsBindingBaseActivity<ActivityDetailsActivi
         if (!isAdapterInitialized) {
             groupAdapter = IdolGroupListAdapter(mutableListOf())
         }
+        groupAdapter.isShowTimeTable = true
         binding.detailsGroupList.adapter = groupAdapter
         isAdapterInitialized = true
     }

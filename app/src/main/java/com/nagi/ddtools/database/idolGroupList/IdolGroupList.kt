@@ -10,13 +10,13 @@ data class IdolGroupList(
     @PrimaryKey(autoGenerate = true) val id: Int,
     @SerializedName("img_url")
     @ColumnInfo(name = "img_url")
-    val imgUrl: String,
+    var imgUrl: String,
     val name: String,
     val version: Int,
     val location: String,
     @SerializedName("group_desc")
     @ColumnInfo(name = "group_desc")
-    val groupDesc: String,
+    var groupDesc: String,
     @SerializedName("member_ids")
     @ColumnInfo(name = "member_ids")
     val memberIds: String?,

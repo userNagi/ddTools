@@ -15,6 +15,7 @@ import com.nagi.ddtools.database.idolGroupList.IdolGroupList
 import com.nagi.ddtools.database.idolGroupList.IdolGroupListDao
 import com.nagi.ddtools.database.user.User
 import com.nagi.ddtools.resourceGet.NetGet
+import com.nagi.ddtools.utils.DataUtils
 import com.nagi.ddtools.utils.LogUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -52,7 +53,9 @@ open class ActivityDetailsViewModel : ViewModel() {
                 for (groupInfo in groupIdList ?: emptyList()) {
                     val groupId = groupInfo.split("-")[0]
                     groupListDao.getById(groupId.toInt()).let { group ->
-                        resultList.add(group)
+                        resultList.add(
+                            group.copy(groupDesc = getTimeTable(groupInfo, groupId.toInt()))
+                        )
                     }
                     _groupList.postValue(resultList)
                 }
@@ -104,4 +107,23 @@ open class ActivityDetailsViewModel : ViewModel() {
         }
     }
 
+    private fun getTimeTable(data: String, groupId: Int): String {
+        val groupTimeData = DataUtils.getGroupTime(getThisPart(data, groupId))
+        if (groupTimeData.size == 4) {
+            groupTimeData.removeAt(0)
+            val timeRange = "${DataUtils.trimSecondsFromTime(groupTimeData[0])}-${
+                DataUtils.trimSecondsFromTime(groupTimeData[1])
+            }"
+            val parts = groupTimeData[2].split(":")
+            val partsMinutes = parts[0].toInt() * 60 + parts[1].toInt()
+            val durationString = "(${partsMinutes}min)"
+            return "$timeRange$durationString"
+        }
+        return ""
+    }
+
+    private fun getThisPart(data: String, groupId: Int): String =
+        data.split(",")
+            .find { it.contains(groupId.toString()) }
+            .orEmpty()
 }

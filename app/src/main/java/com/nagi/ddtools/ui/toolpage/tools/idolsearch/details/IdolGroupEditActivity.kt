@@ -19,6 +19,7 @@ import com.nagi.ddtools.resourceGet.NetGet
 import com.nagi.ddtools.ui.base.DdToolsBindingBaseActivity
 import com.nagi.ddtools.ui.widget.MediaSpinnerAndInput
 import com.nagi.ddtools.utils.FileUtils
+import com.nagi.ddtools.utils.UiUtils.openPage
 import com.nagi.ddtools.utils.UiUtils.toast
 
 class IdolGroupEditActivity : DdToolsBindingBaseActivity<ActivityIdolGroupEditBinding>() {
@@ -48,6 +49,7 @@ class IdolGroupEditActivity : DdToolsBindingBaseActivity<ActivityIdolGroupEditBi
         }
         binding.editMediaAdd.setOnClickListener { addMedia() }
         binding.editSubmit.setOnClickListener { if (checkEmpty()) editSubmit() }
+        binding.editPreview.setOnClickListener { if (checkEmpty()) previewSubmit() }
     }
 
     private fun initViewModel() {
@@ -106,11 +108,7 @@ class IdolGroupEditActivity : DdToolsBindingBaseActivity<ActivityIdolGroupEditBi
             binding.editLocationLayout.error = "请填写团体地点"
             return false
         }
-        if (binding.editDesc.text.isNullOrEmpty()) {
-            binding.editDescLayout.error = "请填写团体描述"
-            return true
-        }
-        if (!::uri.isInitialized && uri.toString().isEmpty()) {
+        if (id == 0 && (!::uri.isInitialized || uri.toString().isEmpty())) {
             toast("请选择图片")
             return false
         }
@@ -118,45 +116,71 @@ class IdolGroupEditActivity : DdToolsBindingBaseActivity<ActivityIdolGroupEditBi
     }
 
 
+    private fun extractGroupData(versionIncrement: Int = 0): IdolGroupList? {
+        val name = binding.editName.text.toString()
+        val location = binding.editLocation.text.toString()
+        val groupDesc = binding.editDesc.text.toString()
+        val version = (viewModel.info.value?.version?.plus(versionIncrement)) ?: 1
+
+        return if (name.isNotEmpty() && location.isNotEmpty() && groupDesc.isNotEmpty()) {
+            IdolGroupList(
+                id = viewModel.info.value?.id ?: System.currentTimeMillis().toString().takeLast(8)
+                    .toInt(),
+                imgUrl = viewModel.info.value?.imgUrl ?: "",
+                name = name,
+                version = version,
+                location = location,
+                groupDesc = groupDesc,
+                ext = getMediaList(name),
+                memberIds = viewModel.info.value?.memberIds,
+                activityIds = viewModel.info.value?.activityIds
+            )
+        } else {
+            null
+        }
+    }
+
     private fun editSubmit() {
-        val submitGroupData = viewModel.info.value?.copy(
-            name = binding.editName.text.toString(),
-            location = binding.editLocation.text.toString(),
-            groupDesc = binding.editDesc.text.toString(),
-            version = viewModel.info.value?.version?.plus(1) ?: 1,
-            ext = getMediaList(binding.editName.text.toString())
-        )
-        if (submitGroupData != null) viewModel.sendSubmitRequest(submitGroupData)
-        else toast("错误，有值为空！")
+        extractGroupData(versionIncrement = 1)?.let { submitGroupData ->
+            viewModel.sendSubmitRequest(submitGroupData)
+        } ?: toast("错误，有值为空！")
     }
 
     private fun createSubmit() {
-        getImgUrl {
-            val data = IdolGroupList(
-                id = System.currentTimeMillis().toString().takeLast(8).toInt(),
-                imgUrl = it.ifEmpty { "" },
-                name = binding.editName.text.toString(),
-                version = 1,
-                location = binding.editLocation.text.toString(),
-                groupDesc = binding.editDesc.text.toString(),
-                ext = getMediaList(binding.editName.text.toString()),
-                memberIds = null,
-                activityIds = null
-            )
-            NetGet.editGroupInfo(data) { resource ->
-                when (resource) {
-                    is Resource.Success -> {
-                        toast(resource.data)
-                        finish()
-                    }
+        extractGroupData()?.let { data ->
+            getImgUrl { imgUrl ->
+                data.imgUrl = imgUrl.ifEmpty { "" }
+                NetGet.editGroupInfo(data) { resource ->
+                    when (resource) {
+                        is Resource.Success -> {
+                            toast(resource.data)
+                            finish()
+                        }
 
-                    is Resource.Error -> {
-                        toast(resource.message)
+                        is Resource.Error -> {
+                            toast(resource.message)
+                        }
                     }
                 }
             }
         }
     }
+
+    private fun previewSubmit() {
+        extractGroupData()?.let { data ->
+            val jsonPreview = Gson().toJson(data)
+            openPage(
+                this@IdolGroupEditActivity,
+                IdolGroupDetailsActivity::class.java,
+                false,
+                Bundle().apply {
+                    putInt("id",id)
+                    putString("pageType", "preview")
+                    putString("data", jsonPreview)
+                })
+        } ?: toast("错误，有值为空！")
+    }
+
 
     private fun getImgUrl(callback: (String) -> Unit) {
         NetGet.uploadImage(
@@ -180,9 +204,10 @@ class IdolGroupEditActivity : DdToolsBindingBaseActivity<ActivityIdolGroupEditBi
 
     private fun handleActivityResult(result: ActivityResult) {
         if (result.resultCode == Activity.RESULT_OK) {
-            result.data?.data?.let { uri ->
+            result.data?.data?.let { uriEnd ->
                 try {
-                    contentResolver.openInputStream(uri)?.use { inputStream ->
+                    uri = uriEnd
+                    contentResolver.openInputStream(uriEnd)?.use { inputStream ->
                         val bitmap = BitmapFactory.decodeStream(inputStream)
                         binding.editImage.setImageBitmap(bitmap)
                     }

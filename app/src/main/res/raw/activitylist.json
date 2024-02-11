@@ -1,17 +1,47 @@
 [
   {
-    "id": "111",
-    "name": "DOKI FES 2024 004\uff01",
-    "duration_date": "2024-01-03",
-    "duration_time": "12:30\u5f00\u573a\uff0c1:30\u5165\u573a\uff0c6:30\u7ed3\u675f",
-    "location": "\u5317\u4eac",
-    "price": "\u65e9\u9e1f\u796850\uff0c\u9884\u552e\u7968100\uff0c\u73b0\u573a\u7968150",
-    "buy_url": "https:\/\/baidu.com\/",
-    "location_desc": "\u6d77\u6dc0\u533a\u563b\u756a\u91cc3F",
-    "info_desc": "\u8be6\u7ec6\u4ecb\u7ecd",
-    "weibo_url": "https:\/\/baidu.com\/",
+    "id": "36050965",
+    "name": "瓯越偶像日sp.01情人节Mini",
+    "duration_date": "2024-02-14",
+    "duration_time": "start：13:00",
+    "location": "浙江",
+    "price": "早鸟票\/39 现场票\/59 情侣票72",
+    "buy_url": "https:\/\/simullive.cn\/u\/app#\/pages\/views\/activityDetail\/activityDetail?g=xJWonGHEsUkEO0Sw6fhv2d_pq",
+    "location_desc": "温州市鞋都大道5050广场6L",
+    "info_desc": "",
+    "weibo_url": "https:\/\/weibo.com\/7874285646\/4993773549391817",
     "bili_url": null,
     "ext": null,
-    "participating_groups": "166037530,191604229"
+    "participating_groups": "90372814-13:00:00-13:25:00,67051104-13:25:00-13:50:00,36150416-13:50:00-14:15:00,12590216-14:15:00-14:50:00"
+  },
+  {
+    "id": "37215102",
+    "name": "Polar Ray Live极光纪 4th 重庆站",
+    "duration_date": "2024-02-14",
+    "duration_time": "14:00-20:00",
+    "location": "重庆",
+    "price": "预售票:68\n现场票:78",
+    "buy_url": "https:\/\/wap.showstart.com\/pages\/activity\/detail\/detail?shareId=4426124&activityId=218701",
+    "location_desc": "渝中区 较场口90号得意潮馆负一楼B1-21",
+    "info_desc": "",
+    "weibo_url": "https:\/\/weibo.com\/5856528983\/4992576895583879",
+    "bili_url": null,
+    "ext": null,
+    "participating_groups": "92561180-00:00:00-00:00:00,91871064-00:00:00-00:00:00,87760527-00:00:00-00:00:00,62014296-00:00:00-00:00:00,12409429-00:00:00-00:00:00"
+  },
+  {
+    "id": "13795878",
+    "name": "布谷社拼盘活动",
+    "duration_date": "2024-02-17",
+    "duration_time": "start：18:10\nlive：18:35",
+    "location": "北京",
+    "price": "饮品入场¥59",
+    "buy_url": "https:\/\/k.youshop10.com\/6EyWt4ku?a=b&p=iphone&wfr=BuyercopyURL&share_relation=cde899de78f85ae1_1617822883_1",
+    "location_desc": "布谷社（北新桥店）",
+    "info_desc": "",
+    "weibo_url": "https:\/\/weibo.com\/7887969348\/4988035869446491",
+    "bili_url": null,
+    "ext": null,
+    "participating_groups": "13396948-18:35:00-18:50:00,72461993-18:50:00-19:10:00,39801643-19:10:00-19:30:00,96123391-19:30:00-19:50:00,84930370-19:50:00-20:15:00"
   }
 ]

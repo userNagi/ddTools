@@ -34,6 +34,16 @@ class ChooseWhoViewModel : ViewModel() {
         AppDatabase.getInstance().idolGroupListDao()
     }
 
+    init {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                val groupList = groupListDao.getAll()
+                _location.postValue(groupList.map { it.location }.toSet())
+                _groupData.postValue(groupList)
+            }
+        }
+    }
+
     fun initData(name: String) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
@@ -49,16 +59,6 @@ class ChooseWhoViewModel : ViewModel() {
                     }
                 }
                 _groupList.postValue(resultList)
-            }
-        }
-    }
-
-    fun getGroupData() {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                val groupList = groupListDao.getAll()
-                _location.postValue(groupList.map { it.location }.toSet())
-                _groupData.postValue(groupList)
             }
         }
     }

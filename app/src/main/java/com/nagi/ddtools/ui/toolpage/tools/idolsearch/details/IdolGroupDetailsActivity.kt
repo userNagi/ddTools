@@ -10,6 +10,8 @@ import androidx.activity.viewModels
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import com.google.gson.Gson
+import com.nagi.ddtools.data.PageState
 import com.nagi.ddtools.data.TagsList
 import com.nagi.ddtools.database.idolGroupList.IdolGroupList
 import com.nagi.ddtools.databinding.ActivityIdolDetailsBinding
@@ -26,6 +28,7 @@ import com.nagi.ddtools.utils.UiUtils.toast
 class IdolGroupDetailsActivity : DdToolsBindingBaseActivity<ActivityIdolDetailsBinding>() {
     private val viewModel: IdolGroupDetailsViewModel by viewModels()
     private var id: Int = 0
+    private var pageState = PageState.VIEW
     private lateinit var mediaAdapter: IdolMediaListAdapter
     private lateinit var idolAdapter: IdolGroupListAdapter
     private lateinit var activityAdapter: ActivityListAdapter
@@ -36,7 +39,6 @@ class IdolGroupDetailsActivity : DdToolsBindingBaseActivity<ActivityIdolDetailsB
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initView()
-        initViewModel()
     }
 
     override fun onResume() {
@@ -45,71 +47,83 @@ class IdolGroupDetailsActivity : DdToolsBindingBaseActivity<ActivityIdolDetailsB
     }
 
     private fun initView() {
-        binding.apply {
-            titleInclude.apply {
-                titleBack.setOnClickListener { finish() }
-                titleText.text = "组合详情"
-                titleRight.visibility = View.VISIBLE
-                titleRight.text = "编辑"
-                titleRight.setOnClickListener {
-                    UiUtils.openPage(
-                        this@IdolGroupDetailsActivity,
-                        IdolGroupEditActivity::class.java,
-                        false,
-                        Bundle().apply {
-                            putInt("id", id)
-                        })
-                }
-            }
-            val layoutManager = FlexboxLayoutManager(applicationContext).apply {
-                flexDirection = FlexDirection.ROW
-                justifyContent = JustifyContent.FLEX_START
-            }
-            detailsEvaluateList.layoutManager = layoutManager
+        id = intent.extras?.getInt("id") ?: 0
+        pageState = if (intent.extras?.getString("pageType").isNullOrEmpty())
+            PageState.VIEW else PageState.PREVIEW
+        initTitle()
+        initListView()
+        if (pageState == PageState.VIEW) initViewModel()
+        else {
+            initFromData()
         }
-        initActivityAdapter()
-        initMediaAdapter()
-        initIdolAdapter()
+    }
+
+    private fun initTitle() {
+        binding.titleInclude.titleBack.setOnClickListener { finish() }
+        binding.titleInclude.titleText.text = "组合详情"
+        binding.titleInclude.titleRight.visibility = View.VISIBLE
+        if (pageState == PageState.VIEW) {
+            binding.titleInclude.titleRight.text = "编辑"
+            binding.titleInclude.titleRight.setOnClickListener {
+                UiUtils.openPage(
+                    this@IdolGroupDetailsActivity,
+                    IdolGroupEditActivity::class.java,
+                    false,
+                    Bundle().apply { putInt("id", id) })
+            }
+        } else binding.titleInclude.titleRight.text = "预览中"
+    }
+
+    private fun initListView() {
+        val layoutManager = FlexboxLayoutManager(applicationContext).apply {
+            flexDirection = FlexDirection.ROW
+            justifyContent = JustifyContent.FLEX_START
+        }
+        binding.detailsEvaluateList.layoutManager = layoutManager
+        mediaAdapter = IdolMediaListAdapter(mutableListOf())
+        binding.detailsGroupMediaList.adapter = mediaAdapter
+        idolAdapter = IdolGroupListAdapter(mutableListOf())
+        binding.detailsGroupMemberList.adapter = idolAdapter
+        activityAdapter = ActivityListAdapter(mutableListOf(), id)
+        binding.detailsPartActivityList.adapter = activityAdapter
     }
 
     private fun initViewModel() {
-        id = intent.extras?.getInt("id") ?: 0
-        viewModel.setId(id)
-        viewModel.getTags("group", id.toString())
-        updateTagAdapter(emptyList())
-        viewModel.data.observe(this) {
-            updateView(it)
-        }
-        viewModel.medias.observe(this) {
-            mediaAdapter.updateDate(it)
-        }
-        viewModel.memberList.observe(this) {
-            idolAdapter.updateData(it)
-        }
-        viewModel.activityList.observe(this) {
-            activityAdapter.updateData(it, id)
-        }
-        viewModel.tags.observe(this) {
-            updateTagAdapter(it)
-        }
-        viewModel.users.observe(this) {
-            viewModel.getTags("group", id.toString(), it.id)
+        viewModel.apply {
+            setId(id)
+            getTags("group", id.toString())
+            updateTagAdapter(emptyList())
+            data.observe(this@IdolGroupDetailsActivity) { updateView(it) }
+            tags.observe(this@IdolGroupDetailsActivity) { updateTagAdapter(it) }
+            medias.observe(this@IdolGroupDetailsActivity) { mediaAdapter.updateDate(it) }
+            memberList.observe(this@IdolGroupDetailsActivity) { idolAdapter.updateData(it) }
+            activityList.observe(this@IdolGroupDetailsActivity) {
+                activityAdapter.updateData(it, id)
+            }
+            users.observe(this@IdolGroupDetailsActivity) {
+                viewModel.getTags("group", id.toString(), it.id)
+            }
         }
     }
 
-    private fun initMediaAdapter() {
-        mediaAdapter = IdolMediaListAdapter(mutableListOf())
-        binding.detailsGroupMediaList.adapter = mediaAdapter
-    }
-
-    private fun initIdolAdapter() {
-        idolAdapter = IdolGroupListAdapter(mutableListOf())
-        binding.detailsGroupMemberList.adapter = idolAdapter
-    }
-
-    private fun initActivityAdapter() {
-        activityAdapter = ActivityListAdapter(mutableListOf(), id)
-        binding.detailsPartActivityList.adapter = activityAdapter
+    private fun initFromData() {
+        val dataJson = intent.extras?.getString("data")
+        val data = Gson().fromJson(dataJson, IdolGroupList::class.java)
+        binding.apply {
+            detailsTitle.text = data.name
+            detailsLocationText.text = data.location
+            detailsInfoText.text = data.groupDesc
+            detailsEvaluateInclude.visibility = View.GONE
+            detailsEvaluateList.visibility = View.GONE
+        }
+        viewModel.apply {
+            data.activityIds?.let { if (it.isNotEmpty()) loadActivityData(0, it) }
+            data.memberIds?.let { if (it.isNotEmpty()) loadMemberData(0, it) }
+            data.ext.let { if (it.isNotEmpty()) loadMediaData(0, it) }
+            activityList.observe(this@IdolGroupDetailsActivity) { activityAdapter.updateData(it,id) }
+            memberList.observe(this@IdolGroupDetailsActivity) { idolAdapter.updateData(it) }
+            medias.observe(this@IdolGroupDetailsActivity) { mediaAdapter.updateDate(it) }
+        }
     }
 
     private fun updateView(data: IdolGroupList) {

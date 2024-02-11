@@ -84,7 +84,7 @@ object DataUtils {
     fun getGroupTime(timeTable: String): MutableList<String> =
         timeTable.split("-").toMutableList().apply {
             if (size > 2) {
-                if (this[1] == "EMPTY" || this[1].isEmpty()) {
+                if (this[1] == "EMPTY" || this[1].isEmpty() || this[1] == "00:00:00") {
                     removeAt(1)
                     removeAt(1)
                 } else {

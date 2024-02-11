@@ -106,7 +106,7 @@ class ActivityListAdapter(
                 }"
                 val parts = groupTimeData[2].split(":")
                 val partsMinutes = parts[0].toInt() * 60 + parts[1].toInt()
-                val durationString = "（${partsMinutes}min）"
+                val durationString = "(${partsMinutes}min)"
                 return "$timeRange$durationString"
             }
             return ""

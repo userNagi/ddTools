@@ -24,13 +24,15 @@
 
     <TextView
         android:id="@+id/activity_location_desc"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:ellipsize="marquee"
         android:layout_height="wrap_content"
         android:layout_marginStart="6dp"
         android:maxLines="1"
         android:textColor="#805540"
         android:textSize="14dp"
         app:layout_constraintBottom_toBottomOf="@+id/activity_location"
+        app:layout_constraintEnd_toStartOf="@+id/activity_time_desc"
         app:layout_constraintStart_toEndOf="@+id/activity_location"
         app:layout_constraintTop_toTopOf="@+id/activity_location"
         tools:ignore="SpUsage"
@@ -61,8 +63,10 @@
     <TextView
         android:id="@+id/activity_name"
         style="@style/TitleTextStyle"
+        android:layout_width="0dp"
         android:layout_marginStart="@dimen/dp_15"
         android:layout_marginTop="@dimen/dp_10"
+        app:layout_constraintEnd_toStartOf="@+id/activity_buy"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/activity_location"
         tools:text="DOKI FES! Vol.004 北京" />
@@ -70,8 +74,10 @@
     <TextView
         android:id="@+id/activity_time"
         style="@style/TextSmailStyle"
+        android:layout_width="0dp"
         android:layout_marginStart="@dimen/dp_15"
         android:layout_marginTop="@dimen/dp_10"
+        app:layout_constraintEnd_toStartOf="@+id/activity_buy"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/activity_name"
         tools:ignore="SpUsage"
@@ -97,7 +103,7 @@
 
     <TextView
         android:id="@+id/activity_money"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginStart="@dimen/dp_15"
         android:layout_marginTop="@dimen/dp_10"
@@ -105,6 +111,7 @@
         android:textColor="#e53b51"
         android:textSize="14dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/activity_weibo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/activity_time"
         tools:ignore="SpUsage"

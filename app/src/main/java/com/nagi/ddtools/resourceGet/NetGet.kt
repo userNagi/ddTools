@@ -7,6 +7,7 @@ import com.google.gson.JsonSyntaxException
 import com.google.gson.reflect.TypeToken
 import com.nagi.ddtools.data.Resource
 import com.nagi.ddtools.data.UpdateInfo
+import com.nagi.ddtools.database.activityList.ActivityList
 import com.nagi.ddtools.database.idolGroupList.IdolGroupList
 import com.nagi.ddtools.database.user.User
 import com.nagi.ddtools.utils.DataUtils
@@ -29,6 +30,7 @@ object NetGet {
     private const val GET_TAGS_URL = "getTags.php/"
     private const val UPDATE_GROUP_INFO = "upDateGroupList.php/"
     private const val UPLOAD_IMG = "uploadImg.php/"
+    private const val INSERT_ACTIVITY_INFO = "insertActivity.php/"
 
     fun getIdolGroupList(context: Context) {
         NetUtils.fetchAndSave(
@@ -192,7 +194,12 @@ object NetGet {
         ) {}
     }
 
-    fun uploadImage(context:Context, uri: Uri, type: String, callback: (Resource<String>) -> Unit) {
+    fun uploadImage(
+        context: Context,
+        uri: Uri,
+        type: String,
+        callback: (Resource<String>) -> Unit
+    ) {
         NetUtils.uploadImage(
             context,
             ROOT_URL + UPLOAD_IMG,
@@ -226,6 +233,33 @@ object NetGet {
             }
         }
 
+    }
+
+    fun insertActivity(data: ActivityList, callback: (Resource<String>) -> Unit) {
+        NetUtils.fetch(
+            ROOT_URL + INSERT_ACTIVITY_INFO,
+            NetUtils.HttpMethod.POST,
+            mapOf(
+                "id" to data.id.toString(),
+                "name" to data.name,
+                "duration_date" to data.durationDate,
+                "duration_time" to data.durationTime,
+                "location" to data.location,
+                "location_desc" to data.locationDesc,
+                "price_desc" to data.price,
+                "buy_url" to data.buyUrl,
+                "info_desc" to data.infoDesc,
+                "weibo_url" to data.weiboUrl
+            ) + (data.ext?.let { mapOf("ext" to it) } ?: emptyMap())
+                    + (data.participatingGroup?.let { mapOf("participating_group" to it) }
+                ?: emptyMap()) + (data.biliUrl?.let { mapOf("bili_url" to data.biliUrl) }
+                ?: emptyMap())
+        ) { resource ->
+            when (resource) {
+                is Resource.Success -> callback(Resource.Success(resource.data))
+                is Resource.Error -> callback(Resource.Error(resource.message))
+            }
+        }
     }
 
     fun getUrl(url: String): String =

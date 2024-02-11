@@ -50,9 +50,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/register_user_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/register_input"
+            style="@style/RegisterTextInputTextStyle"
             android:hint="@string/username"
             android:inputType="textNoSuggestions|textVisiblePassword"
             android:maxLength="18" />
@@ -69,9 +67,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/register_pass_word"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/register_input"
+            style="@style/RegisterTextInputTextStyle"
             android:hint="@string/password"
             android:inputType="textPassword"
             android:maxLength="18" />
@@ -88,9 +84,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/register_pass_word_again"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/register_input"
+            style="@style/RegisterTextInputTextStyle"
             android:hint="@string/password_again"
             android:inputType="textPassword"
             android:maxLength="18" />
@@ -105,9 +99,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/register_email_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/register_input"
+            style="@style/RegisterTextInputTextStyle"
             android:hint="@string/email"
             android:inputType="textEmailAddress"
             android:maxLength="100" />
@@ -122,9 +114,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/register_nickname_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/register_input"
+            style="@style/RegisterTextInputTextStyle"
             android:hint="@string/nickname"
             android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>

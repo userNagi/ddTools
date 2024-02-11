@@ -18,9 +18,12 @@ import com.nagi.ddtools.utils.UiUtils.openPage
 import com.nagi.ddtools.utils.UiUtils.openUrl
 
 class IdolGroupListAdapter(
-    private var dataList: MutableList<IdolGroupList>
+    private var dataList: MutableList<IdolGroupList>,
+    private val onClickListener: ((Int, IdolGroupList) -> Unit)? = null
 ) : RecyclerView.Adapter<IdolGroupListAdapter.ViewHolder>() {
     var swipeToDeleteEnabled = false
+    var isShowEditTime = false
+    var isShowTimeTable = false
     fun updateData(newData: List<IdolGroupList>) {
         val diffCallback = IdolGroupListDiffCallback(dataList, newData)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
@@ -30,26 +33,44 @@ class IdolGroupListAdapter(
         diffResult.dispatchUpdatesTo(this)
     }
 
+    fun editDesc(position: Int, data: IdolGroupList) {
+        dataList[position] = data
+        notifyItemChanged(position)
+    }
+
     fun removeAt(position: Int) {
         dataList.removeAt(position)
         notifyItemRemoved(position)
     }
 
-    class ViewHolder(private val binding: ListIdolGroupViewBinding) :
+    class ViewHolder(
+        private val binding: ListIdolGroupViewBinding,
+        private val isEditTime: Boolean,
+        private val isShowTimeTable: Boolean
+    ) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: IdolGroupList) {
-            binding.idolGroupImg.setImageUrl(item.imgUrl,false)
+        fun bind(item: IdolGroupList, onClickListener: ((Int, IdolGroupList) -> Unit)? = null) {
+            binding.idolGroupImg.setImageUrl(item.imgUrl, false)
             binding.idolGroupName.text = item.name
-            binding.idolGroupLocation.text = item.location
             binding.idolGroupLocation.text = item.location
             if (item.groupDesc.isEmpty()) {
                 binding.idolGroupInfo.visibility = View.GONE
-            } else {
+            }
+            if (isEditTime) {
+                binding.idolGroupInfo.visibility = View.VISIBLE
+                binding.idolGroupInfo.text = "点我编辑时间"
+            }
+            if (isShowTimeTable && item.groupDesc.isNotEmpty()) {
                 binding.idolGroupInfo.visibility = View.VISIBLE
                 binding.idolGroupInfo.text = item.groupDesc
             }
             itemView.setOnClickListener {
-                openPage(
+                if (isEditTime) {
+                    binding.idolGroupInfo.visibility = View.VISIBLE
+                    if (onClickListener != null) {
+                        onClickListener(adapterPosition, item)
+                    }
+                } else openPage(
                     binding.root.context as Activity,
                     IdolGroupDetailsActivity::class.java,
                     false,
@@ -91,11 +112,11 @@ class IdolGroupListAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
             ListIdolGroupViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(binding)
+        return ViewHolder(binding, isShowEditTime,isShowTimeTable)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(dataList[position])
+        holder.bind(dataList[position], onClickListener)
     }
 
     override fun getItemCount(): Int = dataList.size

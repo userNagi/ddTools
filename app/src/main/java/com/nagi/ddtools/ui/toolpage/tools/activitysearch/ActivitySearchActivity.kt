@@ -12,11 +12,13 @@ import com.nagi.ddtools.databinding.ActivityActivitySearchBinding
 import com.nagi.ddtools.resourceGet.NetGet
 import com.nagi.ddtools.ui.adapter.ActivityListAdapter
 import com.nagi.ddtools.ui.base.DdToolsBaseActivity
+import com.nagi.ddtools.ui.toolpage.tools.activitysearch.details.EditActivityActivity
 import com.nagi.ddtools.utils.FileUtils
 import com.nagi.ddtools.utils.LogUtils
 import com.nagi.ddtools.utils.NetUtils
 import com.nagi.ddtools.utils.PrefsUtils
 import com.nagi.ddtools.utils.UiUtils
+import com.nagi.ddtools.utils.UiUtils.openPage
 import com.nagi.ddtools.utils.UiUtils.toast
 import java.io.File
 
@@ -46,11 +48,14 @@ class ActivitySearchActivity : DdToolsBaseActivity() {
         binding.searchLocation.setOnClickListener { updateActivityByLocation() }
         binding.searchDate.setOnClickListener { updateActivityByDate() }
         binding.searchResearch.setOnClickListener { reGetData() }
+        binding.searchAdd.setOnClickListener { addActivity() }
         binding.searchRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (dy > 0) {
+                    binding.searchAdd.hide()
                     binding.searchResearch.hide()
                 } else if (dy < 0) {
+                    binding.searchAdd.show()
                     binding.searchResearch.show()
                 }
             }
@@ -140,6 +145,9 @@ class ActivitySearchActivity : DdToolsBaseActivity() {
         adapter.updateData(data)
     }
 
+    private fun addActivity() {
+        openPage(this@ActivitySearchActivity, EditActivityActivity::class.java)
+    }
 
     private var lastClickTime: Long = 0
     private val debounceTime: Long = 10000

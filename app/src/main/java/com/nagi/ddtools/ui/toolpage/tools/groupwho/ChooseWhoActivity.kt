@@ -104,8 +104,6 @@ class ChooseWhoActivity : DdToolsBindingBaseActivity<ActivityGroupWhoAcivityBind
             dialogBinding.spinnerLocation.adapter = locations.toSpinnerAdapter()
         }
 
-        viewModel.getGroupData()
-
         dialogBinding.spinnerLocation.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(

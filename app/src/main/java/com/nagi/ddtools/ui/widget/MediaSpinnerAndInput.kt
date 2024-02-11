@@ -63,18 +63,30 @@ class MediaSpinnerAndInput @JvmOverloads constructor(
 
     fun setData(mediaList: MediaList) {
         nameGet = mediaList.name
-        binding.spinner.tag = mediaList.name
+        binding.spinner.setSelection(
+            when (mediaList.type) {
+                "weibo" -> 0
+                "xiaohongshu" -> 1
+                "douyin" -> 2
+                "X" -> 3
+                "qq" -> 4
+                "bili" -> 5
+                "youtube" -> 6
+                else -> 0
+            }
+        )
         binding.icon.setImageDrawable(
             ContextCompat.getDrawable(
                 context, when (mediaList.type) {
                     "weibo" -> R.drawable.ic_weibo
-                    "qq" -> R.drawable.ic_xiaohongshu
-                    "2" -> R.drawable.ic_douyin
-                    "3" -> R.drawable.ic_twitter
-                    "4" -> R.drawable.ic_qq
-                    "5" -> R.drawable.ic_bili
-                    "6" -> R.drawable.ic_youtube
-                    else -> 0
+                    "xiaohongshu" -> R.drawable.ic_xiaohongshu
+                    "douyin" -> R.drawable.ic_douyin
+                    "X" -> R.drawable.ic_twitter
+                    "qq" -> R.drawable.ic_qq
+                    "bili" -> R.drawable.ic_bili
+                    "youtube" -> R.drawable.ic_youtube
+                    else -> R.drawable.ic_weibo
+
                 }
             )
         )
