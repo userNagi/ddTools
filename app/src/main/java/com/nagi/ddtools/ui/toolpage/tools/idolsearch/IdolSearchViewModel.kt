@@ -31,9 +31,7 @@ class IdolSearchViewModel : ViewModel() {
                 val locationCountMap: Map<String, Int> =
                     idolGroupList.groupingBy { it.location }.eachCount()
                 _locationData.postValue(locationCountMap)
-                _idolGroupData.postValue(idolGroupList.filter {
-                    lo.isEmpty() || lo == it.location
-                })
+                _idolGroupData.postValue(idolGroupList.filter { lo.isEmpty() || lo == it.location })
                 database.insertAll(idolGroupList)
             }
         }

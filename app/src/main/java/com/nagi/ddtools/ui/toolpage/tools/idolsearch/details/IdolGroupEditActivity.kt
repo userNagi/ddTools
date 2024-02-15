@@ -122,7 +122,7 @@ class IdolGroupEditActivity : DdToolsBindingBaseActivity<ActivityIdolGroupEditBi
         val groupDesc = binding.editDesc.text.toString()
         val version = (viewModel.info.value?.version?.plus(versionIncrement)) ?: 1
 
-        return if (name.isNotEmpty() && location.isNotEmpty() && groupDesc.isNotEmpty()) {
+        return if (name.isNotEmpty() && location.isNotEmpty() ) {
             IdolGroupList(
                 id = viewModel.info.value?.id ?: System.currentTimeMillis().toString().takeLast(8)
                     .toInt(),

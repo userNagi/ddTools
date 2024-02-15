@@ -7,11 +7,13 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.nagi.ddtools.R
 import com.nagi.ddtools.data.ProgressListener
 import com.nagi.ddtools.utils.UiUtils.toast
 import kotlinx.coroutines.CoroutineScope
@@ -218,7 +220,7 @@ object FileUtils {
      * @param fileOrDirectory 指定的文件
      * @return 是否成功
      */
-    fun deleteRecursively(fileOrDirectory: File): Boolean {
+    private fun deleteRecursively(fileOrDirectory: File): Boolean {
         if (fileOrDirectory.isDirectory) {
             val files = fileOrDirectory.listFiles()
             if (files != null) {
@@ -285,6 +287,22 @@ object FileUtils {
         }
         return true
     }
+
+    fun getDrawableForMedia(context: Context, type: String): Drawable? {
+        return ContextCompat.getDrawable(
+            context, when (type) {
+                "weibo" -> R.drawable.ic_weibo
+                "xiaohongshu" -> R.drawable.ic_xiaohongshu
+                "douyin" -> R.drawable.ic_douyin
+                "X" -> R.drawable.ic_twitter
+                "qq" -> R.drawable.ic_qq
+                "bili" -> R.drawable.ic_bili
+                "youtube" -> R.drawable.ic_youtube
+                else -> R.drawable.ic_weibo
+            }
+        )
+    }
+
 
     @Throws(IOException::class)
     private fun createFileForZipEntry(outputFolderPath: String, zipEntry: ZipEntry): File {

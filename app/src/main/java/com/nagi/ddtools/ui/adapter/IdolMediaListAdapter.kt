@@ -1,14 +1,12 @@
 package com.nagi.ddtools.ui.adapter
 
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.nagi.ddtools.R
 import com.nagi.ddtools.data.MediaList
 import com.nagi.ddtools.databinding.ListIdolMediaBinding
+import com.nagi.ddtools.utils.FileUtils.getDrawableForMedia
 import com.nagi.ddtools.utils.UiUtils.openUrl
 
 class IdolMediaListAdapter(private val data: MutableList<MediaList>) :
@@ -37,26 +35,9 @@ class IdolMediaListAdapter(private val data: MutableList<MediaList>) :
     class IdolMediaViewHolder(private val binding: ListIdolMediaBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: MediaList) {
-            binding.mediaIcon.setImageDrawable(getDraw(data.type))
+            binding.mediaIcon.setImageDrawable(getDrawableForMedia(binding.root.context, data.type))
             binding.mediaName.text = data.name
-            itemView.setOnClickListener {
-                binding.root.context.openUrl(data.url)
-            }
-        }
-
-        private fun getDraw(type: String): Drawable? {
-            when (type) {
-                "bili" -> return AppCompatResources.getDrawable(
-                    binding.root.context,
-                    R.drawable.ic_bili
-                )
-
-                "weibo" -> return AppCompatResources.getDrawable(
-                    binding.root.context,
-                    R.drawable.ic_weibo
-                )
-            }
-            return null
+            itemView.setOnClickListener { binding.root.context.openUrl(data.url) }
         }
     }
 

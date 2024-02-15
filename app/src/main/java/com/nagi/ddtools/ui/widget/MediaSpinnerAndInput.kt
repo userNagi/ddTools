@@ -12,6 +12,7 @@ import com.nagi.ddtools.R
 import com.nagi.ddtools.data.MediaList
 import androidx.core.content.ContextCompat
 import com.nagi.ddtools.databinding.WidgetMediaSpinnerBinding
+import com.nagi.ddtools.utils.FileUtils
 
 class MediaSpinnerAndInput @JvmOverloads constructor(
     context: Context,
@@ -75,23 +76,9 @@ class MediaSpinnerAndInput @JvmOverloads constructor(
                 else -> 0
             }
         )
-        binding.icon.setImageDrawable(
-            ContextCompat.getDrawable(
-                context, when (mediaList.type) {
-                    "weibo" -> R.drawable.ic_weibo
-                    "xiaohongshu" -> R.drawable.ic_xiaohongshu
-                    "douyin" -> R.drawable.ic_douyin
-                    "X" -> R.drawable.ic_twitter
-                    "qq" -> R.drawable.ic_qq
-                    "bili" -> R.drawable.ic_bili
-                    "youtube" -> R.drawable.ic_youtube
-                    else -> R.drawable.ic_weibo
-
-                }
-            )
-        )
         binding.name.setText(mediaList.name)
         binding.input.setText(mediaList.url)
+        binding.icon.setImageDrawable(FileUtils.getDrawableForMedia(context, mediaList.type))
     }
 
     fun getData(name: String): MediaList? {

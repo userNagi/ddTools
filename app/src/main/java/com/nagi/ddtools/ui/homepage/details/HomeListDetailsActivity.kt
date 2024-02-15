@@ -79,7 +79,7 @@ class HomeListDetailsActivity : DdToolsBindingBaseActivity<ActivityHomeListDetai
             val data = homePageList.filter { it.parent == id }
             detailsTitle.text = currentData.name
             detailsInfoText.text = currentData.info
-            detailsInfoText.text = if (data.isNotEmpty()) "当前共${data.size}条" else ""
+            detailsInclude.text = if (data.isNotEmpty()) "当前共${data.size}条" else ""
             adapter.updateData(data)
         }
     }

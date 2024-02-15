@@ -201,18 +201,34 @@
             app:layout_constraintTop_toBottomOf="@id/activity_media_list" />
 
         <TextView
+            android:id="@+id/activity_preview_submit"
+            style="@style/TitleTextStyle"
+            android:layout_marginTop="@dimen/dp_20"
+            android:background="@drawable/bg_10_round"
+            android:paddingHorizontal="@dimen/dp_50"
+            android:paddingVertical="@dimen/dp_10"
+            android:text="预览"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/activity_videos_add" />
+
+        <TextView
             android:id="@+id/activity_submit"
             style="@style/TitleTextStyle"
-            android:layout_marginTop="@dimen/dp_50"
+            android:layout_marginTop="@dimen/dp_30"
+            android:layout_marginBottom="@dimen/dp_50"
             android:background="@drawable/bg_10_round"
             android:paddingHorizontal="@dimen/dp_50"
             android:paddingVertical="@dimen/dp_10"
             android:text="@string/confirm"
             android:textColor="@color/white"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/activity_videos_add" />
+            app:layout_constraintTop_toBottomOf="@id/activity_preview_submit" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

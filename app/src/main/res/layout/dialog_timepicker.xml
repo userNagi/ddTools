@@ -1,31 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center"
-    android:orientation="vertical"
-    tools:ignore="HardcodedText">
+    android:layout_height="wrap_content">
 
-    <TextView
-        style="@style/Text"
-        android:text="开始时间：" />
-
-    <TimePicker
-        android:id="@+id/timePicker_1"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:timePickerMode="spinner" />
+        android:gravity="center"
+        android:orientation="vertical"
+        tools:ignore="HardcodedText">
 
-    <TextView
-        style="@style/Text"
-        android:text="结束时间：" />
+        <TextView
+            style="@style/Text"
+            android:text="开始时间：" />
 
-    <TimePicker
-        android:id="@+id/timePicker_2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:timePickerMode="spinner" />
+        <TimePicker
+            android:id="@+id/timePicker_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:timePickerMode="clock" />
 
+        <TextView
+            style="@style/Text"
+            android:text="结束时间：" />
 
-</LinearLayout>
+        <TimePicker
+            android:id="@+id/timePicker_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:timePickerMode="clock" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_20"
+            android:layout_marginBottom="@dimen/dp_10"
+            android:gravity="end">
+
+            <TextView
+                android:id="@+id/time_sure"
+                style="@style/Text"
+                android:layout_marginEnd="@dimen/dp_20"
+                android:text="确定" />
+
+            <TextView
+                android:id="@+id/time_cancel"
+                style="@style/Text"
+                android:text="取消" />
+
+        </LinearLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nagi.ddtools.database.AppDatabase
+import com.nagi.ddtools.database.activityList.ActivityList
+import com.nagi.ddtools.database.activityList.ActivityListDao
 import com.nagi.ddtools.database.idolGroupList.IdolGroupList
 import com.nagi.ddtools.database.idolGroupList.IdolGroupListDao
 import kotlinx.coroutines.Dispatchers
@@ -20,8 +22,14 @@ class EditActivityViewModel : ViewModel() {
     private val _groupData = MutableLiveData<List<IdolGroupList>>()
     val groupData: LiveData<List<IdolGroupList>> = _groupData
 
+    private val _data = MutableLiveData<ActivityList>()
+    val data: LiveData<ActivityList> = _data
+
     private val groupListDao: IdolGroupListDao by lazy {
         AppDatabase.getInstance().idolGroupListDao()
+    }
+    private val activityListDao: ActivityListDao by lazy {
+        AppDatabase.getInstance().activityListDao()
     }
 
     init {
@@ -34,17 +42,51 @@ class EditActivityViewModel : ViewModel() {
         }
     }
 
+    fun setData(id: String) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                val dataGet = activityListDao.getById(id)
+                _data.postValue(dataGet)
+                getGroup(dataGet.participatingGroup)
+            }
+        }
+    }
+
+    private fun getGroup(idAndTimes: String?) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                val groups = idAndTimes?.let { parseIdAndTimes(it) } ?: emptyList()
+                _groupList.postValue(groups)
+            }
+        }
+    }
+
+    private fun parseIdAndTimes(idAndTimes: String): List<IdolGroupList> {
+        return idAndTimes.split(',')
+            .mapNotNull { parseIdAndTime(it) }
+    }
+
+    private fun parseIdAndTime(idAndTime: String): IdolGroupList? {
+        val info = idAndTime.split('-')
+        if (info.size < 3) return null
+
+        return groupListDao.getById(info[0].toInt()).also {
+            it.groupDesc = "${info[1]}-${info[2]}"
+        }
+    }
+
+
     fun addData(data: IdolGroupList) {
         val currentList = _groupList.value?.toMutableList() ?: mutableListOf()
         currentList.add(data)
-        _groupList.value = currentList
+        _groupList.postValue(currentList)
     }
 
     fun removeData(position: Int) {
         val currentList = _groupList.value!!.toMutableList()
         if (position >= 0 && position < currentList.size) {
             currentList.removeAt(position)
-            _groupList.value = currentList
+            _groupList.postValue(currentList)
         }
     }
 

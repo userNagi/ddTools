@@ -47,9 +47,16 @@ open class ActivityDetailsViewModel : ViewModel() {
             withContext(Dispatchers.IO) {
                 val activityList = activityListDao.getById("$id")
                 _data.postValue(activityList)
+                setGroupList(activityList.participatingGroup)
+            }
+        }
+    }
+
+    fun setGroupList(groupString: String?) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
                 val resultList = mutableListOf<IdolGroupList>()
-                val groupIdListString = activityList.participatingGroup
-                val groupIdList = groupIdListString?.split(",")
+                val groupIdList = groupString?.split(",")
                 for (groupInfo in groupIdList ?: emptyList()) {
                     val groupId = groupInfo.split("-")[0]
                     groupListDao.getById(groupId.toInt()).let { group ->

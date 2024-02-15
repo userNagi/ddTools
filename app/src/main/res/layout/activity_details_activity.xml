@@ -84,12 +84,44 @@
             tools:text="12:00-14:00" />
 
         <TextView
+            android:id="@+id/details_price"
+            style="@style/TitleTextStyle"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="票价："
+            app:layout_constraintStart_toStartOf="@id/details_time"
+            app:layout_constraintTop_toBottomOf="@id/details_time_text" />
+
+        <TextView
+            android:id="@+id/details_price_text"
+            style="@style/TitleTextStyle"
+            app:layout_constraintStart_toEndOf="@id/details_price"
+            app:layout_constraintTop_toTopOf="@id/details_price"
+            tools:text="100-200" />
+
+        <TextView
+            android:id="@+id/details_desc"
+            style="@style/TitleTextStyle"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="介绍："
+            app:layout_constraintStart_toStartOf="@id/details_price"
+            app:layout_constraintTop_toBottomOf="@id/details_price" />
+
+        <TextView
+            android:id="@+id/details_desc_text"
+            android:layout_width="@dimen/dp_0"
+            style="@style/TitleTextStyle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/details_desc"
+            app:layout_constraintTop_toTopOf="@id/details_desc"
+            tools:text="这场是XXXXX" />
+
+        <TextView
             android:id="@+id/details_group"
             style="@style/TitleTextStyle"
             android:layout_marginTop="10dp"
             android:text="参演团体："
-            app:layout_constraintStart_toStartOf="@+id/details_time"
-            app:layout_constraintTop_toBottomOf="@+id/details_time_text" />
+            app:layout_constraintStart_toStartOf="@+id/details_desc"
+            app:layout_constraintTop_toBottomOf="@+id/details_desc_text" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/details_group_list"

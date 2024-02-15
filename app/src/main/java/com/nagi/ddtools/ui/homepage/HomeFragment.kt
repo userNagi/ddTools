@@ -139,7 +139,7 @@ class HomeFragment : Fragment() {
                     positiveButtonText = "确定",
                     negativeButtonText = "取消",
                     onPositive = {
-                        name = editBinding.inputText.toString()
+                        name = editBinding.inputText.text.toString()
                         if (name.isNotEmpty()) {
                             onConfirm(name, endUrl)
                         } else {

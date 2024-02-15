@@ -34,6 +34,7 @@ class ActivitySearchViewModel : ViewModel() {
                 val locationList: Set<String> = activityList.map { it.location }.toSet()
                 _locationData.postValue(locationList)
                 _dateData.postValue(dateList)
+                database.deleteAll()
                 database.insertAll(activityList)
                 _activityData.postValue(
                     database.getByDateAfter(getCurrentDateString()).filter {

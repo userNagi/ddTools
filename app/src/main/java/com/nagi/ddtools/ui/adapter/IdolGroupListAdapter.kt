@@ -53,30 +53,23 @@ class IdolGroupListAdapter(
             binding.idolGroupImg.setImageUrl(item.imgUrl, false)
             binding.idolGroupName.text = item.name
             binding.idolGroupLocation.text = item.location
-            if (item.groupDesc.isEmpty()) {
-                binding.idolGroupInfo.visibility = View.GONE
-            }
+            binding.idolGroupInfo.visibility = View.GONE
+
             if (isEditTime) {
                 binding.idolGroupInfo.visibility = View.VISIBLE
-                binding.idolGroupInfo.text = "点我编辑时间"
+                binding.idolGroupInfo.text = item.groupDesc.ifEmpty { "点我编辑时间" }
             }
             if (isShowTimeTable && item.groupDesc.isNotEmpty()) {
                 binding.idolGroupInfo.visibility = View.VISIBLE
                 binding.idolGroupInfo.text = item.groupDesc
             }
             itemView.setOnClickListener {
-                if (isEditTime) {
-                    binding.idolGroupInfo.visibility = View.VISIBLE
-                    if (onClickListener != null) {
-                        onClickListener(adapterPosition, item)
-                    }
-                } else openPage(
+                if (isEditTime) onClickListener?.let { it(adapterPosition, item) }
+                else openPage(
                     binding.root.context as Activity,
                     IdolGroupDetailsActivity::class.java,
                     false,
-                    Bundle().apply {
-                        putInt("id", item.id)
-                    })
+                    Bundle().apply { putInt("id", item.id) })
             }
             if (item.ext.isNotEmpty()) {
                 val mediaResult: MutableList<MediaList>
@@ -95,8 +88,8 @@ class IdolGroupListAdapter(
                             }
                         }
                         if (media.type == "bili") {
-                            binding.jumpWeibo.visibility = View.VISIBLE
-                            binding.jumpWeibo.setOnClickListener {
+                            binding.jumpBili.visibility = View.VISIBLE
+                            binding.jumpBili.setOnClickListener {
                                 binding.root.context.openUrl(
                                     media.url
                                 )
@@ -112,7 +105,7 @@ class IdolGroupListAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
             ListIdolGroupViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(binding, isShowEditTime,isShowTimeTable)
+        return ViewHolder(binding, isShowEditTime, isShowTimeTable)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
