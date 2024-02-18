@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray"
+    tools:context=".ui.toolpage.tools.idolsearch.details.IdolEditActivity"
+    tools:ignore="HardcodedText">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/title_include"
+            layout="@layout/include_page_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edit_name_layout"
+            style="@style/RegisterTextInputLayoutStyle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title_include">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_name"
+                style="@style/RegisterTextInputTextStyle"
+                android:hint="偶像名"
+                android:inputType="text"
+                app:layout_constraintTop_toBottomOf="@+id/title_include"
+                tools:text="好像名字没有特别长的xox不过反正只是开发用就随便写了" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edit_group_layout"
+            style="@style/RegisterTextInputLayoutStyle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_name_layout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_group"
+                style="@style/RegisterTextInputTextStyle"
+                android:cursorVisible="true"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:hint="团体名"
+                android:inputType="none"
+                android:textIsSelectable="true"
+                app:layout_constraintTop_toBottomOf="@+id/title_include"
+                tools:text="当第一道裂缝出现时我所见到的" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edit_location_layout"
+            style="@style/RegisterTextInputLayoutStyle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_group_layout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_location"
+                style="@style/RegisterTextInputTextStyle"
+                android:hint="地点（直接输入，如：北京/辽宁/内蒙古）"
+                android:inputType="text"
+                tools:text="北京" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.nagi.ddtools.ui.widget.NetImageView
+            android:id="@+id/edit_image"
+            android:layout_width="@dimen/dp_100"
+            android:layout_height="@dimen/dp_100"
+            android:layout_marginTop="@dimen/dp_20"
+            android:src="@drawable/baseline_user_unlogin"
+            app:layout_constraintStart_toStartOf="@+id/edit_group_layout"
+            app:layout_constraintTop_toBottomOf="@+id/edit_location_layout" />
+
+        <TextView
+            android:id="@+id/edit_tag"
+            style="@style/Text"
+            android:layout_marginTop="@dimen/dp_20"
+            android:text="标签(可选)："
+            app:layout_constraintStart_toStartOf="@+id/edit_sex"
+            app:layout_constraintTop_toBottomOf="@+id/edit_image" />
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/edit_sex_text"
+            style="@style/Text"
+            android:layout_marginStart="@dimen/dp_10"
+            app:layout_constraintStart_toEndOf="@+id/edit_sex"
+            app:layout_constraintTop_toTopOf="@+id/edit_sex" />
+
+        <TextView
+            android:id="@+id/edit_sex"
+            style="@style/Text"
+            android:layout_marginTop="@dimen/dp_20"
+            android:text="性别(可选)："
+            app:layout_constraintStart_toStartOf="@+id/edit_image"
+            app:layout_constraintTop_toBottomOf="@+id/edit_tag" />
+
+        <TextView
+            android:id="@+id/edit_tag_text"
+            style="@style/Text"
+            android:layout_marginStart="@dimen/dp_10"
+            android:background="@color/lty"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="1dp"
+            android:text="暂无"
+            android:textColor="#F7F8FA"
+            app:layout_constraintStart_toEndOf="@+id/edit_tag"
+            app:layout_constraintTop_toTopOf="@+id/edit_tag" />
+
+        <TextView
+            android:id="@+id/edit_birthday"
+            style="@style/Text"
+            android:text="生日(可选)"
+            app:layout_constraintStart_toEndOf="@+id/edit_sex_text"
+            app:layout_constraintTop_toTopOf="@+id/edit_sex" />
+
+        <TextView
+            android:id="@+id/edit_birthday_text"
+            style="@style/Text"
+            android:layout_marginStart="@dimen/dp_10"
+            android:text="-    -    -"
+            app:layout_constraintStart_toEndOf="@+id/edit_birthday"
+            app:layout_constraintTop_toTopOf="@+id/edit_birthday" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edit_desc_layout"
+            style="@style/RegisterTextInputLayoutStyle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_sex">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_desc"
+                style="@style/RegisterTextInputTextStyle"
+                android:hint="介绍（可选）"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/edit_media_text"
+            style="@style/Text"
+            android:layout_marginTop="@dimen/dp_20"
+            android:text="社交媒体:"
+            app:layout_constraintStart_toStartOf="@+id/edit_desc_layout"
+            app:layout_constraintTop_toBottomOf="@+id/edit_desc_layout" />
+
+        <LinearLayout
+            android:id="@+id/edit_media_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="@+id/edit_desc_layout"
+            app:layout_constraintStart_toStartOf="@+id/edit_media_text"
+            app:layout_constraintTop_toBottomOf="@+id/edit_media_text" />
+
+        <TextView
+            android:id="@+id/edit_media_add"
+            style="@style/Text"
+            android:text="点我添加"
+            app:layout_constraintBottom_toBottomOf="@id/edit_media_layout"
+            app:layout_constraintEnd_toEndOf="@+id/edit_media_layout"
+            app:layout_constraintStart_toStartOf="@+id/edit_media_text" />
+
+        <TextView
+            android:id="@+id/edit_preview"
+            style="@style/TitleTextStyle"
+            android:layout_marginTop="@dimen/dp_30"
+            android:background="@drawable/bg_10_round"
+            android:paddingHorizontal="@dimen/dp_50"
+            android:paddingVertical="@dimen/dp_10"
+            android:text="预览"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_media_add" />
+
+        <TextView
+            android:id="@+id/edit_submit"
+            style="@style/TitleTextStyle"
+            android:layout_marginTop="@dimen/dp_30"
+            android:layout_marginBottom="@dimen/dp_30"
+            android:background="@drawable/bg_10_round"
+            android:paddingHorizontal="@dimen/dp_50"
+            android:paddingVertical="@dimen/dp_10"
+            android:text="@string/confirm"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_preview" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

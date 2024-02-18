@@ -35,6 +35,7 @@ import java.util.zip.ZipInputStream
  * @date :2023/12/27 23:01
  */
 object FileUtils {
+    const val IDOL_LIST_FILE = "/data/idolList.json"
     const val IDOL_GROUP_FILE = "/data/idolGroupList.json"
     const val ACTIVITY_LIS_FILE = "/data/activityList.json"
     private const val TAG = "FileUtils"

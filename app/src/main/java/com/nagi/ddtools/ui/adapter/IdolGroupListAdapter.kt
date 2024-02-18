@@ -72,31 +72,24 @@ class IdolGroupListAdapter(
                     Bundle().apply { putInt("id", item.id) })
             }
             if (item.ext.isNotEmpty()) {
-                val mediaResult: MutableList<MediaList>
                 val extAsJson = JsonParser.parseString(item.ext).asJsonObject
-                if (extAsJson.has("media")) {
-                    val mediaList = extAsJson.get("media").asJsonArray
+                extAsJson.takeIf { it.has("media") }?.get("media")?.asJsonArray?.let { mediaList ->
                     val itemType = object : TypeToken<List<MediaList>>() {}.type
-                    mediaResult = Gson().fromJson(mediaList, itemType)
-                    for (media in mediaResult) {
-                        if (media.type == "weibo") {
-                            binding.jumpWeibo.visibility = View.VISIBLE
-                            binding.jumpWeibo.setOnClickListener {
-                                binding.root.context.openUrl(
-                                    media.url
-                                )
+                    val mediaResult: List<MediaList> = Gson().fromJson(mediaList, itemType)
+                    mediaResult.forEach { media ->
+                        when (media.type) {
+                            "weibo" -> binding.jumpWeibo.apply {
+                                visibility = View.VISIBLE
+                                setOnClickListener { binding.root.context.openUrl(media.url) }
                             }
-                        }
-                        if (media.type == "bili") {
-                            binding.jumpBili.visibility = View.VISIBLE
-                            binding.jumpBili.setOnClickListener {
-                                binding.root.context.openUrl(
-                                    media.url
-                                )
+
+                            "bili" -> binding.jumpBili.apply {
+                                visibility = View.VISIBLE
+                                setOnClickListener { binding.root.context.openUrl(media.url) }
                             }
+
                         }
                     }
-
                 }
             }
         }

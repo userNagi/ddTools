@@ -35,7 +35,9 @@ class DdTools : Application() {
         }
         NetGet.getIdolGroupList(applicationContext)
         NetGet.getActivityList(applicationContext)
+        NetGet.getIdolList(applicationContext)
         DataSet.setIdolGroups(applicationContext)
         DataSet.setActivity(applicationContext)
+        DataSet.setIdols(applicationContext)
     }
 }

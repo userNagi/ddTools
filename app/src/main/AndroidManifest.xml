@@ -19,6 +19,9 @@
         android:theme="@style/Theme.DdTools"
         tools:targetApi="31">
         <activity
+            android:name=".ui.toolpage.tools.idolsearch.details.IdolEditActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.toolpage.tools.activitysearch.details.EditActivityActivity"
             android:exported="false" />
         <activity

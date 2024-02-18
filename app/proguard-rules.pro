@@ -53,3 +53,7 @@
       <fields>;
       <init>(...);
   }
+  -keep class com.nagi.ddtools.database.idolList.IdolTag {
+      <fields>;
+      <init>(...);
+  }

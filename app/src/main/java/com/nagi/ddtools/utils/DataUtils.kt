@@ -125,6 +125,17 @@ object DataUtils {
         return pattern.replace(time, "")
     }
 
+    fun getSex(sex: String?): String {
+        return when (sex) {
+            "男" -> "male"
+            "女" -> "female"
+            "female" -> "女"
+            "male" -> "男"
+            null -> "-"
+            else -> sex
+        }
+    }
+
     /**
      * 将字节数组转换为十六进制字符串
      * @param hash 字节数组

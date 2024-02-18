@@ -13,6 +13,7 @@ import com.nagi.ddtools.database.user.User
 import com.nagi.ddtools.utils.DataUtils
 import com.nagi.ddtools.utils.FileUtils.ACTIVITY_LIS_FILE
 import com.nagi.ddtools.utils.FileUtils.IDOL_GROUP_FILE
+import com.nagi.ddtools.utils.FileUtils.IDOL_LIST_FILE
 import com.nagi.ddtools.utils.LogUtils
 import com.nagi.ddtools.utils.NetUtils
 import java.io.File
@@ -21,6 +22,7 @@ object NetGet {
     private const val ROOT_URL = "https://wiki.chika-idol.live/request/ddtools/"
     private const val INFO_URL = "https://info.chika-idol.live/"
     private const val IDOL_GROUP_LIST_URL = "getChikaIdolList.php/"
+    private const val IDOL_LIST_URL = "getIdolList.php/"
     private const val ACTIVITY_LIST_URL = "getActivity.php/"
     private const val CHECK_UPDATE_URL = "getUpdateInfo.php/"
     private const val USER_LOGIN = "userLogin.php/"
@@ -30,6 +32,7 @@ object NetGet {
     private const val GET_TAGS_URL = "getTags.php/"
     private const val UPDATE_GROUP_INFO = "upDateGroupList.php/"
     private const val UPLOAD_IMG = "uploadImg.php/"
+    private const val GET_IDOL_TAG = "getIdolTag.php/"
     private const val INSERT_ACTIVITY_INFO = "insertActivity.php/"
 
     fun getIdolGroupList(context: Context) {
@@ -38,11 +41,21 @@ object NetGet {
             NetUtils.HttpMethod.POST,
             emptyMap(),
             File(context.filesDir, IDOL_GROUP_FILE).path
-        ) { resource ->
-            if (resource is Resource.Error) {
-                LogUtils.e("Failed to fetch idol group list: ${resource.message}")
-            }
+        ) {
+            if (it is Resource.Error) LogUtils.e("Failed to fetch idol group list: ${it.message}")
         }
+    }
+
+    fun getIdolList(context: Context) {
+        NetUtils.fetchAndSave(
+            ROOT_URL + IDOL_LIST_URL,
+            NetUtils.HttpMethod.POST,
+            emptyMap(),
+            File(context.filesDir, IDOL_LIST_FILE).path
+        ) {
+            if (it is Resource.Error) LogUtils.e("Failed to fetch idol group list: ${it.message}")
+        }
+
     }
 
     fun getActivityList(context: Context) {
@@ -255,6 +268,15 @@ object NetGet {
                 ?: emptyMap()) + (data.biliUrl?.let { mapOf("bili_url" to data.biliUrl) }
                 ?: emptyMap())
         ) { resource ->
+            when (resource) {
+                is Resource.Success -> callback(Resource.Success(resource.data))
+                is Resource.Error -> callback(Resource.Error(resource.message))
+            }
+        }
+    }
+
+    fun getIdolTag(callback: (Resource<String>) -> Unit) {
+        NetUtils.fetch(ROOT_URL + GET_IDOL_TAG, NetUtils.HttpMethod.POST, mapOf()) { resource ->
             when (resource) {
                 is Resource.Success -> callback(Resource.Success(resource.data))
                 is Resource.Error -> callback(Resource.Error(resource.message))

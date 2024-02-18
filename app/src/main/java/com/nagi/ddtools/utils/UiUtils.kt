@@ -7,6 +7,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Looper
+import android.util.TypedValue
 import android.view.View
 import android.widget.AutoCompleteTextView.OnDismissListener
 import android.widget.ProgressBar
@@ -33,6 +34,10 @@ object UiUtils {
     private var loadingDialog: Dialog? = null
     private var loadingJob: Job? = null
 
+    fun Context.dpToPx(dp: Float): Float =
+        TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resources.displayMetrics)
+
+
     @Synchronized
     fun Context.toast(message: String, duration: Int = Toast.LENGTH_SHORT) {
         if (Looper.myLooper() == Looper.getMainLooper()) {
@@ -56,7 +61,6 @@ object UiUtils {
         customView: View? = null,
         onDismiss: (() -> Unit)? = null
     ) {
-
         currentDialog?.dismiss()
         currentDialog = AlertDialog.Builder(this).apply {
             setTitle(title)

@@ -9,10 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.nagi.ddtools.R
 import com.nagi.ddtools.data.Resource
 import com.nagi.ddtools.database.idolGroupList.IdolGroupList
+import com.nagi.ddtools.database.idolList.IdolList
 import com.nagi.ddtools.databinding.ActivityIdolSearchBinding
 import com.nagi.ddtools.resourceGet.NetGet.getUrl
 import com.nagi.ddtools.ui.adapter.IdolGroupListAdapter
+import com.nagi.ddtools.ui.adapter.IdolListAdapter
 import com.nagi.ddtools.ui.base.DdToolsBaseActivity
+import com.nagi.ddtools.ui.toolpage.tools.idolsearch.details.IdolEditActivity
 import com.nagi.ddtools.ui.toolpage.tools.idolsearch.details.IdolGroupEditActivity
 import com.nagi.ddtools.utils.FileUtils
 import com.nagi.ddtools.utils.LogUtils
@@ -26,7 +29,8 @@ import java.io.File
 
 class IdolSearchActivity : DdToolsBaseActivity() {
     private lateinit var binding: ActivityIdolSearchBinding
-    private lateinit var adapter: IdolGroupListAdapter
+    private lateinit var groupListAdapter: IdolGroupListAdapter
+    private lateinit var idolListAdapter: IdolListAdapter
     private var isAdapterInitialized = false
     private var chooseWhich = 0
     private var location: String = ""
@@ -38,7 +42,8 @@ class IdolSearchActivity : DdToolsBaseActivity() {
             setContentView(it.root)
         }
         initView()
-        viewModel.idolGroupData.observe(this) { data -> updateAdapter(data) }
+        viewModel.idolGroupData.observe(this) { data -> updateGroupAdapter(data) }
+        viewModel.idolListData.observe(this) { data -> updateIdolAdapter(data) }
     }
 
     private fun initView() {
@@ -48,12 +53,13 @@ class IdolSearchActivity : DdToolsBaseActivity() {
         binding.searchResearch.setOnClickListener { reGetData() }
         binding.searchLocation.setOnClickListener { updateIdolGroupData() }
         binding.searchSwitchSearch.isClickable = false
-        binding.searchSwitchSearch.setOnClickListener { toast("暂未接入，请耐心等待") }
-        binding.searchSwitchSearch.setOnCheckedChangeListener { _, isChecked ->
-//            updateSwitch(isChecked)
-        }
+        binding.searchSwitchSearch.setOnCheckedChangeListener { _, s -> updateSwitch(s) }
         binding.searchAdd.setOnClickListener {
-            openPage(this@IdolSearchActivity, IdolGroupEditActivity::class.java)
+            openPage(
+                this@IdolSearchActivity,
+                if (binding.searchSwitchSearch.isChecked) IdolEditActivity::class.java
+                else IdolGroupEditActivity::class.java
+            )
         }
         binding.searchRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -70,13 +76,17 @@ class IdolSearchActivity : DdToolsBaseActivity() {
     }
 
     private fun initAdapter() {
-        val inputStream = File(applicationContext.filesDir, FileUtils.IDOL_GROUP_FILE)
-        val jsonString = inputStream.bufferedReader().use { it.readText() }
+        val groupPath = File(applicationContext.filesDir, FileUtils.IDOL_GROUP_FILE)
+        val idolPath = File(applicationContext.filesDir, FileUtils.IDOL_LIST_FILE)
+        val groupString = groupPath.bufferedReader().use { it.readText() }
+        val idolString = idolPath.bufferedReader().use { it.readText() }
         if (!isAdapterInitialized) {
-            viewModel.loadIdolGroupData(jsonString, location)
-            adapter = IdolGroupListAdapter(mutableListOf())
+            viewModel.loadIdolGroupData(groupString, location)
+            viewModel.loadIdolListData(idolString, location)
+            groupListAdapter = IdolGroupListAdapter(mutableListOf())
+            idolListAdapter = IdolListAdapter(mutableListOf())
         }
-        binding.searchRecycler.adapter = adapter
+        binding.searchRecycler.adapter = groupListAdapter
         isAdapterInitialized = true
     }
 
@@ -84,9 +94,11 @@ class IdolSearchActivity : DdToolsBaseActivity() {
         if (isChecked) {
             binding.searchSwitchTextLeft.setTextColor(Color.BLACK)
             binding.searchSwitchTextRight.setTextColor(resources.getColor(R.color.lty, null))
+            binding.searchRecycler.adapter = idolListAdapter
         } else {
             binding.searchSwitchTextLeft.setTextColor(resources.getColor(R.color.lty, null))
             binding.searchSwitchTextRight.setTextColor(Color.BLACK)
+            binding.searchRecycler.adapter = groupListAdapter
         }
     }
 
@@ -133,8 +145,9 @@ class IdolSearchActivity : DdToolsBaseActivity() {
                     emptyMap(), File(filesDir, FileUtils.IDOL_GROUP_FILE).path
                 ) { resource ->
                     when (resource) {
-                        is Resource.Success ->
+                        is Resource.Success -> {
                             runOnUiThread { initAdapter() }
+                        }
 
                         is Resource.Error -> {
                             LogUtils.e("Failed to fetch idol group list: ${resource.message}")
@@ -154,7 +167,11 @@ class IdolSearchActivity : DdToolsBaseActivity() {
         }
     }
 
-    private fun updateAdapter(data: List<IdolGroupList>) {
-        adapter.updateData(data)
+    private fun updateGroupAdapter(data: List<IdolGroupList>) {
+        groupListAdapter.updateData(data)
+    }
+
+    private fun updateIdolAdapter(data: List<IdolList>) {
+        idolListAdapter.updateData(data)
     }
 }
