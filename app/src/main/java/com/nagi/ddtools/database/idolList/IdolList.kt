@@ -12,6 +12,8 @@ data class IdolList(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     val name: String,
+    @SerializedName("group_id") @ColumnInfo(name = "group_id")
+    val groupId: Int,
     @SerializedName("group_name") @ColumnInfo(name = "group_name")
     val groupName: String,
     @SerializedName("image_url") @ColumnInfo(name = "image_url")

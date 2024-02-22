@@ -163,7 +163,7 @@
             android:id="@+id/edit_media_add"
             style="@style/Text"
             android:text="点我添加"
-            app:layout_constraintBottom_toBottomOf="@id/edit_media_layout"
+            app:layout_constraintTop_toBottomOf="@id/edit_media_layout"
             app:layout_constraintEnd_toEndOf="@+id/edit_media_layout"
             app:layout_constraintStart_toStartOf="@+id/edit_media_text" />
 

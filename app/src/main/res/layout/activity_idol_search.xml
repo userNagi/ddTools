@@ -67,12 +67,10 @@
         app:layout_constraintEnd_toStartOf="@+id/search_switch_search"
         app:layout_constraintTop_toTopOf="@+id/search_switch_search" />
 
-    <androidx.appcompat.widget.SwitchCompat
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/search_switch_search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@null"
-        android:checked="false"
         android:textColor="@color/lty"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

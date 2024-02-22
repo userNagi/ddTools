@@ -52,7 +52,6 @@ class IdolSearchActivity : DdToolsBaseActivity() {
         binding.searchTitleBack.setOnClickListener { finish() }
         binding.searchResearch.setOnClickListener { reGetData() }
         binding.searchLocation.setOnClickListener { updateIdolGroupData() }
-        binding.searchSwitchSearch.isClickable = false
         binding.searchSwitchSearch.setOnCheckedChangeListener { _, s -> updateSwitch(s) }
         binding.searchAdd.setOnClickListener {
             openPage(

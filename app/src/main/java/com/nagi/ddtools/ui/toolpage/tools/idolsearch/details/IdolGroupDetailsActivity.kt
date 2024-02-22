@@ -14,7 +14,7 @@ import com.google.gson.Gson
 import com.nagi.ddtools.data.PageState
 import com.nagi.ddtools.data.TagsList
 import com.nagi.ddtools.database.idolGroupList.IdolGroupList
-import com.nagi.ddtools.databinding.ActivityIdolDetailsBinding
+import com.nagi.ddtools.databinding.ActivityIdolGroupDetailsBinding
 import com.nagi.ddtools.ui.adapter.ActivityListAdapter
 import com.nagi.ddtools.ui.adapter.IdolGroupListAdapter
 import com.nagi.ddtools.ui.adapter.IdolMediaListAdapter
@@ -25,15 +25,15 @@ import com.nagi.ddtools.utils.UiUtils
 import com.nagi.ddtools.utils.UiUtils.dialog
 import com.nagi.ddtools.utils.UiUtils.toast
 
-class IdolGroupDetailsActivity : DdToolsBindingBaseActivity<ActivityIdolDetailsBinding>() {
+class IdolGroupDetailsActivity : DdToolsBindingBaseActivity<ActivityIdolGroupDetailsBinding>() {
     private val viewModel: IdolGroupDetailsViewModel by viewModels()
     private var id: Int = 0
     private var pageState = PageState.VIEW
     private lateinit var mediaAdapter: IdolMediaListAdapter
     private lateinit var idolAdapter: IdolGroupListAdapter
     private lateinit var activityAdapter: ActivityListAdapter
-    override fun createBinding(): ActivityIdolDetailsBinding {
-        return ActivityIdolDetailsBinding.inflate(layoutInflater)
+    override fun createBinding(): ActivityIdolGroupDetailsBinding {
+        return ActivityIdolGroupDetailsBinding.inflate(layoutInflater)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -142,23 +142,26 @@ class IdolGroupDetailsActivity : DdToolsBindingBaseActivity<ActivityIdolDetailsB
         }
     }
 
+    private fun configurePrompt(text: String) {
+        binding.detailsEvaluateInclude.text = text
+        binding.detailsEvaluateInclude.setOnClickListener { checkUserLoginAndPrompt() }
+    }
+
     private fun showTagsList(data: List<TagsList>) {
         binding.detailsEvaluateList.visibility = View.VISIBLE
         binding.detailsEvaluateList.adapter = createTagListAdapter(data)
-        @SuppressLint("SetTextI18n")
-        binding.detailsEvaluateInclude.text = "当前共${data.size}条，点我继续添加！"
-        binding.detailsEvaluateInclude.setOnClickListener { checkUserLoginAndPrompt() }
+        configurePrompt("当前共${data.size}条，点我继续添加！")
     }
 
     private fun hideTagsListAndPromptUserToAddTag() {
         binding.detailsEvaluateList.visibility = View.GONE
-        binding.detailsEvaluateInclude.text = "暂时还没有评价，点我添加一个"
-        binding.detailsEvaluateInclude.setOnClickListener { checkUserLoginAndPrompt() }
+        configurePrompt("暂时还没有评价，点我添加一个")
     }
 
+
     private var lastClickTime: Long = 0
-    private fun createTagListAdapter(data: List<TagsList>): TagListAdapter {
-        return TagListAdapter(data, object : TagListAdapter.OnTagClickListener {
+    private fun createTagListAdapter(data: List<TagsList>) =
+        TagListAdapter(data, object : TagListAdapter.OnTagClickListener {
             override fun onTagClick(tag: TagsList) {
                 val currentTime = System.currentTimeMillis()
                 if (currentTime - lastClickTime >= 2000) {
@@ -175,7 +178,7 @@ class IdolGroupDetailsActivity : DdToolsBindingBaseActivity<ActivityIdolDetailsB
                 }
             }
         })
-    }
+
 
     private fun checkUserLoginAndPrompt() {
         if (viewModel.users.value == null) {

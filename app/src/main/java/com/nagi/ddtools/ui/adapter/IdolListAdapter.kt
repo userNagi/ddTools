@@ -1,8 +1,10 @@
 package com.nagi.ddtools.ui.adapter
 
+import android.app.Activity
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -11,6 +13,8 @@ import com.google.gson.Gson
 import com.nagi.ddtools.database.idolList.IdolTag
 import com.nagi.ddtools.database.idolList.IdolList
 import com.nagi.ddtools.databinding.ListIdolViewBinding
+import com.nagi.ddtools.ui.toolpage.tools.idolsearch.details.IdolDetailsActivity
+import com.nagi.ddtools.utils.UiUtils
 import com.nagi.ddtools.utils.UiUtils.dpToPx
 
 class IdolListAdapter(
@@ -52,7 +56,10 @@ class IdolListAdapter(
             itemView.setOnClickListener {
                 if (onClickListener != null) onClickListener(adapterPosition, item)
                 else {
-                    // TODO:
+                    UiUtils.openPage(
+                        binding.root.context as Activity,
+                        IdolDetailsActivity::class.java,
+                        false, Bundle().apply { putInt("id", item.id) })
                 }
             }
         }
