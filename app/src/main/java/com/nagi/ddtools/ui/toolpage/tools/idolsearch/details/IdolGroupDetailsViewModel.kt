@@ -15,6 +15,8 @@ import com.nagi.ddtools.database.activityList.ActivityList
 import com.nagi.ddtools.database.activityList.ActivityListDao
 import com.nagi.ddtools.database.idolGroupList.IdolGroupList
 import com.nagi.ddtools.database.idolGroupList.IdolGroupListDao
+import com.nagi.ddtools.database.idolList.IdolList
+import com.nagi.ddtools.database.idolList.IdolListDao
 import com.nagi.ddtools.database.user.User
 import com.nagi.ddtools.resourceGet.NetGet
 import com.nagi.ddtools.utils.LogUtils
@@ -35,8 +37,8 @@ class IdolGroupDetailsViewModel : ViewModel() {
     private val _medias = MutableLiveData<List<MediaList>>()
     val medias: LiveData<List<MediaList>> = _medias
 
-    private val _memberList = MutableLiveData<List<IdolGroupList>>()
-    val memberList: LiveData<List<IdolGroupList>> = _memberList
+    private val _memberList = MutableLiveData<List<IdolList>>()
+    val memberList: LiveData<List<IdolList>> = _memberList
 
     private val _activityList = MutableLiveData<List<ActivityList>>()
     val activityList: LiveData<List<ActivityList>> = _activityList
@@ -46,6 +48,9 @@ class IdolGroupDetailsViewModel : ViewModel() {
     }
     private val groupListDao: IdolGroupListDao by lazy {
         AppDatabase.getInstance().idolGroupListDao()
+    }
+    private val memberDao: IdolListDao by lazy {
+        AppDatabase.getInstance().idolListDao()
     }
 
     fun setId(id: Int) {
@@ -65,13 +70,13 @@ class IdolGroupDetailsViewModel : ViewModel() {
     fun loadMemberData(groupId: Int, member: String = "") {
         viewModelScope.launch(Dispatchers.IO) {
             // (如果member不为空，则使用member的数据，否则正常读取数据库，这个是为了区分预览还是正式，下面同理)
-            val memberResult = mutableListOf<IdolGroupList>()
+            val memberResult = mutableListOf<IdolList>()
             val memberResultString = member.ifEmpty { groupListDao.getById(groupId).memberIds }
             if (!memberResultString.isNullOrEmpty()) {
                 val memberResultList = memberResultString.split(",")
                 for (memberId in memberResultList) {
                     if (memberId.isNotEmpty()) {
-                        groupListDao.getById(memberId.toInt()).let { member ->
+                        memberDao.getById(memberId.toInt()).let { member ->
                             memberResult.add(member)
                         }
                     }

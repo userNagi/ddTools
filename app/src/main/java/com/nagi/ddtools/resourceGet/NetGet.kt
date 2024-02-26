@@ -9,6 +9,7 @@ import com.nagi.ddtools.data.Resource
 import com.nagi.ddtools.data.UpdateInfo
 import com.nagi.ddtools.database.activityList.ActivityList
 import com.nagi.ddtools.database.idolGroupList.IdolGroupList
+import com.nagi.ddtools.database.idolList.IdolList
 import com.nagi.ddtools.database.user.User
 import com.nagi.ddtools.utils.DataUtils
 import com.nagi.ddtools.utils.FileUtils.ACTIVITY_LIS_FILE
@@ -34,6 +35,7 @@ object NetGet {
     private const val UPLOAD_IMG = "uploadImg.php/"
     private const val GET_IDOL_TAG = "getIdolTag.php/"
     private const val INSERT_ACTIVITY_INFO = "insertActivity.php/"
+    private const val INSERT_IDOL = "insertIdol.php/"
 
     fun getIdolGroupList(context: Context) {
         NetUtils.fetchAndSave(
@@ -109,6 +111,7 @@ object NetGet {
             if (resource is Resource.Success) {
                 try {
                     val userInfo = Gson().fromJson(resource.data, User::class.java)
+                    userInfo.isMainUser = true
                     callback(Resource.Success(userInfo))
                 } catch (e: JsonSyntaxException) {
                     callback(Resource.Error("JSON parsing error: ${e.localizedMessage}"))
@@ -267,6 +270,35 @@ object NetGet {
                     + (data.participatingGroup?.let { mapOf("participating_group" to it) }
                 ?: emptyMap()) + (data.biliUrl?.let { mapOf("bili_url" to data.biliUrl) }
                 ?: emptyMap())
+        ) { resource ->
+            when (resource) {
+                is Resource.Success -> callback(Resource.Success(resource.data))
+                is Resource.Error -> callback(Resource.Error(resource.message))
+            }
+        }
+    }
+
+    fun editIdol(data: IdolList, callback: (Resource<String>) -> Unit) {
+        NetUtils.fetch(
+            ROOT_URL + INSERT_IDOL,
+            NetUtils.HttpMethod.POST,
+            buildMap {
+                put("id", data.id.toString())
+                put("name", data.name)
+                put("group_id", data.groupId.toString())
+                put("img_url", data.imageUrl)
+                put("location", data.location)
+                data.sex?.also { put("sex", it) }
+                data.ext?.also { put("ext", it) }
+                data.description?.also { put("desc", it) }
+                data.birthday?.also { put("birthday", it) }
+                data.tag?.also {
+                    put("tag_text", it.text)
+                    put("tag_textColor", it.textColor)
+                    put("tag_backColor", it.backColor)
+                }
+            }
+
         ) { resource ->
             when (resource) {
                 is Resource.Success -> callback(Resource.Success(resource.data))

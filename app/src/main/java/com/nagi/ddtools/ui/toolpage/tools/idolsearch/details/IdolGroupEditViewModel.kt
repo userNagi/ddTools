@@ -47,18 +47,4 @@ class IdolGroupEditViewModel : ViewModel() {
             }
         }
     }
-
-    fun sendSubmitRequest(data: IdolGroupList) {
-        NetGet.editGroupInfo(data) { resource ->
-            when (resource) {
-                is Resource.Success -> {
-                    _submitResult.postValue(resource.data)
-                }
-
-                is Resource.Error -> {
-                    _submitResult.postValue(resource.message)
-                }
-            }
-        }
-    }
 }

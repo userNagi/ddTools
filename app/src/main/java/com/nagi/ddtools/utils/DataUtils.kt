@@ -1,5 +1,10 @@
 package com.nagi.ddtools.utils
 
+import android.content.Context
+import android.net.Uri
+import android.widget.ArrayAdapter
+import com.nagi.ddtools.data.Resource
+import com.nagi.ddtools.resourceGet.NetGet
 import java.security.MessageDigest
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -151,5 +156,30 @@ object DataUtils {
             hexString.append(hex)
         }
         return hexString.toString()
+    }
+
+    fun getImgUrl(
+        context: Context,
+        uri: Uri,
+        path: String,
+        callback: (String) -> Unit
+    ) {
+        NetGet.uploadImage(context, uri, path) { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    callback(resource.data)
+                }
+
+                is Resource.Error -> {
+                    callback("")
+                }
+            }
+        }
+    }
+
+    fun Collection<String>.toSpinnerAdapter(context: Context): ArrayAdapter<String> {
+        return ArrayAdapter(context, android.R.layout.simple_spinner_item, this.toList()).also {
+            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        }
     }
 }

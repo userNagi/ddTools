@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
 import com.nagi.ddtools.database.idolList.IdolTag
 import com.nagi.ddtools.database.idolList.IdolList
 import com.nagi.ddtools.databinding.ListIdolViewBinding
@@ -32,7 +31,7 @@ class IdolListAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ListIdolViewBinding.inflate(LayoutInflater.from(parent.context))
-        return ViewHolder(binding, onClickListener)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -43,7 +42,6 @@ class IdolListAdapter(
 
     class ViewHolder(
         private val binding: ListIdolViewBinding,
-        private val onClickListener: ((Int, IdolList) -> Unit)? = null
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(
             item: IdolList,

@@ -4,6 +4,72 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.minepage.user.userInfo.UserInfoActivity">
+    android:background="@color/gray"
+    tools:context=".ui.minepage.user.userInfo.UserInfoActivity"
+    tools:ignore="HardcodedText">
+
+    <include
+        android:id="@+id/include_title"
+        layout="@layout/include_page_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.nagi.ddtools.ui.widget.NetImageView
+        android:id="@+id/user_avatar"
+        android:layout_width="88dp"
+        android:layout_height="88dp"
+        android:layout_marginStart="@dimen/dp_20"
+        android:background="@color/lty"
+        android:src="@drawable/baseline_user_unlogin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include_title"
+        app:shapeAppearance="@style/circleStyle" />
+
+    <TextView
+        android:id="@+id/user_nickname_text"
+        style="@style/Text"
+        android:layout_marginTop="@dimen/dp_20"
+        android:text="昵称："
+        app:layout_constraintStart_toStartOf="@+id/user_avatar"
+        app:layout_constraintTop_toBottomOf="@+id/user_avatar" />
+
+    <TextView
+        android:id="@+id/user_nickname"
+        style="@style/Text"
+        app:layout_constraintStart_toEndOf="@+id/user_nickname_text"
+        app:layout_constraintTop_toTopOf="@+id/user_nickname_text"
+        tools:text="test" />
+
+    <TextView
+        android:id="@+id/user_username_text"
+        style="@style/Text"
+        android:layout_marginTop="@dimen/dp_10"
+        android:text="用户名："
+        app:layout_constraintStart_toStartOf="@+id/user_nickname_text"
+        app:layout_constraintTop_toBottomOf="@+id/user_nickname_text" />
+
+    <TextView
+        android:id="@+id/user_username"
+        style="@style/Text"
+        app:layout_constraintStart_toEndOf="@+id/user_username_text"
+        app:layout_constraintTop_toTopOf="@+id/user_username_text"
+        tools:text="test" />
+
+    <TextView
+        android:id="@+id/user_include_text"
+        style="@style/Text"
+        android:layout_marginTop="@dimen/dp_10"
+        android:text="简介："
+        app:layout_constraintStart_toStartOf="@+id/user_username_text"
+        app:layout_constraintTop_toBottomOf="@+id/user_username_text" />
+
+    <TextView
+        android:id="@+id/user_include"
+        style="@style/Text"
+        android:layout_width="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/user_include_text"
+        app:layout_constraintTop_toTopOf="@+id/user_include_text"
+        tools:text="介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

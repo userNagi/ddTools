@@ -13,6 +13,7 @@ import com.nagi.ddtools.databinding.ActivityGroupWhoAcivityBinding
 import com.nagi.ddtools.databinding.DialogAddGroupChooseBinding
 import com.nagi.ddtools.ui.adapter.IdolGroupListAdapter
 import com.nagi.ddtools.ui.base.DdToolsBindingBaseActivity
+import com.nagi.ddtools.utils.DataUtils.toSpinnerAdapter
 import com.nagi.ddtools.utils.UiUtils
 import com.nagi.ddtools.utils.UiUtils.dialog
 
@@ -101,7 +102,7 @@ class ChooseWhoActivity : DdToolsBindingBaseActivity<ActivityGroupWhoAcivityBind
         val dialogView = dialogBinding.root
 
         viewModel.location.observe(this) { locations ->
-            dialogBinding.spinnerLocation.adapter = locations.toSpinnerAdapter()
+            dialogBinding.spinnerLocation.adapter = locations.toSpinnerAdapter(this)
         }
 
         dialogBinding.spinnerLocation.onItemSelectedListener =
@@ -116,7 +117,7 @@ class ChooseWhoActivity : DdToolsBindingBaseActivity<ActivityGroupWhoAcivityBind
                     viewModel.groupData.value?.let { groups ->
                         val filteredGroups = groups.filter { it.location == selectedLocation }
                         dialogBinding.spinnerGroup.adapter =
-                            filteredGroups.map { it.name }.toSpinnerAdapter()
+                            filteredGroups.map { it.name }.toSpinnerAdapter(this@ChooseWhoActivity)
                     }
                 }
 
@@ -135,17 +136,6 @@ class ChooseWhoActivity : DdToolsBindingBaseActivity<ActivityGroupWhoAcivityBind
         dialog("添加选项", "请选择", "", "", {}, {}, dialogView
         )
     }
-
-    private fun Collection<String>.toSpinnerAdapter(): ArrayAdapter<String> {
-        return ArrayAdapter(
-            applicationContext,
-            android.R.layout.simple_spinner_item,
-            this.toList()
-        ).also {
-            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        }
-    }
-
 
     private fun updateAdapter(data: List<IdolGroupList>) {
         adapter.updateData(data)

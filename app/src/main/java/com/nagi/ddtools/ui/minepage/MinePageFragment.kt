@@ -15,6 +15,7 @@ import com.nagi.ddtools.ui.minepage.feedback.UserFeedBack
 import com.nagi.ddtools.ui.minepage.join.JoinUsActivity
 import com.nagi.ddtools.ui.minepage.setting.GlobalSettingActivity
 import com.nagi.ddtools.ui.minepage.user.login.LoginActivity
+import com.nagi.ddtools.ui.minepage.user.userInfo.UserInfoActivity
 import com.nagi.ddtools.utils.UiUtils.openPage
 
 class MinePageFragment : Fragment() {
@@ -63,9 +64,10 @@ class MinePageFragment : Fragment() {
                 setOnClickListener(requireActivity(), AboutActivity::class.java)
             }
             loginViewImage.setOnClickListener {
-                if (viewModel.user.value.isNullOrEmpty()) {
-                    openPage(requireActivity(), LoginActivity::class.java)
-                }
+
+                if (viewModel.user.value.isNullOrEmpty()) openPage(
+                    requireActivity(), LoginActivity::class.java
+                ) else openPage(requireActivity(), UserInfoActivity::class.java)
             }
         }
     }
@@ -80,7 +82,7 @@ class MinePageFragment : Fragment() {
                     if (userInfo.avatar_url.isNotEmpty() && userInfo.avatar_url.isNotBlank()) {
                         loginViewImage.setImageUrl(userInfo.avatar_url)
                         loginViewImage.setOnClickListener {
-                                loginViewImage.onCLick(userInfo.avatar_url)
+                            loginViewImage.onCLick(userInfo.avatar_url)
                         }
                     }
                 }

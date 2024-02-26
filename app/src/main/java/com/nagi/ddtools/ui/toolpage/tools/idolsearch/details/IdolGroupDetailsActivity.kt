@@ -17,6 +17,7 @@ import com.nagi.ddtools.database.idolGroupList.IdolGroupList
 import com.nagi.ddtools.databinding.ActivityIdolGroupDetailsBinding
 import com.nagi.ddtools.ui.adapter.ActivityListAdapter
 import com.nagi.ddtools.ui.adapter.IdolGroupListAdapter
+import com.nagi.ddtools.ui.adapter.IdolListAdapter
 import com.nagi.ddtools.ui.adapter.IdolMediaListAdapter
 import com.nagi.ddtools.ui.adapter.TagListAdapter
 import com.nagi.ddtools.ui.base.DdToolsBindingBaseActivity
@@ -30,7 +31,7 @@ class IdolGroupDetailsActivity : DdToolsBindingBaseActivity<ActivityIdolGroupDet
     private var id: Int = 0
     private var pageState = PageState.VIEW
     private lateinit var mediaAdapter: IdolMediaListAdapter
-    private lateinit var idolAdapter: IdolGroupListAdapter
+    private lateinit var idolAdapter: IdolListAdapter
     private lateinit var activityAdapter: ActivityListAdapter
     override fun createBinding(): ActivityIdolGroupDetailsBinding {
         return ActivityIdolGroupDetailsBinding.inflate(layoutInflater)
@@ -82,7 +83,7 @@ class IdolGroupDetailsActivity : DdToolsBindingBaseActivity<ActivityIdolGroupDet
         binding.detailsEvaluateList.layoutManager = layoutManager
         mediaAdapter = IdolMediaListAdapter(mutableListOf())
         binding.detailsGroupMediaList.adapter = mediaAdapter
-        idolAdapter = IdolGroupListAdapter(mutableListOf())
+        idolAdapter = IdolListAdapter(mutableListOf())
         binding.detailsGroupMemberList.adapter = idolAdapter
         activityAdapter = ActivityListAdapter(mutableListOf(), id)
         binding.detailsPartActivityList.adapter = activityAdapter

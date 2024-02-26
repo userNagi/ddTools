@@ -14,5 +14,8 @@ data class User(
     val role: String,
     val experience: String,
     val status: String,
-    val ext: String
+    val ext: String,
+    val sex: String?,
+    val preferred_location: String?,
+    var isMainUser:Boolean
 )

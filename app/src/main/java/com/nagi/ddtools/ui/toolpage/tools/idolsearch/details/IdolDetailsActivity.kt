@@ -11,12 +11,14 @@ import androidx.activity.viewModels
 import androidx.appcompat.content.res.AppCompatResources
 import com.google.gson.Gson
 import com.nagi.ddtools.R
+import com.nagi.ddtools.data.MediaList
 import com.nagi.ddtools.data.TagsList
 import com.nagi.ddtools.database.idolGroupList.IdolGroupList
 import com.nagi.ddtools.database.idolList.IdolList
 import com.nagi.ddtools.database.idolList.IdolTag
 import com.nagi.ddtools.databinding.ActivityIdolDetailsBinding
 import com.nagi.ddtools.ui.adapter.IdolGroupListAdapter
+import com.nagi.ddtools.ui.adapter.IdolMediaListAdapter
 import com.nagi.ddtools.ui.adapter.TagListAdapter
 import com.nagi.ddtools.ui.base.DdToolsBindingBaseActivity
 import com.nagi.ddtools.ui.minepage.user.login.LoginActivity
@@ -41,7 +43,8 @@ class IdolDetailsActivity : DdToolsBindingBaseActivity<ActivityIdolDetailsBindin
 
     private fun initData() {
         id = intent.extras?.getInt("id")
-        if (id == 0) initPreview() else {
+        val pageType = intent.extras?.getString("pageType")
+        if (pageType == "preview") initPreview() else {
             initViewModel()
             initTags()
         }
@@ -51,6 +54,7 @@ class IdolDetailsActivity : DdToolsBindingBaseActivity<ActivityIdolDetailsBindin
         binding.titleInclude.apply {
             titleBack.setOnClickListener { finish() }
             titleText.text = "偶像详情"
+            titleRight.visibility = View.VISIBLE
             titleRight.text = if (id == 0) "预览中" else "编辑"
             titleRight.setOnClickListener {
                 if (id != 0) openPage(
@@ -77,10 +81,12 @@ class IdolDetailsActivity : DdToolsBindingBaseActivity<ActivityIdolDetailsBindin
         viewModel.setData(id ?: 0, data)
         viewModel.data.observe(this) { it?.let { it1 -> updateView(it1) } }
         viewModel.group.observe(this) { it?.let { it1 -> updateGroupAdapter(it1) } }
+        viewModel.medias.observe(this) { it?.let { it1 -> updateMediaAdapter(it1) } }
     }
 
     private fun updateView(data: IdolList) {
         setTag(data.tag)
+        binding.detailsLocationText.text = data.location
         binding.detailsTitle.text = data.name
         binding.detailsInfoText.text = data.description
         binding.detailsGroupBirthdayText.text = data.birthday
@@ -91,6 +97,10 @@ class IdolDetailsActivity : DdToolsBindingBaseActivity<ActivityIdolDetailsBindin
 
     private fun updateGroupAdapter(data: IdolGroupList) {
         binding.detailsGroup.adapter = IdolGroupListAdapter(mutableListOf(data))
+    }
+
+    private fun updateMediaAdapter(data: List<MediaList>) {
+        binding.detailsGroupMediaList.adapter = IdolMediaListAdapter(data as MutableList<MediaList>)
     }
 
     private fun checkUserLoginAndPrompt() {

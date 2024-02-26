@@ -22,6 +22,7 @@ import com.nagi.ddtools.ui.adapter.IdolGroupListAdapter
 import com.nagi.ddtools.ui.base.DdToolsBindingBaseActivity
 import com.nagi.ddtools.ui.minepage.user.register.RegisterActivity
 import com.nagi.ddtools.ui.widget.MediaSpinnerAndInput
+import com.nagi.ddtools.utils.DataUtils.toSpinnerAdapter
 import com.nagi.ddtools.utils.UiUtils.dialog
 import com.nagi.ddtools.utils.UiUtils.hideDialog
 import com.nagi.ddtools.utils.UiUtils.openPage
@@ -97,7 +98,7 @@ class EditActivityActivity : DdToolsBindingBaseActivity<ActivityEditActivityBind
         val dialogView = dialogBinding.root
 
         viewModel.location.observe(this) { locations ->
-            dialogBinding.spinnerLocation.adapter = locations.toSpinnerAdapter()
+            dialogBinding.spinnerLocation.adapter = locations.toSpinnerAdapter(applicationContext)
         }
         dialogBinding.spinnerLocation.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
@@ -111,7 +112,7 @@ class EditActivityActivity : DdToolsBindingBaseActivity<ActivityEditActivityBind
                     viewModel.groupData.value?.let { groups ->
                         val filteredGroups = groups.filter { it.location == selectedLocation }
                         dialogBinding.spinnerGroup.adapter =
-                            filteredGroups.map { it.name }.toSpinnerAdapter()
+                            filteredGroups.map { it.name }.toSpinnerAdapter(applicationContext)
                     }
                 }
 
@@ -349,14 +350,4 @@ class EditActivityActivity : DdToolsBindingBaseActivity<ActivityEditActivityBind
         return if (mediaList.isEmpty()) "" else Gson().toJson(mediaList)
     }
 
-
-    private fun Collection<String>.toSpinnerAdapter(): ArrayAdapter<String> {
-        return ArrayAdapter(
-            applicationContext,
-            android.R.layout.simple_spinner_item,
-            this.toList()
-        ).also {
-            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        }
-    }
 }

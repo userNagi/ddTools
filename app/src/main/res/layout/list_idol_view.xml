@@ -48,7 +48,6 @@
                 android:textColor="@color/black"
                 android:textSize="14dp"
                 tools:ignore="SpUsage"
-                android:maxLength="10"
                 android:ellipsize="end"
                 tools:text="当第一道裂缝出现时我所见到的" />
 

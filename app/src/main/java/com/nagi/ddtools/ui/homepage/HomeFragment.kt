@@ -70,7 +70,7 @@ class HomeFragment : Fragment() {
         initAdapter()
         viewModel.loadHomePageList()
         viewModel.homeListData.observe(viewLifecycleOwner) { data ->
-            updateView(data.filter { it.parent == 0 })
+            updateView(data.filter { it.parent == 0 },data.size)
         }
 
     }
@@ -110,9 +110,9 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun updateView(data: List<HomePageList>) {
+    private fun updateView(data: List<HomePageList>, sum: Int) {
         with(binding) {
-            homePageSum.text = if (data.isNotEmpty()) "当前共${data.size}条" else ""
+            homePageSum.text = if (data.isNotEmpty()) "当前共${data.size}项，${sum}条" else ""
             homePageListview.visibility = if (data.isEmpty()) View.GONE else View.VISIBLE
             homePageAdd.visibility = if (data.isEmpty()) View.VISIBLE else View.GONE
             homePageAdd.setOnClickListener {

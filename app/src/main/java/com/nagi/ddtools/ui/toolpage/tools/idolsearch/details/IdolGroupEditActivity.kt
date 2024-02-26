@@ -17,7 +17,9 @@ import com.nagi.ddtools.database.idolGroupList.IdolGroupList
 import com.nagi.ddtools.databinding.ActivityIdolGroupEditBinding
 import com.nagi.ddtools.resourceGet.NetGet
 import com.nagi.ddtools.ui.base.DdToolsBindingBaseActivity
+import com.nagi.ddtools.ui.minepage.user.register.RegisterActivity
 import com.nagi.ddtools.ui.widget.MediaSpinnerAndInput
+import com.nagi.ddtools.utils.DataUtils.getImgUrl
 import com.nagi.ddtools.utils.FileUtils
 import com.nagi.ddtools.utils.UiUtils.openPage
 import com.nagi.ddtools.utils.UiUtils.toast
@@ -48,8 +50,14 @@ class IdolGroupEditActivity : DdToolsBindingBaseActivity<ActivityIdolGroupEditBi
             titleBack.setOnClickListener { finish() }
         }
         binding.editMediaAdd.setOnClickListener { addMedia() }
-        binding.editSubmit.setOnClickListener { if (checkEmpty()) editSubmit() }
+        binding.editSubmit.setOnClickListener { createSubmit() }
         binding.editPreview.setOnClickListener { if (checkEmpty()) previewSubmit() }
+        binding.editName.addTextChangedListener(RegisterActivity.RegisterWatching {
+            binding.editNameLayout.error = null
+        })
+        binding.editLocation.addTextChangedListener(RegisterActivity.RegisterWatching {
+            binding.editLocationLayout.error = null
+        })
     }
 
     private fun initViewModel() {
@@ -60,9 +68,6 @@ class IdolGroupEditActivity : DdToolsBindingBaseActivity<ActivityIdolGroupEditBi
         if (id == 0) {
             binding.editImage.setOnClickListener {
                 FileUtils.openImageGallery(this@IdolGroupEditActivity, resultLauncher)
-            }
-            binding.editSubmit.setOnClickListener {
-                if (checkEmpty()) createSubmit()
             }
             return
         }
@@ -122,7 +127,7 @@ class IdolGroupEditActivity : DdToolsBindingBaseActivity<ActivityIdolGroupEditBi
         val groupDesc = binding.editDesc.text.toString()
         val version = (viewModel.info.value?.version?.plus(versionIncrement)) ?: 1
 
-        return if (name.isNotEmpty() && location.isNotEmpty() ) {
+        return if (name.isNotEmpty() && location.isNotEmpty()) {
             IdolGroupList(
                 id = viewModel.info.value?.id ?: System.currentTimeMillis().toString().takeLast(8)
                     .toInt(),
@@ -140,26 +145,28 @@ class IdolGroupEditActivity : DdToolsBindingBaseActivity<ActivityIdolGroupEditBi
         }
     }
 
-    private fun editSubmit() {
-        extractGroupData(versionIncrement = 1)?.let { submitGroupData ->
-            viewModel.sendSubmitRequest(submitGroupData)
-        } ?: toast("错误，有值为空！")
+    private var cachedImgUrl: String? = null
+    private fun getImageUrl(): String? {
+        if (cachedImgUrl.isNullOrEmpty()) {
+            getImgUrl(applicationContext, uri, "groupImg/groupAvatar") { imgUrl ->
+                cachedImgUrl = imgUrl
+            }
+        }
+        return cachedImgUrl
     }
 
     private fun createSubmit() {
         extractGroupData()?.let { data ->
-            getImgUrl { imgUrl ->
-                data.imgUrl = imgUrl.ifEmpty { "" }
-                NetGet.editGroupInfo(data) { resource ->
-                    when (resource) {
-                        is Resource.Success -> {
-                            toast(resource.data)
-                            finish()
-                        }
+            data.imgUrl = getImageUrl() ?: "".ifEmpty { "" }
+            NetGet.editGroupInfo(data) { resource ->
+                when (resource) {
+                    is Resource.Success -> {
+                        toast(resource.data)
+                        finish()
+                    }
 
-                        is Resource.Error -> {
-                            toast(resource.message)
-                        }
+                    is Resource.Error -> {
+                        toast(resource.message)
                     }
                 }
             }
@@ -174,32 +181,11 @@ class IdolGroupEditActivity : DdToolsBindingBaseActivity<ActivityIdolGroupEditBi
                 IdolGroupDetailsActivity::class.java,
                 false,
                 Bundle().apply {
-                    putInt("id",id)
+                    putInt("id", id)
                     putString("pageType", "preview")
                     putString("data", jsonPreview)
                 })
         } ?: toast("错误，有值为空！")
-    }
-
-
-    private fun getImgUrl(callback: (String) -> Unit) {
-        NetGet.uploadImage(
-            applicationContext,
-            uri,
-            "groupImg/groupAvatar"
-        ) { resource ->
-            when (resource) {
-                is Resource.Success -> {
-                    callback(resource.data)
-                }
-
-                is Resource.Error -> {
-                    toast(resource.message)
-                    callback("")
-                    finish()
-                }
-            }
-        }
     }
 
     private fun handleActivityResult(result: ActivityResult) {
