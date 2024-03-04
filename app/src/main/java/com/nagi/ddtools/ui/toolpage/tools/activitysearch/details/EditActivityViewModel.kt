@@ -61,10 +61,9 @@ class EditActivityViewModel : ViewModel() {
         }
     }
 
-    private fun parseIdAndTimes(idAndTimes: String): List<IdolGroupList> {
-        return idAndTimes.split(',')
-            .mapNotNull { parseIdAndTime(it) }
-    }
+    private fun parseIdAndTimes(idAndTimes: String) =
+        idAndTimes.split(',').mapNotNull { parseIdAndTime(it) }
+
 
     private fun parseIdAndTime(idAndTime: String): IdolGroupList? {
         val info = idAndTime.split('-')
@@ -75,6 +74,28 @@ class EditActivityViewModel : ViewModel() {
         }
     }
 
+    private fun parseNameAndTimes(idAndTimes: String) =
+        idAndTimes.split(',').mapNotNull { parseNameAndTime(it) }
+
+
+    private fun parseNameAndTime(nameAndTime: String): IdolGroupList? {
+        val info = nameAndTime.split('-')
+        if (info.size < 3) return null
+        val groupInfo = groupListDao.getByName(info[0])
+        if (groupInfo?.name.isNullOrEmpty()) return null
+
+        return groupInfo.also { it!!.groupDesc = "${info[1]}-${info[2]}" }
+    }
+
+    fun handleAddIdolFromText(text: String) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                val groups = parseNameAndTimes(text)
+                groups.forEach { addData(it) }
+            }
+        }
+
+    }
 
     fun addData(data: IdolGroupList) {
         val currentList = _groupList.value?.toMutableList() ?: mutableListOf()

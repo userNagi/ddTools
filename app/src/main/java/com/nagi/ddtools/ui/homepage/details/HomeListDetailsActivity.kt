@@ -38,7 +38,10 @@ class HomeListDetailsActivity : DdToolsBindingBaseActivity<ActivityHomeListDetai
             showDeleteDialog(position, data)
         }
     }
-
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadHomePageList()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         resultLauncher =

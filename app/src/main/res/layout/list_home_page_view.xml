@@ -4,22 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingHorizontal="@dimen/dp_10"
     android:gravity="center"
     android:orientation="vertical">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/home_page_listview_image"
-        android:layout_width="165dp"
-        android:layout_height="230dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:padding="@dimen/dp_1"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
         android:src="@drawable/ic_baseline_add"
         app:shapeAppearance="@style/homePageListImageStyle"
         app:strokeColor="@color/lty"
         app:strokeWidth="@dimen/dp_2" />
 
+
     <TextView
         android:id="@+id/home_page_listview_text"
-        android:layout_width="165dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="top"
         android:maxHeight="@dimen/dp_40"

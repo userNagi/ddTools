@@ -15,6 +15,8 @@ import com.nagi.ddtools.database.idolList.IdolList
 import com.nagi.ddtools.database.idolList.IdolListDao
 import com.nagi.ddtools.database.idolList.IdolTag
 import com.nagi.ddtools.database.idolList.IdolTagDao
+import com.nagi.ddtools.database.localCollect.LocalCollect
+import com.nagi.ddtools.database.localCollect.LocalCollectDao
 import com.nagi.ddtools.database.user.User
 import com.nagi.ddtools.database.user.UserDao
 
@@ -29,6 +31,7 @@ import com.nagi.ddtools.database.user.UserDao
         HomePageList::class,
         IdolGroupList::class,
         ActivityList::class,
+        LocalCollect::class,
         IdolList::class,
         IdolTag::class,
         User::class
@@ -39,6 +42,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun homePageDao(): HomePageListDao
     abstract fun idolGroupListDao(): IdolGroupListDao
     abstract fun activityListDao(): ActivityListDao
+    abstract fun localCollectDao(): LocalCollectDao
     abstract fun idolListDao(): IdolListDao
     abstract fun tagDao(): IdolTagDao
     abstract fun userDao(): UserDao

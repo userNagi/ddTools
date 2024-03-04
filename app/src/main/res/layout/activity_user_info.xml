@@ -17,36 +17,32 @@
     <com.nagi.ddtools.ui.widget.NetImageView
         android:id="@+id/user_avatar"
         android:layout_width="88dp"
+        android:scaleType="centerCrop"
         android:layout_height="88dp"
         android:layout_marginStart="@dimen/dp_20"
-        android:background="@color/lty"
+        android:background="@color/white"
         android:src="@drawable/baseline_user_unlogin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include_title"
         app:shapeAppearance="@style/circleStyle" />
 
     <TextView
-        android:id="@+id/user_nickname_text"
-        style="@style/Text"
-        android:layout_marginTop="@dimen/dp_20"
-        android:text="昵称："
-        app:layout_constraintStart_toStartOf="@+id/user_avatar"
-        app:layout_constraintTop_toBottomOf="@+id/user_avatar" />
-
-    <TextView
         android:id="@+id/user_nickname"
-        style="@style/Text"
-        app:layout_constraintStart_toEndOf="@+id/user_nickname_text"
-        app:layout_constraintTop_toTopOf="@+id/user_nickname_text"
+        style="@style/TitleTextStyle"
+        android:layout_marginStart="@dimen/dp_20"
+        app:layout_constraintBottom_toTopOf="@id/user_username"
+        app:layout_constraintStart_toEndOf="@+id/user_avatar"
+        app:layout_constraintTop_toTopOf="@+id/user_avatar"
         tools:text="test" />
 
     <TextView
         android:id="@+id/user_username_text"
         style="@style/Text"
-        android:layout_marginTop="@dimen/dp_10"
         android:text="用户名："
-        app:layout_constraintStart_toStartOf="@+id/user_nickname_text"
-        app:layout_constraintTop_toBottomOf="@+id/user_nickname_text" />
+        app:layout_constraintBottom_toBottomOf="@+id/user_avatar"
+        app:layout_constraintStart_toStartOf="@+id/user_nickname"
+        app:layout_constraintTop_toBottomOf="@+id/user_nickname"
+        app:layout_constraintVertical_bias="0.454" />
 
     <TextView
         android:id="@+id/user_username"
@@ -58,10 +54,10 @@
     <TextView
         android:id="@+id/user_include_text"
         style="@style/Text"
-        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_20"
         android:text="简介："
-        app:layout_constraintStart_toStartOf="@+id/user_username_text"
-        app:layout_constraintTop_toBottomOf="@+id/user_username_text" />
+        app:layout_constraintStart_toStartOf="@+id/user_avatar"
+        app:layout_constraintTop_toBottomOf="@+id/user_avatar" />
 
     <TextView
         android:id="@+id/user_include"
@@ -72,4 +68,48 @@
         app:layout_constraintTop_toTopOf="@+id/user_include_text"
         tools:text="介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍" />
 
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/user_edit"
+        android:layout_width="@dimen/dp_20"
+        android:layout_height="@dimen/dp_20"
+        android:layout_marginEnd="@dimen/dp_20"
+        android:src="@drawable/baseline_edit"
+        app:layout_constraintBottom_toBottomOf="@+id/user_avatar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/user_avatar" />
+
+    <TextView
+        android:id="@+id/user_location_text"
+        style="@style/Text"
+        android:layout_marginTop="@dimen/dp_20"
+        android:text="首选地点："
+        app:layout_constraintStart_toStartOf="@+id/user_include_text"
+        app:layout_constraintTop_toBottomOf="@+id/user_include_text" />
+
+    <TextView
+        android:id="@+id/user_location"
+        style="@style/Text"
+        app:layout_constraintStart_toEndOf="@+id/user_location_text"
+        app:layout_constraintTop_toTopOf="@+id/user_location_text"
+        tools:text="test" />
+
+    <TextView
+        android:id="@+id/user_collect"
+        style="@style/Text"
+        android:layout_marginTop="@dimen/dp_20"
+        android:text="我的收藏："
+        app:layout_constraintStart_toStartOf="@+id/user_location_text"
+        app:layout_constraintTop_toBottomOf="@+id/user_location_text" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/user_collect_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/dp_20"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_collect"
+        tools:listitem="@layout/list_activity_in_idol_details" />
 </androidx.constraintlayout.widget.ConstraintLayout>

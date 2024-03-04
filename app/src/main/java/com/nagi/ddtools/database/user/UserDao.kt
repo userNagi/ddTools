@@ -9,11 +9,15 @@ import androidx.room.Query
 interface UserDao {
     @Query("SELECT * FROM User")
     fun getAll(): List<User>
+
     @Query("SELECT * FROM User where id =:id")
     fun getById(id: Int): User
 
     @Query("DELETE FROM User WHERE id =:id")
     fun deleteById(id: String)
+
+    @Query("DELETE FROM User")
+    fun deleteAll()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(user: User)

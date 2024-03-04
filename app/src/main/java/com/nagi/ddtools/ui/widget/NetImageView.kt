@@ -12,6 +12,7 @@ import androidx.core.view.setPadding
 import com.google.android.material.imageview.ShapeableImageView
 import com.nagi.ddtools.R
 import com.nagi.ddtools.databinding.DialogImageShowBinding
+import com.nagi.ddtools.utils.FileUtils.viewBigImage
 import com.nagi.ddtools.utils.LogUtils
 import com.nagi.ddtools.utils.NetImageLoader
 import com.nagi.ddtools.utils.NetUtils.getBitmapFromURL
@@ -63,7 +64,9 @@ class NetImageView @JvmOverloads constructor(
     }
 
     fun onCLick(url: String) {
-        showPopupImage(context, url)
+        setOnClickListener {
+            showPopupImage(context, url)
+        }
     }
 
     private fun getCachedBitmap(url: String): Bitmap? {
@@ -84,49 +87,16 @@ class NetImageView @JvmOverloads constructor(
         return url.hashCode().toString()
     }
 
-    private fun showPopupImage(context: Context, originalUrl: String) {
-        context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val popupViewBinding = DialogImageShowBinding.inflate(LayoutInflater.from(context))
-        val popupWindow = PopupWindow(
-            popupViewBinding.root,
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            true
-        )
-        popupViewBinding.popupImageView.setPadding(50)
-
+    private fun showPopupImage(context: Context, url: String) {
         val coroutineScope = CoroutineScope(Dispatchers.Main)
         coroutineScope.launch {
-            val cachedBitmap = getCachedBitmap(originalUrl)
+            val cachedBitmap = getCachedBitmap(url)
             val bmp = cachedBitmap ?: withContext(Dispatchers.IO) {
-                getBitmapFromURL(originalUrl)
+                getBitmapFromURL(url)
             }
-            bmp?.let { bitmap ->
-                if (cachedBitmap == null) {
-                    withContext(Dispatchers.IO) {
-                        cacheBitmap(originalUrl, bitmap)
-                    }
-                }
-                popupViewBinding.popupImageView.setImageBitmap(bitmap)
-            } ?: run {
-                popupViewBinding.popupImageView.setImageResource(R.drawable.baseline_user_unlogin)
-            }
+            viewBigImage(context, this@NetImageView, bmp)
         }
-
-        popupViewBinding.root.setOnClickListener {
-            popupWindow.dismiss()
-        }
-        popupViewBinding.popupImageView.setOnLongClickListener {
-            saveImageToGallery(context, originalUrl)
-            true
-        }
-        popupWindow.showAtLocation(this, Gravity.CENTER, 0, 0)
     }
-
-    private fun saveImageToGallery(context: Context, imageUrl: String) {
-        context.toast("已保存至相册")
-    }
-
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         currentLoadJob?.cancel()

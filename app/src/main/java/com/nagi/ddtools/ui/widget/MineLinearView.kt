@@ -26,7 +26,7 @@ class MineLinearView @JvmOverloads constructor(
             setImageDrawable(getDrawable(context, drawable))
             when (color) {
                 "red" -> setBackgroundColor(Color.RED)
-                "green" -> setBackgroundColor(Color.GREEN)
+                "green" -> setBackgroundColor(Color.parseColor("#006400"))
                 "blue" -> setBackgroundColor(Color.BLUE)
                 "black" -> setBackgroundColor(Color.BLACK)
                 "yellow" -> setBackgroundColor(Color.YELLOW)

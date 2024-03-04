@@ -22,6 +22,7 @@ class ActivityListAdapter(
     private var detailsId: Int = 0
 ) :
     RecyclerView.Adapter<ActivityListAdapter.ActivityViewHolder>() {
+    var isShowTime = true
 
     fun updateData(newData: List<ActivityList>, id: Int = 0) {
         detailsId = id
@@ -50,13 +51,13 @@ class ActivityListAdapter(
     override fun getItemCount(): Int = dataList.size
     override fun onBindViewHolder(holder: ActivityViewHolder, position: Int) {
         if (dataList.size == 0) return
-        holder.bind(dataList[position], detailsId)
+        holder.bind(dataList[position], detailsId, isShowTime)
     }
 
     class ActivityViewHolder(private val binding: ViewBinding) :
         RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
-        fun bind(data: ActivityList, groupId: Int) {
+        fun bind(data: ActivityList, groupId: Int, isShowTime: Boolean = true) {
             val date = DataUtils.parseDate(data.durationDate)
             if (binding is ListActivityViewBinding) {
                 binding.apply {
@@ -81,7 +82,8 @@ class ActivityListAdapter(
                 binding.apply {
                     activityTimeDesc.text = "${date[1]}月${date[0]}日"
                     activityName.text = data.name
-                    activityTimeTable.text = getTimeTable(data.participatingGroup!!, groupId)
+                    if (isShowTime) activityTimeTable.text =
+                        data.participatingGroup?.let { getTimeTable(it, groupId) }
                     activityLocationDesc.apply {
                         text = data.locationDesc
                         setOnClickListener { MapUtils.chooseLocation(context, data.locationDesc) }

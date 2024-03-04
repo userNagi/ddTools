@@ -15,21 +15,12 @@ class MinePageViewModel : ViewModel() {
     private var _user = MutableLiveData<List<User>>()
     var user: LiveData<List<User>> = _user
 
-    init {
-        loadUsersFromDatabase()
-    }
-
     fun reGetUser() {
-        loadUsersFromDatabase()
-    }
-
-    private fun loadUsersFromDatabase() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 val users = database.userDao().getAll()
                 _user.postValue(users)
             }
         }
-
     }
 }

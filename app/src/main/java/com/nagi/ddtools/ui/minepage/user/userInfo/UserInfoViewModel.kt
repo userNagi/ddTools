@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nagi.ddtools.database.AppDatabase
+import com.nagi.ddtools.database.activityList.ActivityList
 import com.nagi.ddtools.database.user.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,16 +19,40 @@ class UserInfoViewModel : ViewModel() {
     private var _thisUser = MutableLiveData<User>()
     var thisUser: LiveData<User> = _thisUser
 
+    private var _collectActivity = MutableLiveData<List<ActivityList>>()
+    var collectActivity: LiveData<List<ActivityList>> = _collectActivity
+
     fun getUser() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 val users = database.userDao().getAll()
                 _user.postValue(users)
                 _thisUser.postValue(users[0])
+                getUserCollectActivity(users[0].id)
             }
         }
     }
 
     fun getUserLogin(): Boolean = !_user.value.isNullOrEmpty()
+    fun logout() {
+        viewModelScope.launch { withContext(Dispatchers.IO) { database.userDao().deleteAll() } }
+    }
+
+    private fun getUserCollectActivity(id: Int) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                val activities = mutableListOf<ActivityList>()
+                val localCollects = database.localCollectDao().getByUserId(id)
+                localCollects.forEach {
+                    if (it.collectType == "activity") {
+                        val item = database.activityListDao().getById("${it.collectId}")
+                        activities.add(item)
+                    }
+                }
+                _collectActivity.postValue(activities)
+            }
+        }
+    }
+
 
 }

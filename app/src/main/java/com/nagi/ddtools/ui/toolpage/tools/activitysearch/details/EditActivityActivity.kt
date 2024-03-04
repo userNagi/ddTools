@@ -1,12 +1,16 @@
 package com.nagi.ddtools.ui.toolpage.tools.activitysearch.details
 
 import android.os.Bundle
+import android.text.InputType
+import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
+import android.widget.EditText
 import android.widget.TimePicker
 import androidx.activity.viewModels
 import androidx.core.view.children
+import androidx.lifecycle.map
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
@@ -27,6 +31,7 @@ import com.nagi.ddtools.utils.UiUtils.dialog
 import com.nagi.ddtools.utils.UiUtils.hideDialog
 import com.nagi.ddtools.utils.UiUtils.openPage
 import com.nagi.ddtools.utils.UiUtils.toast
+import java.io.File.separator
 
 class EditActivityActivity : DdToolsBindingBaseActivity<ActivityEditActivityBinding>() {
     private lateinit var dataForSubmit: ActivityList
@@ -52,6 +57,7 @@ class EditActivityActivity : DdToolsBindingBaseActivity<ActivityEditActivityBind
         if (id != 0) loadData()
         binding.activityPartList.adapter = this@EditActivityActivity.adapter
         binding.activityPartAdd.setOnClickListener { addIdol() }
+        binding.activityPartAdd.setOnLongClickListener { addIdolFromText(); true }
         binding.activityVideosAdd.setOnClickListener { addVideo() }
         binding.titleInclude.apply {
             titleText.text = if (id == 0) "创建活动" else "修改活动"
@@ -129,6 +135,43 @@ class EditActivityActivity : DdToolsBindingBaseActivity<ActivityEditActivityBind
         }
         dialogBinding.buttonCancel.setOnClickListener { hideDialog() }
         dialog("添加选项", "请选择", "", "", {}, {}, dialogView)
+    }
+
+    private fun addIdolFromText() {
+        val editText = EditText(this).apply {
+            inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_MULTI_LINE
+            isVerticalScrollBarEnabled = true
+            scrollBarStyle = View.SCROLLBARS_INSIDE_INSET
+            minLines = 5
+            textSize = 16f
+            gravity = Gravity.START or Gravity.TOP
+            layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            hint =
+                "请输入信息，以团体名（列表中的名字）-开始时间（如下午1点20到1点40，写成13:20:00）-结束时间，换行分割，如\n\n" +
+                        "心率研究所-13:00:00-13:15:00\n\n" +
+                        "如果发现少了，那就是名字打错了，可以手动添加，反正最后是时间顺序，无所谓的"
+            setText(
+                viewModel.groupList.value?.joinToString(
+                    separator = "\n",
+                    transform = IdolGroupList::groupDesc
+                )
+            )
+        }
+
+        dialog(
+            title = "批量添加偶像",
+            message = "",
+            customView = editText,
+            positiveButtonText = "添加",
+            onPositive = {
+                val userInputText = editText.text.toString()
+                viewModel.handleAddIdolFromText(userInputText)
+            },
+            negativeButtonText = "取消"
+        )
     }
 
     private fun addVideo() {
@@ -313,7 +356,9 @@ class EditActivityActivity : DdToolsBindingBaseActivity<ActivityEditActivityBind
                         finish()
                     }
 
-                    is Resource.Error -> toast(resource.message)
+                    is Resource.Error -> {
+                        toast(resource.message)
+                    }
                 }
             }
         }

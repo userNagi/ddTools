@@ -6,16 +6,19 @@ import android.text.InputFilter
 import android.view.Gravity
 import android.view.View
 import androidx.activity.viewModels
+import androidx.appcompat.content.res.AppCompatResources
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.nagi.ddtools.R
 import com.nagi.ddtools.data.MediaList
 import com.nagi.ddtools.data.PageState
 import com.nagi.ddtools.data.TagsList
 import com.nagi.ddtools.database.activityList.ActivityList
 import com.nagi.ddtools.database.idolGroupList.IdolGroupList
+import com.nagi.ddtools.database.localCollect.LocalCollect
 import com.nagi.ddtools.databinding.ActivityDetailsActivityBinding
 import com.nagi.ddtools.databinding.DialogSingleInputBinding
 import com.nagi.ddtools.databinding.ListIdolMediaBinding
@@ -75,6 +78,7 @@ class ActivityDetailsActivity : DdToolsBindingBaseActivity<ActivityDetailsActivi
                 justifyContent = JustifyContent.FLEX_START
             }
             detailsEvaluateList.layoutManager = layoutManager
+            detailsCollect.setOnClickListener { viewModel.setCollect(createCollectData()) }
         }
         initGroupAdapter()
         if (pageState == PageState.VIEW) initViewModel()
@@ -89,11 +93,14 @@ class ActivityDetailsActivity : DdToolsBindingBaseActivity<ActivityDetailsActivi
         viewModel.data.observe(this) {
             updateView(it)
         }
-        viewModel.groupList.observe(this) { data ->
-            upGroupAdapter(data)
+        viewModel.isCollection.observe(this) {
+            updateCollection(it)
         }
         viewModel.tags.observe(this) { data ->
             updateTagAdapter(data)
+        }
+        viewModel.groupList.observe(this) { data ->
+            upGroupAdapter(data)
         }
     }
 
@@ -106,6 +113,7 @@ class ActivityDetailsActivity : DdToolsBindingBaseActivity<ActivityDetailsActivi
             detailsLocationText.text = data.location
             detailsTimeText.text = data.durationTime
             detailsPriceText.text = data.price
+            detailsCollect.visibility = View.GONE
             detailsEvaluate.visibility = View.GONE
             detailsEvaluateList.visibility = View.GONE
             detailsEvaluateInclude.visibility = View.GONE
@@ -115,10 +123,8 @@ class ActivityDetailsActivity : DdToolsBindingBaseActivity<ActivityDetailsActivi
             }
             if (data.infoDesc.isNotEmpty()) detailsDescText.text = data.infoDesc
         }
-        viewModel.apply {
-            setGroupList(data.participatingGroup)
-            groupList.observe(this@ActivityDetailsActivity) { groupAdapter.updateData(it) }
-        }
+        viewModel.setGroupList(data.participatingGroup)
+        viewModel.groupList.observe(this@ActivityDetailsActivity) { groupAdapter.updateData(it) }
     }
 
     private fun initGroupAdapter() {
@@ -164,6 +170,16 @@ class ActivityDetailsActivity : DdToolsBindingBaseActivity<ActivityDetailsActivi
         }
     }
 
+    private fun updateCollection(data: Boolean) {
+        binding.detailsCollect.visibility = View.VISIBLE
+        binding.detailsCollect.setImageDrawable(
+            AppCompatResources.getDrawable(
+                applicationContext,
+                if (data) R.drawable.baseline_collect else R.drawable.baseline_un_collect
+            )
+        )
+    }
+
     private fun updateTagAdapter(data: List<TagsList>) {
         if (data.isNotEmpty()) showTagsList(data)
         else hideTagsListAndPromptUserToAddTag()
@@ -192,22 +208,23 @@ class ActivityDetailsActivity : DdToolsBindingBaseActivity<ActivityDetailsActivi
                 if (currentTime - lastClickTime >= 2000) {
                     lastClickTime = currentTime
                     viewModel.addTags("activity", id, tag.content, "like_tag", tag.id) {
-                        toastBack(it)
+                        toastBack(
+                            it
+                        )
                     }
-                } else {
-                    toast("每2秒只能点一次，请不要频繁点击")
-                }
+                } else toast("每2秒只能点一次，请不要频繁点击")
             }
         })
 
-
     private fun checkUserLoginAndPrompt() {
-        if (viewModel.users.value == null) {
-            promptUserToLogin()
-        } else {
-            showAddTagDialog()
-        }
+        if (viewModel.users.value == null) promptUserToLogin() else showAddTagDialog()
     }
+
+    private fun createCollectData() = LocalCollect(
+        collectId = id,
+        collectType = "activity",
+        userId = viewModel.users.value?.id ?: 0
+    )
 
     private fun showAddTagDialog() {
         val editBinding = DialogSingleInputBinding.inflate(layoutInflater)

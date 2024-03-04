@@ -15,7 +15,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.nagi.ddtools.R
 import com.nagi.ddtools.data.Resource
 import com.nagi.ddtools.data.UpdateInfo
 import com.nagi.ddtools.database.homePagList.HomePageList
@@ -27,11 +29,14 @@ import com.nagi.ddtools.ui.adapter.HomePageListAdapter
 import com.nagi.ddtools.utils.FileUtils
 import com.nagi.ddtools.utils.FileUtils.moveImage
 import com.nagi.ddtools.utils.FileUtils.openImageGallery
+import com.nagi.ddtools.utils.FileUtils.viewBigImage
 import com.nagi.ddtools.utils.LogUtils
 import com.nagi.ddtools.utils.NetUtils
 import com.nagi.ddtools.utils.PrefsUtils
 import com.nagi.ddtools.utils.UiUtils.dialog
 import com.nagi.ddtools.utils.UiUtils.toast
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
@@ -46,6 +51,11 @@ class HomeFragment : Fragment() {
     private lateinit var addLauncher: ActivityResultLauncher<Intent>
     private lateinit var editLauncher: ActivityResultLauncher<Intent>
     private var currentSelectedData: HomePageList? = null
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadHomePageList()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -70,7 +80,7 @@ class HomeFragment : Fragment() {
         initAdapter()
         viewModel.loadHomePageList()
         viewModel.homeListData.observe(viewLifecycleOwner) { data ->
-            updateView(data.filter { it.parent == 0 },data.size)
+            updateView(data.filter { it.parent == 0 }, data.size)
         }
 
     }
@@ -106,7 +116,7 @@ class HomeFragment : Fragment() {
     private fun initAdapter() {
         binding.homePageListview.apply {
             adapter = this@HomeFragment.adapter
-            layoutManager = GridLayoutManager(context, 2)
+            layoutManager = StaggeredGridLayoutManager(3, GridLayoutManager.VERTICAL)
         }
     }
 
@@ -187,7 +197,7 @@ class HomeFragment : Fragment() {
     //长按的dialog
     private fun showEditDialog(position: Int, data: HomePageList) {
         currentSelectedData = data
-        val bottomSheetDialog = BottomSheetDialog(requireContext())
+        val bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.BottomSheetDialog)
         val bottomBinding = DialogLongClickBinding.inflate(layoutInflater).apply {
             dialogDelete.setOnClickListener {
                 showDeleteDialog(position, data)
@@ -196,6 +206,21 @@ class HomeFragment : Fragment() {
             dialogEdit.setOnClickListener {
                 openImageGallery(requireActivity(), editLauncher)
                 bottomSheetDialog.cancel()
+            }
+            dialogEditText.setOnClickListener {
+                val editDialog = DialogSingleInputBinding.inflate(layoutInflater).apply {
+                    inputText.setText(data.name)
+                }
+                requireContext().dialog(
+                    "编辑文字", "", "确定", "取消",
+                    { viewModel.updateData(data.copy(name = editDialog.inputText.text.toString())) },
+                    {},
+                    editDialog.root
+                )
+            }
+            dialogViewImage.setOnClickListener {
+                FileUtils.loadBitmapFromPath(CoroutineScope(Dispatchers.Main), data.imgUrl)
+                { bmp -> viewBigImage(requireContext(), it, bmp) }
             }
             dialogCancel.setOnClickListener { bottomSheetDialog.cancel() }
         }

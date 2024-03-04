@@ -9,16 +9,23 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.Environment
 import android.util.Log
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.PopupWindow
 import androidx.activity.result.ActivityResultLauncher
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.setPadding
 import com.nagi.ddtools.R
 import com.nagi.ddtools.data.ProgressListener
+import com.nagi.ddtools.databinding.DialogImageShowBinding
 import com.nagi.ddtools.utils.UiUtils.toast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -289,6 +296,34 @@ object FileUtils {
         return true
     }
 
+    /**
+     * 查看大图
+     */
+    fun viewBigImage(context: Context, view: View, bmp: Bitmap?) {
+        context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val popupViewBinding = DialogImageShowBinding.inflate(LayoutInflater.from(context))
+        val popupWindow = PopupWindow(
+            popupViewBinding.root,
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            true
+        )
+        popupViewBinding.popupImageView.setPadding(50)
+        bmp?.let { bit ->
+            popupViewBinding.popupImageView.setImageBitmap(bit)
+        } ?: run {
+            popupViewBinding.popupImageView.setImageResource(R.drawable.baseline_user_unlogin)
+        }
+        popupViewBinding.root.setOnClickListener {
+            popupWindow.dismiss()
+        }
+        popupViewBinding.popupImageView.setOnLongClickListener {
+            saveImageToGallery(context, bmp)
+            true
+        }
+        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0)
+    }
+
     fun getDrawableForMedia(context: Context, type: String): Drawable? {
         return ContextCompat.getDrawable(
             context, when (type) {
@@ -331,4 +366,21 @@ object FileUtils {
         val timestamp = System.currentTimeMillis()
         return "IMG_$timestamp.$extension"
     }
+
+    private fun saveImageToGallery(context: Context, imageUrl: Bitmap?) {
+        if (imageUrl == null) {
+            return
+        }
+        val fileName = getFileNameWithTimestamp(Uri.parse(imageUrl.toString()))
+        val file = File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), fileName)
+        try {
+            FileOutputStream(file).use { fos ->
+                imageUrl.compress(Bitmap.CompressFormat.JPEG, 100, fos)
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        context.toast("已保存至相册")
+    }
+
 }

@@ -13,6 +13,8 @@ import com.nagi.ddtools.database.activityList.ActivityList
 import com.nagi.ddtools.database.activityList.ActivityListDao
 import com.nagi.ddtools.database.idolGroupList.IdolGroupList
 import com.nagi.ddtools.database.idolGroupList.IdolGroupListDao
+import com.nagi.ddtools.database.localCollect.LocalCollect
+import com.nagi.ddtools.database.localCollect.LocalCollectDao
 import com.nagi.ddtools.database.user.User
 import com.nagi.ddtools.resourceGet.NetGet
 import com.nagi.ddtools.utils.DataUtils
@@ -35,11 +37,18 @@ open class ActivityDetailsViewModel : ViewModel() {
     private val _groupList = MutableLiveData<List<IdolGroupList>>()
     val groupList: LiveData<List<IdolGroupList>> = _groupList
 
+    private val _isCollection = MutableLiveData<Boolean>()
+    val isCollection: LiveData<Boolean> = _isCollection
+
     private val activityListDao: ActivityListDao by lazy {
         AppDatabase.getInstance().activityListDao()
     }
     private val groupListDao: IdolGroupListDao by lazy {
         AppDatabase.getInstance().idolGroupListDao()
+    }
+
+    private val collectDao: LocalCollectDao by lazy {
+        AppDatabase.getInstance().localCollectDao()
     }
 
     fun setId(id: Int) {
@@ -48,6 +57,7 @@ open class ActivityDetailsViewModel : ViewModel() {
                 val activityList = activityListDao.getById("$id")
                 _data.postValue(activityList)
                 setGroupList(activityList.participatingGroup)
+                getCollect(activityList.id)
             }
         }
     }
@@ -65,6 +75,28 @@ open class ActivityDetailsViewModel : ViewModel() {
                         )
                     }
                     _groupList.postValue(resultList)
+                }
+            }
+        }
+    }
+
+    private fun getCollect(id: Int) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                _isCollection.postValue(collectDao.getByTypeAndId("activity", id).isNotEmpty())
+            }
+        }
+    }
+
+    fun setCollect(collect: LocalCollect) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                if (collectDao.getByTypeAndId("activity", collect.collectId).isNotEmpty()) {
+                    collectDao.deleteByTypeAndId("activity", collect.collectId)
+                    _isCollection.postValue(false)
+                } else {
+                    collectDao.insertCollect(collect)
+                    _isCollection.postValue(true)
                 }
             }
         }

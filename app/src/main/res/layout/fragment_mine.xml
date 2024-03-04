@@ -26,7 +26,7 @@
         android:layout_marginTop="5dp"
         android:text="@string/clock_login"
         app:layout_constraintStart_toEndOf="@+id/login_view_image"
-        app:layout_constraintTop_toTopOf="@+id/login_view_image"/>
+        app:layout_constraintTop_toTopOf="@+id/login_view_image" />
 
     <TextView
         android:id="@+id/login_username"
@@ -40,14 +40,24 @@
         app:layout_constraintStart_toEndOf="@+id/login_view_image" />
 
     <com.nagi.ddtools.ui.widget.MineLinearView
-        android:id="@+id/mine_linear_feedback"
+        android:id="@+id/mine_linear_collect"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_15"
         android:layout_marginTop="@dimen/dp_50"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_view_image" />
+        app:layout_constraintTop_toBottomOf="@+id/login_username" />
+
+    <com.nagi.ddtools.ui.widget.MineLinearView
+        android:id="@+id/mine_linear_feedback"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_15"
+        android:layout_marginTop="@dimen/dp_20"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mine_linear_collect" />
 
     <com.nagi.ddtools.ui.widget.MineLinearView
         android:id="@+id/mine_linear_join_us"

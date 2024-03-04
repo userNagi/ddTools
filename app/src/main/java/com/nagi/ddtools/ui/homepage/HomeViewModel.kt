@@ -56,8 +56,8 @@ class HomeViewModel : ViewModel() {
     fun addData(data: HomePageList) {
         val currentList = _homeListData.value?.toMutableList() ?: mutableListOf()
         currentList.add(data)
-        _homeListData.postValue(currentList)
         setHomePageList(data)
+        _homeListData.postValue(currentList)
     }
 
     private fun setHomePageList(currentList: HomePageList) {
