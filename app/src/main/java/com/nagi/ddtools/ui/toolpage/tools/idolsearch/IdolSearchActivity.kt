@@ -85,7 +85,8 @@ class IdolSearchActivity : DdToolsBaseActivity() {
             groupListAdapter = IdolGroupListAdapter(mutableListOf())
             idolListAdapter = IdolListAdapter(mutableListOf())
         }
-        binding.searchRecycler.adapter = groupListAdapter
+        binding.searchRecycler.adapter =
+            if (binding.searchSwitchSearch.isChecked) idolListAdapter else groupListAdapter
         isAdapterInitialized = true
     }
 
@@ -139,21 +140,39 @@ class IdolSearchActivity : DdToolsBaseActivity() {
             lastClickTime = currentTime
             UiUtils.showLoading(this)
             try {
-                NetUtils.fetchAndSave(
-                    getUrl("group"), NetUtils.HttpMethod.POST,
-                    emptyMap(), File(filesDir, FileUtils.IDOL_GROUP_FILE).path
-                ) { resource ->
-                    when (resource) {
-                        is Resource.Success -> {
-                            runOnUiThread { initAdapter() }
+                if (binding.searchSwitchSearch.isChecked) {
+                    NetUtils.fetchAndSave(
+                        getUrl("idol"), NetUtils.HttpMethod.POST,
+                        emptyMap(), File(filesDir, FileUtils.IDOL_LIST_FILE).path
+                    ) { resource ->
+                        when (resource) {
+                            is Resource.Success -> {
+                                runOnUiThread { initAdapter() }
+                            }
+                            is Resource.Error -> {
+                                LogUtils.e("Failed to fetch idol list: ${resource.message}")
+                                toast("获取失败，请稍后重试")
+                            }
                         }
-
-                        is Resource.Error -> {
-                            LogUtils.e("Failed to fetch idol group list: ${resource.message}")
-                            toast("获取失败，请稍后重试")
-                        }
+                        UiUtils.hideLoading()
                     }
-                    UiUtils.hideLoading()
+                } else {
+                    NetUtils.fetchAndSave(
+                        getUrl("group"), NetUtils.HttpMethod.POST,
+                        emptyMap(), File(filesDir, FileUtils.IDOL_GROUP_FILE).path
+                    ) { resource ->
+                        when (resource) {
+                            is Resource.Success -> {
+                                runOnUiThread { initAdapter() }
+                            }
+
+                            is Resource.Error -> {
+                                LogUtils.e("Failed to fetch idol group list: ${resource.message}")
+                                toast("获取失败，请稍后重试")
+                            }
+                        }
+                        UiUtils.hideLoading()
+                    }
                 }
                 chooseWhich = 0
                 binding.searchLocation.text = "全世界"

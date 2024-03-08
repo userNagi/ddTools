@@ -320,6 +320,7 @@ object NetGet {
         when (url) {
             "info" -> INFO_URL
             "login" -> ROOT_URL + USER_LOGIN
+            "idol" -> ROOT_URL + IDOL_LIST_URL
             "group" -> ROOT_URL + IDOL_GROUP_LIST_URL
             "activity" -> ROOT_URL + ACTIVITY_LIST_URL
             else -> ""

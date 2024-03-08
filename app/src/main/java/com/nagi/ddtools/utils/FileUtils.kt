@@ -2,6 +2,7 @@ package com.nagi.ddtools.utils
 
 import android.Manifest
 import android.app.Activity
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -10,6 +11,7 @@ import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Environment
+import android.provider.MediaStore
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -367,20 +369,43 @@ object FileUtils {
         return "IMG_$timestamp.$extension"
     }
 
-    private fun saveImageToGallery(context: Context, imageUrl: Bitmap?) {
-        if (imageUrl == null) {
-            return
-        }
-        val fileName = getFileNameWithTimestamp(Uri.parse(imageUrl.toString()))
-        val file = File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), fileName)
-        try {
-            FileOutputStream(file).use { fos ->
-                imageUrl.compress(Bitmap.CompressFormat.JPEG, 100, fos)
-            }
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-        context.toast("已保存至相册")
+    private fun getFileNameWithTimestamp(): String {
+        val timestamp = System.currentTimeMillis()
+        return "IMG_$timestamp.jpg"
     }
 
+    private fun saveImageToGallery(context: Context, bitmap: Bitmap?) {
+        if (bitmap == null) {
+            context.toast("保存失败：图片为空")
+            return
+        }
+
+        val filename = getFileNameWithTimestamp()
+        val contentValues = ContentValues().apply {
+            put(MediaStore.MediaColumns.DISPLAY_NAME, filename) // 文件名
+            put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
+            put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES) // 相对路径
+
+        }
+        val resolver = context.contentResolver
+        val uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+        uri?.let {
+            try {
+                resolver.openOutputStream(uri).use { out ->
+                    if (out != null) {
+                        if (bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out)) {
+                            context.toast("已保存至相册")
+                        } else {
+                            context.toast("保存失败")
+                        }
+                    }
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+                context.toast("保存失败")
+            }
+        } ?: run {
+            context.toast("保存失败")
+        }
+    }
 }

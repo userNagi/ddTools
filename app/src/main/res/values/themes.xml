@@ -70,7 +70,7 @@
 
     <style name="BottomSheetDialog">
         <item name="android:windowIsFloating">false</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowBackground">#AA000000</item>
     </style>
 
 
